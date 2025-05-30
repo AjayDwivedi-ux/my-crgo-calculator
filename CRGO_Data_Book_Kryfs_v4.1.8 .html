@@ -1,0 +1,1888 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRGO Data Book (v4.1.8 - Responsive)</title>    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            /* Global Colors - Light Theme (Vibrant Blue Accent) */
+            --accent-color: hsl(195, 70%, 50%); 
+            --accent-hover-color: hsl(195, 70%, 40%); 
+            --bg-accent-light: color-mix(in srgb, var(--accent-color) 10%, #FFFFFF); 
+            --text-accent-strong: hsl(195, 70%, 30%); 
+
+            --primary-color: var(--text-accent-strong); 
+            --primary-dark-color: hsl(195, 75%, 25%); 
+            --primary-light-color: hsl(195, 65%, 60%); 
+            
+            --text-color-primary: #212121; 
+            --text-color-secondary: #5f6368; 
+            --text-color-on-primary: #FFFFFF;
+            --text-color-on-accent: #FFFFFF; 
+            
+            --bg-color-body: #f8f9fa; 
+            --bg-color-app: #FFFFFF; 
+            --bg-color-list-item-hover: var(--bg-accent-light); 
+            --border-color: #dee2e6; 
+            --link-color: var(--accent-color);
+
+            --font-family: 'Poppins', 'Segoe UI', sans-serif;
+            --font-size-root: 16px; --font-size-base: 1rem;
+            --font-size-small: 0.875rem; --font-size-medium: 1rem; --font-size-large: 1.125rem;
+            --font-size-h1: 1.4rem; --font-size-h2: 1.2rem; --font-size-h3: 1.05rem;
+            --header-height: 60px;
+            --fab-size: 56px;
+            --z-fab: 990; --z-searchbar-header: 995;
+            --z-modal-backdrop: 1000; --z-modal-content: 1001; --z-main-menu: 1005;
+            --z-options-modal: 1010; --z-calculator-selection-modal: 1015; --z-specific-calculator-modal: 1020;
+            --transition-speed: 0.25s; --fast-transition-speed: 0.15s;
+            --border-radius-main: 8px;
+            --border-radius-elements: 4px;
+
+            --calc-input-border: var(--border-color);
+            --calc-input-focus-border: var(--accent-color); 
+            --calc-input-bg: #FDFDFD; 
+            --calc-input-text: var(--text-color-primary);
+            --calc-button-bg: var(--accent-color); 
+            --calc-button-hover-bg: var(--accent-hover-color); 
+            --calc-result-border: var(--accent-color); 
+            --calc-result-bg: var(--bg-accent-light); 
+            --calc-result-text: var(--text-color-secondary);
+            --calc-formula-bg: color-mix(in srgb, var(--border-color) 20%, var(--bg-accent-light));
+            --calc-formula-border: var(--accent-color); 
+            --calc-formula-text: var(--text-color-primary);
+            
+            --dac-details-bg: var(--bg-color-app); 
+            --dac-details-border: var(--border-color); 
+            --dac-details-text: var(--text-color-primary); 
+            --dac-detail-item-label-color: var(--text-accent-strong); 
+            --dac-detail-item-value-color: var(--accent-color); 
+            --dac-syntax-bg: var(--bg-accent-light); 
+            --dac-syntax-text: var(--text-accent-strong); 
+            --dac-syntax-border: var(--accent-color); 
+            --dac-actual-bg: color-mix(in srgb, var(--accent-color) 5%, #FFFFFF); 
+            --dac-actual-text: var(--text-color-primary); 
+            --dac-actual-border: var(--accent-color); 
+            --dac-val-color: var(--accent-hover-color); 
+            --dac-op-color: var(--accent-color); 
+            --dac-res-color: var(--text-accent-strong); 
+        }
+        body.dark-theme {
+            --accent-color: hsl(195, 65%, 55%); 
+            --accent-hover-color: hsl(195, 65%, 45%); 
+            --bg-accent-light: color-mix(in srgb, var(--accent-color) 15%, var(--bg-color-app)); 
+            --text-accent-strong: hsl(195, 60%, 75%); 
+
+            --primary-color: var(--text-accent-strong);
+            --primary-dark-color: hsl(195, 70%, 65%);
+            --primary-light-color: hsl(195, 55%, 80%);
+            
+            --text-color-primary: #e8eaed; 
+            --text-color-secondary: #bdc1c6; 
+            --text-color-on-primary: #000000;
+            --text-color-on-accent: #FFFFFF; 
+            
+            --bg-color-body: #17181a; 
+            --bg-color-app: #202124; 
+            --bg-color-list-item-hover: color-mix(in srgb, var(--accent-color) 10%, var(--bg-color-app)); 
+            --border-color: #3c4043; 
+            --link-color: var(--accent-color);
+
+            --calc-input-border: var(--border-color);
+            --calc-input-focus-border: var(--accent-color);
+            --calc-input-bg: #2f3136; 
+            --calc-input-text: var(--text-color-primary);
+            --calc-button-bg: var(--accent-color);
+            --calc-button-hover-bg: var(--accent-hover-color);
+            --calc-result-border: var(--accent-color);
+            --calc-result-bg: var(--bg-accent-light);
+            --calc-result-text: var(--text-color-secondary);
+            --calc-formula-bg: color-mix(in srgb, var(--border-color) 20%, var(--bg-accent-light));
+            --calc-formula-border: var(--accent-color);
+            --calc-formula-text: var(--text-color-primary);
+
+            --dac-details-bg: #282c34; 
+            --dac-details-border: #424242; 
+            --dac-details-text: var(--text-color-primary);
+            --dac-detail-item-label-color: var(--text-accent-strong); 
+            --dac-detail-item-value-color: var(--accent-color); 
+            --dac-syntax-bg: var(--bg-accent-light); 
+            --dac-syntax-text: var(--text-accent-strong); 
+            --dac-syntax-border: var(--accent-color); 
+            --dac-actual-bg: color-mix(in srgb, var(--accent-color) 10%, #282c34); 
+            --dac-actual-text: var(--text-color-primary); 
+            --dac-actual-border: var(--accent-color); 
+            --dac-val-color: var(--accent-hover-color); 
+            --dac-op-color: var(--accent-color); 
+            --dac-res-color: var(--text-accent-strong); 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-family); font-size: var(--font-size-root); background-color: var(--bg-color-body); color: var(--text-color-primary); line-height: 1.6; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 10px; transition: background-color var(--transition-speed), color var(--transition-speed); }
+        body.font-size-small { --font-size-base: 0.875rem; } body.font-size-medium { --font-size-base: 1rem; } body.font-size-large { --font-size-base: 1.125rem; }
+        .app-container { 
+            width: 100%; 
+            max-width: 450px; /* Default for mobile */
+            height: calc(100vh - 20px); /* Default height */
+            max-height: 800px; 
+            background-color: var(--bg-color-app); 
+            border-radius: var(--border-radius-main); 
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07); 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            position: relative; 
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed), max-width var(--transition-speed); 
+            margin: 0 auto; /* Center on larger screens by default */
+        }
+        body.dark-theme .app-container { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); }
+        .app-header { background-color: var(--bg-color-app); color: var(--text-color-primary); height: var(--header-height); padding: 0 12px 0 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, color var(--transition-speed); position:relative; z-index: 10; border-bottom: 1px solid var(--border-color); }
+        .app-title { font-size: 1.3rem; font-weight: 600; color: var(--text-accent-strong); transition: opacity var(--transition-speed) ease, font-size var(--transition-speed); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100% - 90px); }
+        .header-actions { display: flex; align-items: center; }
+        .header-actions .icon-button { background: none; border: none; color: var(--primary-light-color); font-size: 1.3rem; padding: 10px; margin-left: 4px; cursor: pointer; border-radius: 50%; transition: background-color var(--fast-transition-speed) ease, transform var(--fast-transition-speed) ease-out, color var(--fast-transition-speed); }
+        .header-actions .icon-button:hover { background-color: var(--bg-color-list-item-hover); color: var(--accent-color); }
+        .header-actions .icon-button:active { transform: scale(0.9); }
+        .search-bar-header { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color-app); display: flex; align-items: center; padding: 0 8px 0 12px; transform: scaleY(0); transform-origin: top; opacity: 0; visibility: hidden; transition: transform var(--fast-transition-speed) ease, opacity var(--fast-transition-speed) ease, visibility var(--fast-transition-speed) ease, background-color var(--transition-speed) ease; z-index: var(--z-searchbar-header); border-bottom: 1px solid var(--border-color); }
+        .search-bar-header.active { transform: scaleY(1); opacity: 1; visibility: visible; }
+        .search-bar-header input[type="text"] { flex-grow: 1; padding: 10px; border: none; font-size: var(--font-size-medium); background: transparent; color: var(--text-color-primary); outline: none; }
+        .search-bar-header .icon-button { color: var(--text-color-secondary); }
+        .search-bar-header .icon-button:hover { color: var(--accent-color); }
+        .main-content { flex-grow: 1; overflow-y: auto; background-color: var(--bg-color-body); transition: background-color var(--transition-speed); } .item-list { list-style: none; }
+        .item-list li { padding: 14px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; cursor: pointer; transition: background-color var(--fast-transition-speed) ease, transform 0.1s ease-out, border-color var(--transition-speed) ease, padding var(--transition-speed); background-color: var(--bg-color-app); font-size: var(--font-size-base); }
+        .item-list li:last-child { border-bottom: none; }
+        .item-list li:hover { background-color: var(--bg-color-list-item-hover); transform: translateX(3px); }
+        .item-list li .item-icon { margin-right: 16px; color: var(--primary-light-color); font-size: 1.3rem; width: 24px; text-align: center; transition: color var(--transition-speed); }
+        .item-list li:hover .item-icon { color: var(--accent-color); }
+        .item-list li .item-text .item-name { font-weight: 500; color: var(--text-color-primary); font-size: inherit; transition: color var(--transition-speed); }
+        .item-list li .item-text .item-preview { font-size: 0.85em; color: var(--text-color-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; margin-top: 2px; transition: color var(--transition-speed), max-width var(--transition-speed); }
+        .item-list .no-results { padding: 20px; text-align: center; color: var(--text-color-secondary); font-style: italic; background-color: var(--bg-color-app); transition: background-color var(--transition-speed), color var(--transition-speed); }
+        .fab { position: absolute; bottom: 24px; right: 24px; width: var(--fab-size); height: var(--fab-size); background: var(--accent-color); color: var(--text-color-on-accent); border: none; border-radius: 50%; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px color-mix(in srgb, var(--accent-color) 40%, transparent); cursor: pointer; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color var(--transition-speed), width var(--transition-speed), height var(--transition-speed), font-size var(--transition-speed); }
+        .fab:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 7px 18px color-mix(in srgb, var(--accent-color) 50%, transparent); background-color: var(--accent-hover-color); } .fab:active { transform: scale(1.0) rotate(0deg); }
+        .menu-dropdown-new { display: none; position: absolute; top: calc(var(--header-height) - 2px); right: 8px; background-color: var(--bg-color-app); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border-radius: var(--border-radius-elements); box-shadow: 0 5px 18px rgba(0,0,0,0.1); z-index: var(--z-main-menu); width: 250px; overflow: hidden; border: 1px solid var(--border-color); opacity: 0; transform: translateY(-8px) scale(0.95); transform-origin: top right; transition: opacity var(--fast-transition-speed) ease-out, transform var(--fast-transition-speed) ease-out, background-color var(--transition-speed), border-color var(--transition-speed); }
+        body.dark-theme .menu-dropdown-new { background-color: color-mix(in srgb, var(--bg-color-app) 95%, black); border: 1px solid var(--border-color); }
+        .menu-dropdown-new.active { display: block; opacity: 1; transform: translateY(0) scale(1); }
+        .menu-dropdown-new .menu-item-new { display: flex; align-items: center; padding: 12px 16px; text-decoration: none; color: var(--text-color-primary); font-size: var(--font-size-medium); font-weight: 500; transition: background-color var(--fast-transition-speed) ease, color var(--transition-speed); position: relative; }
+        .menu-dropdown-new .menu-item-new i { margin-right: 12px; color: var(--primary-light-color); width: 18px; text-align: center; transition: color var(--transition-speed); }
+        .menu-dropdown-new .menu-item-new:hover i { color: var(--accent-color); }
+        .menu-item-new .submenu-indicator { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.75em; color: var(--text-color-secondary); }
+        .menu-dropdown-new .menu-item-new:hover { background-color: var(--bg-color-list-item-hover); }
+        .menu-dropdown-new .menu-divider-new { height: 1px; background-color: var(--border-color); margin: 5px 12px; transition: background-color var(--transition-speed); }
+        .menu-dropdown-new .menu-header-new { padding: 8px 16px 4px; font-size: var(--font-size-small); color: var(--text-color-secondary); display:block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: color var(--transition-speed); }
+        .modal-new { display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; opacity: 0; transition: opacity var(--transition-speed) ease; z-index: var(--z-modal-content); } 
+        body.dark-theme .modal-new { background-color: rgba(0,0,0,0.6); }
+        .modal-new.active { display: flex; opacity: 1; }
+        .modal-content-new { background-color: var(--bg-color-app); margin: auto; padding: 24px; border-radius: var(--border-radius-main); box-shadow: 0 7px 25px rgba(0,0,0,0.12); width: 90%; max-width: 550px; position: relative; transform: translateY(15px) scale(0.98); opacity: 0; transition: transform var(--transition-speed) cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity var(--transition-speed) ease, background-color var(--transition-speed), box-shadow var(--transition-speed), max-width var(--transition-speed); font-size: var(--font-size-base); }
+        body.dark-theme .modal-content-new { box-shadow: 0 7px 25px rgba(0,0,0,0.3); }
+        .modal-new.active .modal-content-new { transform: translateY(0) scale(1); opacity: 1; }
+        .modal-header-new { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); transition: border-color var(--transition-speed); }
+        .modal-title-new { font-size: var(--font-size-h1); font-weight: 600; color: var(--text-accent-strong); transition: color var(--transition-speed), font-size var(--transition-speed); }
+        .modal-close-button-new { background: none; border: none; font-size: 1.6rem; color: var(--text-color-secondary); cursor: pointer; padding: 4px; transition: color 0.2s ease, transform 0.2s ease; }
+        .modal-close-button-new:hover { color: var(--accent-color); transform: rotate(90deg); }
+        .modal-body-new { max-height: 75vh; overflow-y: auto; padding-right: 8px; } /* Scrollbar padding */
+        .modal-body-new p { margin-bottom: 14px; color: var(--text-color-secondary); }
+        .modal-body-new p:first-of-type { margin-top: 0; }
+        .modal-body-new strong { color: var(--text-color-primary); font-weight: 600; }
+        .modal-body-new ul { list-style-type: none; padding-left: 0; margin-bottom: 14px; }
+        .modal-body-new ul li { margin-bottom: 10px; color: var(--text-color-secondary); padding-left: 25px; position:relative; }
+        .modal-body-new ul li::before { 
+            content: "\f005"; 
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900; 
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            top: 2px; 
+            font-size: 0.8em;
+        }
+        .modal-body-new ul li strong { font-size: 1.02em; }
+        .modal-body-new a { color: var(--link-color); text-decoration: none; }
+        .modal-body-new a:hover { text-decoration: underline; }
+        .modal-body-new em { color: var(--text-color-secondary); font-style: italic; }
+        .modal-body-new hr { border: 0; border-top: 1px solid var(--border-color); margin: 20px 0; }
+        .modal-body-new label:not(.calculator-mode-selector label):not(.psw-form-group label) { 
+            display: block; margin-bottom: 6px; font-weight: 500; color: var(--text-color-primary); 
+            font-size: inherit; transition: color var(--transition-speed); 
+        }
+        .modal-body-new input[type="text"]:not(.psw-form-group input), 
+        .modal-body-new input[type="number"]:not(.psw-form-group input), 
+        .modal-body-new textarea, .modal-body-new input[type="file"], .modal-body-new select { 
+            width: 100%; padding: 10px 14px; margin-bottom: 16px; border: 1px solid var(--calc-input-border); 
+            border-radius: var(--border-radius-elements); font-size: inherit; background-color: var(--calc-input-bg); 
+            color: var(--calc-input-text); 
+            transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background-color var(--transition-speed), color var(--transition-speed); 
+        }
+        .modal-body-new input[type="text"]:not(.psw-form-group input):focus, 
+        .modal-body-new input[type="number"]:not(.psw-form-group input):focus, 
+        .modal-body-new textarea:focus, .modal-body-new select:focus { 
+            outline: none; border-color: var(--calc-input-focus-border); 
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--calc-input-focus-border) 20%, transparent); 
+        }
+        .modal-body-new select option { background-color: var(--bg-color-app); color: var(--text-color-primary); }
+        body.dark-theme .modal-body-new select option { background-color: var(--bg-color-app); color: var(--text-color-primary); }
+        .modal-body-new textarea { min-height: 90px; resize: vertical; }
+        .file-preview-container { margin-top: 6px; margin-bottom: 6px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .file-preview-item { width: 70px; height: 70px; border: 1px dashed var(--border-color); border-radius: var(--border-radius-elements); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px; text-align: center; overflow: hidden; background-color: var(--bg-color-body); transition: border-color var(--transition-speed), background-color var(--transition-speed); }
+        .file-preview-item img { max-width: 100%; max-height: 100%; object-fit: cover; } 
+        .file-preview-item .file-icon { font-size: 1.8em; color: var(--text-color-secondary); }
+        .file-preview-item .file-name { font-size: 0.65em; color: var(--text-color-secondary); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+        .remove-files-btn-container { text-align: right; margin-bottom: 6px; }
+        .remove-files-btn { font-size: var(--font-size-small); color: var(--link-color); text-decoration: underline; cursor: pointer; transition: color var(--transition-speed); }
+        .modal-actions-new, .calculator-button-container { text-align: right; margin-top: 20px; }
+        .modal-actions-new .button, .calculator-button-container button { padding: 10px 24px; border: none; border-radius: var(--border-radius-elements); font-size: var(--font-size-medium); font-weight: 500; cursor: pointer; margin-left: 8px; transition: background-color var(--fast-transition-speed) ease, transform 0.1s ease, color var(--fast-transition-speed), box-shadow var(--fast-transition-speed); }
+        .calculator-button-container button { width: 100%; margin-left:0; background-color: var(--calc-button-bg); color: var(--text-color-on-accent); }
+        .calculator-button-container button:hover { background-color: var(--calc-button-hover-bg); }
+        .modal-actions-new .button:active, .calculator-button-container button:active { transform: scale(0.97); }
+        .modal-actions-new .button-primary { background-color: var(--accent-color); color: var(--text-color-on-accent); box-shadow: 0 2px 5px color-mix(in srgb, var(--accent-color) 25%, transparent); }
+        .modal-actions-new .button-primary:hover { background-color: var(--accent-hover-color); box-shadow: 0 3px 7px color-mix(in srgb, var(--accent-hover-color) 30%, transparent); }
+        .modal-actions-new .button-secondary { background-color: var(--bg-color-list-item-hover); color: var(--text-color-primary); }
+        .modal-actions-new .button-secondary:hover { background-color: color-mix(in srgb, var(--border-color) 90%, black); }
+        body.dark-theme .modal-actions-new .button-secondary { background-color: var(--primary-dark-color); color: var(--text-color-on-primary); }
+        body.dark-theme .modal-actions-new .button-secondary:hover { background-color: var(--primary-color); }
+        .calculator-result-box { display: none; margin-top: 18px; background: var(--calc-result-bg); border-left: 3px solid var(--calc-result-border); padding: 12px 16px; border-radius: var(--border-radius-elements); font-size: var(--font-size-medium); line-height: 1.5; color: var(--calc-result-text); transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed); }
+        .calculator-result-box strong {color: var(--text-color-primary);} 
+        body.dark-theme .calculator-result-box strong {color: var(--text-color-primary);}
+        .calculator-formula-box { background-color: var(--calc-formula-bg); border-left: 3px solid var(--calc-formula-border); padding: 8px 12px; border-radius: var(--border-radius-elements); margin-top: 8px; font-size: var(--font-size-small); color: var(--calc-formula-text); white-space: pre-wrap; word-break: break-all; transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed); }
+        .calculator-details-box { margin-top: 15px; padding: 15px; background-color: var(--dac-details-bg); border: 1px solid var(--dac-details-border); border-radius: var(--border-radius-elements); font-size: 0.95em; color: var(--dac-details-text); }
+        .calculator-details-box .detail-item { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dotted color-mix(in srgb, var(--border-color) 50%, transparent); }
+        .calculator-details-box .detail-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .calculator-details-box .detail-item strong { color: var(--dac-detail-item-label-color); min-width: 160px; display: inline-block; font-weight: 600; }
+        .calculator-details-box .detail-item .value { font-weight: bold; color: var(--dac-detail-item-value-color); }
+        .calculator-details-box .syntax-display-block { background-color: var(--dac-syntax-bg); padding: 8px 12px; border-radius: var(--border-radius-elements); font-family: "Consolas", "Courier New", monospace; color: var(--dac-syntax-text); display: block; margin-top: 5px; white-space: pre-wrap; word-break: break-all; border-left: 3px solid var(--dac-syntax-border); font-size: 0.9em; }
+        .calculator-details-box .syntax-explanation { font-size: 0.85em; margin-left: 15px; color: var(--text-color-secondary); font-style: italic; display: block; margin-top: 3px; }
+        .calculator-details-box .actual-calculation-block { background-color: var(--dac-actual-bg); padding: 8px 12px; border-radius: var(--border-radius-elements); font-family: "Consolas", "Courier New", monospace; color: var(--dac-actual-text); display: block; margin-top: 5px; white-space: pre-wrap; word-break: break-all; border-left: 3px solid var(--dac-actual-border); font-size: 0.9em; }
+        .calculator-details-box .note { font-size: 0.85em; color: #6c757d; margin-top: 10px; padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; }
+        body.dark-theme .calculator-details-box .note {color: #adb5bd; background-color: #343a40; border-color: #495057;}
+        .calculator-formula-box .val, .calculator-details-box .actual-calculation-block .val { color: var(--dac-val-color); font-weight: bold; } 
+        .calculator-formula-box .op, .calculator-details-box .actual-calculation-block .op { color: var(--dac-op-color); font-weight: bold; } 
+        .calculator-formula-box .res, .calculator-details-box .actual-calculation-block .res { color: var(--dac-res-color); font-weight: bold; } 
+        .settings-section { margin-bottom: 18px; } 
+        .settings-section h3 { 
+            font-size: var(--font-size-h2); 
+            color: var(--text-accent-strong); 
+            margin-bottom: 10px; padding-bottom: 5px; 
+            border-bottom: 1px solid var(--accent-color); 
+            transition: color var(--transition-speed), border-color var(--transition-speed), font-size var(--transition-speed); 
+        }
+        .setting-option { margin-bottom: 12px; } .setting-option strong { display: block; margin-bottom: 4px; font-weight: 500; font-size: var(--font-size-medium); }
+        .setting-option label { margin-right: 12px; font-size: var(--font-size-medium); cursor: pointer; } .setting-option input[type="radio"] { margin-right: 4px; vertical-align: middle; accent-color: var(--accent-color); }
+        #details-modal-files-container { margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
+        #details-modal-files-container img { max-width: 100%; max-height: 220px; border-radius: var(--border-radius-elements); object-fit: contain; border: 1px solid var(--border-color); display: block; margin: 0 auto 8px auto; transition: border-color var(--transition-speed); }
+        #details-modal-files-container a.file-download-link { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background-color: var(--bg-color-body); border: 1px solid var(--border-color); border-radius: var(--border-radius-elements); color: var(--link-color); text-decoration: none; transition: background-color var(--fast-transition-speed), border-color var(--transition-speed), color var(--transition-speed); }
+        #details-modal-files-container a.file-download-link:hover { background-color: var(--bg-color-list-item-hover); }
+        #details-modal-content { white-space: pre-wrap; word-wrap: break-word; }
+        #details-modal-actions { border-top: 1px solid var(--border-color); padding-top:16px; margin-top:16px; display: flex; flex-wrap:wrap; justify-content: space-between; align-items: center; gap:10px;}
+        #details-modal-actions .action-group-left, #details-modal-actions .action-group-right { display: flex; gap: 8px; }
+        #details-modal-actions .button.edit { background-color: var(--accent-color); color: var(--text-color-on-accent); }
+        #details-modal-actions .button.edit:hover { background-color: var(--accent-hover-color); }
+        #details-modal-actions .button.delete { background-color: #c9302c; color: white; } 
+        #details-modal-actions .button.delete:hover { background-color: #a9201c; }
+        body.dark-theme #details-modal-actions .button.delete { background-color: #a9201c; } 
+        body.dark-theme #details-modal-actions .button.delete:hover { background-color: #80100c; }
+        .options-list { list-style: none; padding: 0; margin:0; }
+        .options-list li a { display: flex; align-items: center; padding: 12px 8px; text-decoration: none; color: var(--text-color-primary); font-size: var(--font-size-base); font-weight: 500; border-radius: var(--border-radius-elements); transition: background-color var(--fast-transition-speed) ease, color var(--transition-speed); }
+        .options-list li a:hover { background-color: var(--bg-color-list-item-hover); }
+        .options-list li a i { margin-right: 12px; color: var(--accent-color); width: 18px; text-align: center; }
+        .hidden { display: none !important; }
+        .calculator-mode-selector { display: flex; justify-content: center; margin-bottom: 18px; }
+        .calculator-mode-selector label { padding: 7px 13px; margin: 0 4px; border: 1px solid var(--border-color); border-radius: var(--border-radius-elements); cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color var(--transition-speed), box-shadow 0.1s ease; color: var(--text-color-secondary); display: inline-flex; align-items: center; gap: 6px;}
+        .calculator-mode-selector label i { font-size: 0.9em; }
+        .calculator-mode-selector input[type="radio"] { display: none; } 
+        .calculator-mode-selector input[type="radio"]:checked + label { 
+            background-color: var(--accent-color); 
+            color: var(--text-color-on-accent); 
+            border-color: var(--accent-color); 
+            box-shadow: 0 2px 4px color-mix(in srgb, var(--accent-color) 30%, transparent);
+        }
+        .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .input-group > div { flex: 1; }
+
+        /* PIECES/STACK CALCULATOR SPECIFIC UI STYLES (using global theme vars) */
+        .psw-calculator-ui-wrapper {
+            background-color: var(--bg-color-body); 
+            border-radius: var(--border-radius-elements);
+            padding: 18px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: padding var(--transition-speed);
+        }
+        body.dark-theme .psw-calculator-ui-wrapper {
+            background-color: #282c34; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+        .psw-calc-section {
+            background-color: var(--bg-accent-light); 
+            padding: 15px;
+            border-radius: var(--border-radius-elements);
+            margin-bottom: 18px;
+            border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
+        }
+         .psw-calc-section:last-child {
+            margin-bottom: 0;
+        }
+        .psw-calc-section-title {
+            font-size: 1.05rem; 
+            font-weight: 600;
+            color: var(--text-accent-strong); 
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            transition: font-size var(--transition-speed);
+        }
+         .psw-calc-section-title i {
+            margin-right: 8px;
+            color: var(--accent-color); 
+            font-size: 1.1em;
+        }
+        .psw-input-row { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+        }
+        .psw-input-row:last-child { margin-bottom: 0; }
+
+        .psw-form-group { 
+            flex: 1 1 calc(50% - 7.5px); 
+            display: flex; 
+            flex-direction: column; 
+            min-width: calc(50% - 7.5px); 
+        }
+        .psw-form-group.full-width { 
+            flex-basis: 100%; 
+            min-width: 100%;
+        }
+
+        .psw-form-group label { 
+            display: block; 
+            margin-bottom: 6px; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+            color: var(--text-color-secondary); 
+            min-height: 1.4em; 
+            line-height: 1.4em;
+        }
+        .psw-form-group input[type="number"], 
+        .psw-form-group select { 
+            width: 100%; 
+            padding: 10px 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--border-radius-elements); 
+            font-size: 0.95rem; 
+            background-color: var(--calc-input-bg); 
+            color: var(--text-color-primary); 
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            line-height: normal; 
+            height: 40px; 
+            box-sizing: border-box;
+        }
+        .psw-form-group input[type="number"][id$="-thickness-custom"] {
+             margin-top: 5px; 
+        }
+
+        .psw-form-group input[type="number"]:focus, 
+        .psw-form-group select:focus { 
+            outline: none; 
+            border-color: var(--accent-color); 
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent); 
+        }
+        
+        #pieces-stack-calculator-modal .calculator-button-container button, 
+        .modal-new[id$="-psw-calculator-modal"] .calculator-button-container button
+        {
+            background: linear-gradient(145deg, var(--accent-color), var(--accent-hover-color));
+            color: var(--text-color-on-accent);
+            font-weight: 500;
+            padding: 12px 24px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border:none;
+            display: inline-flex; 
+            align-items: center;
+            gap: 8px; 
+        }
+         #pieces-stack-calculator-modal .calculator-button-container button:hover,
+         .modal-new[id$="-psw-calculator-modal"] .calculator-button-container button:hover
+         {
+            background: linear-gradient(145deg, var(--accent-hover-color), var(--accent-color));
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        #pieces-stack-result-box, 
+        .calculator-result-box[id$="-psw-result-box"] 
+        { 
+            padding: 0; 
+            border-left: none; 
+            background: transparent; 
+            color: var(--text-color-primary); 
+        }
+        #pieces-stack-result-box strong,
+        .calculator-result-box[id$="-psw-result-box"] strong
+        { 
+            color: var(--text-color-primary); 
+            font-weight: 600;
+        }
+        body.dark-theme #pieces-stack-result-box strong,
+        body.dark-theme .calculator-result-box[id$="-psw-result-box"] strong
+        {
+            color: var(--text-color-primary);
+        }
+        #pieces-stack-result-box .result-value,
+        .calculator-result-box[id$="-psw-result-box"] .result-value
+        {
+            color: var(--accent-color); 
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+        #pieces-stack-result-box .calculator-formula-box,
+        .calculator-result-box[id$="-psw-result-box"] .calculator-formula-box
+        {
+            margin-top: 12px;
+            background-color: color-mix(in srgb, var(--border-color) 20%, var(--bg-accent-light));
+            border-left: 3px solid var(--accent-color);
+            padding: 10px 14px;
+        }
+        body.dark-theme #pieces-stack-result-box .calculator-formula-box,
+        body.dark-theme .calculator-result-box[id$="-psw-result-box"] .calculator-formula-box
+        {
+            background-color: color-mix(in srgb, var(--border-color) 30%, var(--bg-accent-light));
+        }
+        /* About Modal Contact Icon Styling */
+        #about-modal-body .fa-phone-alt, #about-modal-body .fa-envelope {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+        .error-message { color: #c0392b; font-weight: bold; display: block; margin-top: 5px; }
+
+        /* --- START RESPONSIVE STYLES (MEDIA QUERIES) --- */
+        
+        /* Tablet Styles (e.g., iPads, etc.) */
+        @media screen and (min-width: 768px) {
+            .app-container {
+                max-width: 700px; /* Wider container for tablets */
+                max-height: 90vh; /* Adjust max height if needed */
+                margin: 20px auto; /* Add some top/bottom margin */
+            }
+            .app-title {
+                font-size: 1.5rem; /* Slightly larger title */
+            }
+            .header-actions .icon-button {
+                font-size: 1.4rem;
+                padding: 12px;
+            }
+            .item-list li {
+                padding: 16px 20px; /* More padding in list items */
+            }
+            .item-list li .item-text .item-preview {
+                max-width: 450px; /* Allow more preview text */
+            }
+            .fab {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+                bottom: 30px;
+                right: 30px;
+            }
+            .modal-content-new {
+                max-width: 650px; /* Wider modals */
+                padding: 28px;
+            }
+            .modal-title-new {
+                font-size: 1.6rem; /* Larger modal titles */
+            }
+            .settings-section h3 {
+                font-size: 1.3rem;
+            }
+            .psw-calculator-ui-wrapper {
+                padding: 20px;
+            }
+            .psw-calc-section-title {
+                font-size: 1.15rem;
+            }
+            .psw-form-group label {
+                font-size: 0.95rem;
+            }
+            .psw-form-group input[type="number"],
+            .psw-form-group select {
+                font-size: 1rem;
+                height: 44px;
+            }
+            .calculator-button-container button {
+                padding: 14px 28px;
+                font-size: 1.05rem;
+            }
+             #details-modal-files-container img { 
+                max-height: 280px; 
+            }
+        }
+
+        /* Small Laptop/Desktop Styles */
+        @media screen and (min-width: 1024px) {
+            .app-container {
+                max-width: 850px; /* Even wider for small laptops */
+            }
+            .app-title {
+                font-size: 1.65rem;
+            }
+            .item-list li .item-text .item-preview {
+                max-width: 600px;
+            }
+            .modal-content-new {
+                max-width: 750px;
+            }
+            .modal-title-new {
+                font-size: 1.75rem;
+            }
+            /* If you want input groups to potentially have more items per row on larger screens,
+               you might need to adjust .psw-form-group flex-basis here, e.g., to calc(33.33% - 10px) for 3 items.
+               For now, they will just get wider with 2 items per row. */
+            .input-group { /* For DAC calculator etc. */
+                 gap: 15px;
+            }
+            #details-modal-files-container img { 
+                max-height: 320px; 
+            }
+        }
+
+        /* Larger Desktop Styles */
+        @media screen and (min-width: 1280px) {
+            .app-container {
+                max-width: 960px; /* Max width for large desktops */
+            }
+             .app-title {
+                font-size: 1.8rem;
+            }
+            .modal-content-new {
+                max-width: 800px;
+            }
+            .psw-calculator-ui-wrapper {
+                padding: 24px;
+            }
+             #details-modal-files-container img { 
+                max-height: 350px; 
+            }
+        }
+        /* --- END RESPONSIVE STYLES --- */
+
+    </style>
+</head>
+<body class="">
+    <div class="app-container">
+        <header class="app-header">
+            <div class="app-title" id="app-main-title">CRGO Data Book</div>
+            <div class="search-bar-header" id="search-bar-header">
+                <button class="icon-button" id="back-from-search-btn" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+                <input type="text" id="search-input-field" placeholder="Search entries...">
+                <button class="icon-button" id="clear-search-btn" aria-label="Clear Search"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="header-actions" id="main-header-actions">
+                <button class="icon-button" id="search-icon-btn" aria-label="Search"><i class="fas fa-search"></i></button>
+                <button class="icon-button" id="menu-icon-btn" aria-label="Menu"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+        </header>
+        <main class="main-content" id="main-list-view"><ul class="item-list" id="main-item-list"></ul></main>
+        <button class="fab" id="fab-add-entry" aria-label="Add New Entry"><i class="fas fa-plus"></i></button>
+        <div class="menu-dropdown-new" id="main-menu-dropdown">
+            <a href="#" class="menu-item-new" data-action="add-new-generic"><i class="fas fa-plus-circle"></i> Add New Entry</a>
+            <a href="#" class="menu-item-new" data-action="show-cnc-options"><i class="fas fa-cogs"></i> CNC <span class="submenu-indicator">&rsaquo;</span></a>
+            <a href="#" class="menu-item-new" data-action="show-slitting-options"><i class="fas fa-tape"></i> Slitting <span class="submenu-indicator">&rsaquo;</span></a>
+            <a href="#" class="menu-item-new" data-action="add-packing"><i class="fas fa-box-open"></i> Packing</a>
+            <a href="#" class="menu-item-new" data-action="add-core"><i class="fas fa-cubes"></i> Core</a>
+            <a href="#" class="menu-item-new" data-action="add-manual"><i class="fas fa-tools"></i> Manual</a>
+            <div class="menu-divider-new"></div>
+            <a href="#" class="menu-item-new" data-action="sort-az"><i class="fas fa-sort-alpha-down"></i> Sort A-Z</a>
+            <a href="#" class="menu-item-new" data-action="sort-za"><i class="fas fa-sort-alpha-up"></i> Sort Z-A</a>
+            <div class="menu-divider-new"></div>
+            <a href="#" class="menu-item-new" data-action="settings"><i class="fas fa-cog"></i> Settings</a>
+            <a href="#" class="menu-item-new" data-action="help"><i class="fas fa-question-circle"></i> Help</a>
+            <a href="#" class="menu-item-new" data-action="about"><i class="fas fa-info-circle"></i> About</a>
+        </div>
+    </div>
+    <div class="modal-new" id="add-edit-entry-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new" id="entry-modal-title">Add Entry</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><form id="entry-form"><div><label for="entry-name">Name / Title:</label><input type="text" id="entry-name" required placeholder="e.g., Core Loss Formula"></div><div><label for="entry-details">Details / Formula:</label><textarea id="entry-details" rows="5" required placeholder="Enter all details here..."></textarea></div><div><label for="entry-file-input">Attach File(s) (Optional):</label><input type="file" id="entry-file-input" multiple> <div class="file-preview-container hidden" id="entry-file-preview-container"></div><div class="remove-files-btn-container hidden" id="remove-entry-files-btn-container"><span class="remove-files-btn" id="remove-entry-files-btn">Clear Selected Files</span></div><small style="display: block; color: var(--text-color-secondary); font-size: 0.8em;">Max 5MB per file. Images are compressed.</small></div></form></div><div class="modal-actions-new"><button class="button button-secondary" id="cancel-entry-modal-btn">Cancel</button><button class="button button-primary" id="save-entry-modal-btn">Save</button></div></div></div>
+    <div class="modal-new" id="view-details-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new" id="details-modal-title">Details</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><div id="details-modal-files-container" class="hidden"></div><div id="details-modal-content"></div></div><div class="modal-actions-new" id="details-modal-actions"><div class="action-group-left"><button class="button button-secondary" id="details-modal-copy-btn"><i class="fas fa-copy"></i> Copy</button><button class="button button-secondary" id="details-modal-download-txt-btn"><i class="fas fa-download"></i> Text</button></div><div class="action-group-right"><button class="button button-primary" id="details-modal-export-pdf-btn"><i class="fas fa-file-pdf"></i> PDF</button><button class="button edit" id="details-modal-edit-btn"><i class="fas fa-edit"></i> Edit</button><button class="button delete" id="details-modal-delete-btn"><i class="fas fa-trash-alt"></i> Delete</button></div></div></div></div>
+    <div class="modal-new" id="settings-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Settings</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><div class="settings-section"><h3>Appearance</h3><div class="setting-option"><strong>Theme:</strong><br><label><input type="radio" name="theme_setting" value="light" id="theme-light-setting"> Light</label><label><input type="radio" name="theme_setting" value="dark" id="theme-dark-setting"> Dark</label></div><div class="setting-option"><strong>Font Size:</strong><br><label><input type="radio" name="fontsize_setting" value="small" id="fontsize-small-setting"> Small</label><label><input type="radio" name="fontsize_setting" value="medium" id="fontsize-medium-setting"> Medium</label><label><input type="radio" name="fontsize_setting" value="large" id="fontsize-large-setting"> Large</label></div></div><div class="settings-section"><h3>Data Management</h3><p><small>Export, Import, Clear Data coming soon.</small></p></div></div></div></div>
+    
+    <div class="modal-new" id="about-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">About CRGO Data Book</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new" id="about-modal-body">
+        <!-- Updated About Content will be injected here by JavaScript -->
+    </div></div></div>
+
+    <div class="modal-new" id="help-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Help</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new" id="help-modal-body">
+        <!-- Help content will be injected here by JavaScript -->
+    </div></div></div>
+
+    <div class="modal-new" id="cnc-options-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">CNC Options</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><ul class="options-list"><li><a href="#" data-action="add-cnc-entry-from-submenu"><i class="fas fa-plus-circle"></i> Add New CNC Entry</a></li><li><a href="#" data-action="show-weight-calculator-selection"><i class="fas fa-calculator"></i> Weight Calculator <span class="submenu-indicator">&rsaquo;</span></a></li><li><a href="#" data-action="show-plate-type-selector-psw"><i class="fas fa-balance-scale-right"></i> Pieces/Stack from Weight (Plates) <span class="submenu-indicator">&rsaquo;</span></a></li></ul></div></div></div>
+    <div class="modal-new" id="slitting-options-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Slitting Options</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><ul class="options-list"><li><a href="#" data-action="add-slitting-entry-from-submenu"><i class="fas fa-plus-circle"></i> Add New Slitting Entry</a></li><li><a href="#" data-action="show-slitting-calculator-selection"><i class="fas fa-balance-scale"></i> Coil Weight/Stack Calc <span class="submenu-indicator">&rsaquo;</span></a></li></ul></div></div></div>
+    
+    <div class="modal-new" id="weight-calculator-selection-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Select CNC Weight Calculator</h2><button class="modal-close-button-new">&times;</button></div>
+            <div class="modal-body-new">
+                <ul class="options-list" id="calculator-types-list">
+                    <li><a href="#" data-calculator-type="a_plate"><i class="fas fa-square"></i> A Plate</a></li>
+                    <li><a href="#" data-calculator-type="b_plate"><i class="fas fa-object-group"></i> B Plate</a></li>
+                    <li><a href="#" data-calculator-type="c_plate"><i class="fas fa-object-ungroup"></i> C Plate</a></li>
+                    <li><a href="#" data-calculator-type="triangle"><i class="fas fa-play" style="transform: rotate(-90deg);"></i> Triangle</a></li>
+                    <li><a href="#" data-calculator-type="angle"><i class="fas fa-drafting-compass"></i> Angle</a></li>
+                    <li><a href="#" data-calculator-type="right_angle"><i class="fas fa-ruler-combined"></i> Right Angle</a></li>
+                    <li><a href="#" data-calculator-type="half_mitre"><i class="fas fa-ruler-horizontal"></i> Half Mitre</a></li>
+                    <li><a href="#" data-calculator-type="parallelogram"><i class="fas fa-draw-polygon"></i> Parallelogram</a></li>
+                    <li><a href="#" data-calculator-type="hole"><i class="fas fa-circle-notch"></i> Hole</a></li>
+                    <li><a href="#" data-calculator-type="dual_angle_cut"><i class="fas fa-gem"></i> Dual Angle Cut Plate</a></li>
+                    <li><a href="#" data-calculator-type="pieces_stack"><i class="fas fa-layer-group"></i> Pieces/Stack (General)</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plate Type Selector Modal for Pieces/Stack from Weight -->
+    <div class="modal-new" id="plate-type-selector-psw-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new">
+                <h2 class="modal-title-new">Select Plate Type for Pieces/Stack Calc</h2>
+                <button class="modal-close-button-new" data-close-modal>&times;</button>
+            </div>
+            <div class="modal-body-new">
+                <ul class="options-list" id="plate-type-psw-list">
+                    <li><a href="#" data-plate-calculator-type="a-plate-psw"><i class="fas fa-square"></i> A Plate</a></li>
+                    <li><a href="#" data-plate-calculator-type="b-plate-psw"><i class="fas fa-object-group"></i> B Plate</a></li>
+                    <li><a href="#" data-plate-calculator-type="c-plate-psw"><i class="fas fa-object-ungroup"></i> C Plate</a></li>
+                    <li><a href="#" data-plate-calculator-type="rectangle-psw"><i class="fas fa-ruler-combined"></i> Rectangle / Right Angle</a></li>
+                    <li><a href="#" data-plate-calculator-type="half-mitre-psw"><i class="fas fa-ruler-horizontal"></i> Half Mitre</a></li>
+                    <li><a href="#" data-plate-calculator-type="parallelogram-psw"><i class="fas fa-draw-polygon"></i> Parallelogram</a></li>
+                    <li><a href="#" data-plate-calculator-type="dual-angle-psw"><i class="fas fa-gem"></i> Dual Angle Cut Plate</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-new" id="slitting-calculator-selection-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Select Slitting Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><ul class="options-list"><li><a href="#" data-calculator-type="coil_weight_stack"><i class="fas fa-weight-hanging"></i> Coil Weight/Stack Calc</a></li></ul></div></div></div>
+    <div class="modal-new" id="a-plate-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">A Plate Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="a-plate-length">Length (L) in mm:</label><input type="number" id="a-plate-length" placeholder="e.g. 990"><label for="a-plate-width">Width (W) in mm:</label><input type="number" id="a-plate-width" placeholder="e.g. 230"><label for="a-plate-stack">Stack (S) in mm:</label><input type="number" id="a-plate-stack" placeholder="e.g. 270.3"><div class="calculator-button-container"><button id="calculate-a-plate-btn">Calculate</button></div><div class="calculator-result-box" id="a-plate-result-box"></div></div></div></div>
+    <div class="modal-new" id="b-plate-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">B Plate Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="b-plate-length">Length (L) in mm:</label><input type="number" id="b-plate-length" placeholder="e.g. 1000"><label for="b-plate-width">Width (W) in mm:</label><input type="number" id="b-plate-width" placeholder="e.g. 200"><label for="b-plate-stack">Stack (S) in mm:</label><input type="number" id="b-plate-stack" placeholder="e.g. 150"><div class="calculator-button-container"><button id="calculate-b-plate-btn">Calculate</button></div><div class="calculator-result-box" id="b-plate-result-box"></div></div></div></div>
+    <div class="modal-new" id="c-plate-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">C Plate Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="c-plate-length">Length (L) in mm:</label><input type="number" id="c-plate-length" placeholder="e.g. 1100"><label for="c-plate-width">Width (W) in mm:</label><input type="number" id="c-plate-width" placeholder="e.g. 180"><label for="c-plate-stack">Stack (S) in mm:</label><input type="number" id="c-plate-stack" placeholder="e.g. 120"><div class="calculator-button-container"><button id="calculate-c-plate-btn">Calculate</button></div><div class="calculator-result-box" id="c-plate-result-box"></div></div></div></div>
+    <div class="modal-new" id="triangle-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Triangle Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="triangle-type">Triangle Type (B/C):</label><input type="text" id="triangle-type" maxlength="1" placeholder="B or C"><label for="triangle-size">Side Size (mm):</label><input type="number" id="triangle-size" placeholder="e.g. 150"><label for="triangle-stack">Stack (S) in mm:</label><input type="number" id="triangle-stack" placeholder="e.g. 50"><div class="calculator-button-container"><button id="calculate-triangle-btn">Calculate</button></div><div class="calculator-result-box" id="triangle-result-box"></div></div></div></div>
+    <div class="modal-new" id="angle-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Angle Value Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="angle-degree">Angle (Degree °):</label><input type="number" id="angle-degree" placeholder="e.g. 45"><label for="angle-size">Opposite Side Length (mm):</label><input type="number" id="angle-size" placeholder="e.g. 100"><div class="calculator-button-container"><button id="calculate-angle-val-btn">Calculate</button></div><div class="calculator-result-box" id="angle-result-box"></div></div></div></div>
+    <div class="modal-new" id="right-angle-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Right Angle Plate Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="ra-length">Length (L) in mm:</label><input type="number" id="ra-length" placeholder="e.g., 1493"><label for="ra-width">Width (W) in mm:</label><input type="number" id="ra-width" placeholder="e.g., 295"><label for="ra-stack">Stack (S) in mm:</label><input type="number" id="ra-stack" placeholder="e.g., 102"><div class="calculator-button-container"><button id="calculate-ra-btn">Calculate</button></div><div class="calculator-result-box" id="ra-result-box"></div></div></div></div>
+    <div class="modal-new" id="half-mitre-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Half-Mitre Plate Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="hm-length">Length (L) in mm:</label><input type="number" id="hm-length" placeholder="e.g., 855"><label for="hm-width">Width (W) in mm:</label><input type="number" id="hm-width" placeholder="e.g., 380"><label for="hm-stack">Stack (S) in mm:</label><input type="number" id="hm-stack" placeholder="e.g., 149.8"><div class="calculator-button-container"><button id="calculate-hm-btn">Calculate</button></div><div class="calculator-result-box" id="hm-result-box"></div></div></div></div>
+    <div class="modal-new" id="parallelogram-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Parallelogram Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="pg-length">Length (L) in mm:</label><input type="number" id="pg-length" placeholder="e.g., 1200"><label for="pg-width">Width (W) in mm:</label><input type="number" id="pg-width" placeholder="e.g., 300"><label for="pg-stack">Stack (S) in mm:</label><input type="number" id="pg-stack" placeholder="e.g., 194"><div class="calculator-button-container"><button id="calculate-pg-btn">Calculate</button></div><div class="calculator-result-box" id="pg-result-box"></div></div></div></div>
+    <div class="modal-new" id="hole-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Hole Material Weight Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="hole-num">Number of Holes:</label><input type="number" id="hole-num" placeholder="e.g., 1" value="1"><label for="hole-diameter">Hole Diameter (mm):</label><input type="number" id="hole-diameter" placeholder="e.g., 16"><label for="hole-stack">Stack (S) in mm:</label><input type="number" id="hole-stack" placeholder="e.g., 70"><div class="calculator-button-container"><button id="calculate-hole-btn">Calculate</button></div><div class="calculator-result-box" id="hole-result-box"></div></div></div></div>
+    <div class="modal-new" id="coil-weight-stack-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Coil Weight/Stack Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><div class="calculator-mode-selector"><input type="radio" name="coilCalcMode" id="calc-mode-weight" value="weight" checked><label for="calc-mode-weight">Calculate Weight</label><input type="radio" name="coilCalcMode" id="calc-mode-stack" value="stack"><label for="calc-mode-stack">Calculate Stack</label></div><div id="coil-calc-inputs-weight"><label for="coil-id-for-weight">ID of Coil (mm):</label><input type="number" id="coil-id-for-weight" placeholder="e.g., 500"><label for="coil-width-for-weight">Width (W) in mm:</label><input type="number" id="coil-width-for-weight" placeholder="e.g., 420"><label for="coil-stack-for-weight">Stack Height (S) in mm:</label><input type="number" id="coil-stack-for-weight" placeholder="e.g., 75"></div><div id="coil-calc-inputs-stack" class="hidden"><label for="coil-id-for-stack">ID of Coil (mm):</label><input type="number" id="coil-id-for-stack" placeholder="e.g., 500"><label for="coil-width-for-stack">Width (W) in mm:</label><input type="number" id="coil-width-for-stack" placeholder="e.g., 300"><label for="coil-weight-for-stack">Weight (kgs):</label><input type="number" id="coil-weight-for-stack" placeholder="e.g., 190"></div><div class="calculator-button-container"><button id="calculate-coil-btn">Calculate</button></div><div class="calculator-result-box" id="coil-result-box"></div></div></div></div>
+    <div class="modal-new" id="dual-angle-cut-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Dual Angle Cut Weight Calculator</h2><button class="modal-close-button-new">&times;</button></div>
+            <div class="modal-body-new">
+                <label for="dac-length">Length (L / L<sub>long</sub>) (mm):</label><input type="number" id="dac-length" placeholder="e.g., 812.5" value="812.5">
+                <label for="dac-width">Width (W / h) (mm):</label><input type="number" id="dac-width" placeholder="e.g., 295" value="295">
+                <div class="input-group">
+                    <div><label for="dac-angle1">Angle 1 (degrees):</label><input type="number" id="dac-angle1" placeholder="e.g., 75" value="75"></div>
+                    <div><label for="dac-angle2">Angle 2 (degrees):</label><input type="number" id="dac-angle2" placeholder="e.g., 45" value="45"></div>
+                </div>
+                <p style="font-size:0.8em; color:var(--text-color-secondary); margin-top:-10px; margin-bottom:15px;">Note: Enter 90° for straight ends (Rectangle). For Trapezoid, enter internal base angles.</p>
+                <label for="dac-stack">Stack (S) (mm):</label><input type="number" id="dac-stack" placeholder="e.g., 196" value="196">
+                <label for="dac-density">Density (D) (g/cm³):</label><input type="number" id="dac-density" value="7.65" step="0.01">
+                <label for="dac-stacking-factor">Stacking Factor (SF):</label><input type="number" id="dac-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0">
+                <div class="calculator-button-container"><button id="calculate-dac-btn">Calculate Weight</button></div>
+                <div class="calculator-result-box" id="dac-result-box">Please enter values and calculate.</div>
+                <div class="calculator-details-box" id="dac-details-box" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-new" id="pieces-stack-calculator-modal"> <!-- Original Pieces/Stack Calculator -->
+        <div class="modal-content-new">
+            <div class="modal-header-new">
+                <h2 class="modal-title-new">Pieces/Stack Calculator (General)</h2>
+                <button class="modal-close-button-new">&times;</button>
+            </div>
+            <div class="modal-body-new">
+                <div class="calculator-mode-selector">
+                    <input type="radio" name="psCalcMode" id="ps-calc-mode-pieces" value="pieces" checked>
+                    <label for="ps-calc-mode-pieces"><i class="fas fa-th-list"></i> Calculate Pieces</label>
+                    <input type="radio" name="psCalcMode" id="ps-calc-mode-stack" value="stack">
+                    <label for="ps-calc-mode-stack"><i class="fas fa-layer-group"></i> Calculate Stack</label>
+                </div>
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div id="ps-calc-inputs-pieces">
+                            <div class="psw-form-group full-width"><label for="ps-total-stack">Total Stack Height (mm):</label><input type="number" id="ps-total-stack" placeholder="e.g., 150"></div>
+                            <div class="psw-form-group full-width"><label for="ps-thickness-per-piece">Lamination Thickness (mm):</label><input type="number" id="ps-thickness-per-piece" placeholder="e.g., 0.23" step="0.01"></div>
+                        </div>
+                        <div id="ps-calc-inputs-stack" class="hidden">
+                            <div class="psw-form-group full-width"><label for="ps-total-pieces">Total Number of Pieces:</label><input type="number" id="ps-total-pieces" placeholder="e.g., 652"></div>
+                            <div class="psw-form-group full-width"><label for="ps-thickness-per-piece-for-stack">Lamination Thickness (mm):</label><input type="number" id="ps-thickness-per-piece-for-stack" placeholder="e.g., 0.23" step="0.01"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-pieces-stack-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="pieces-stack-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pieces/Stack from Weight Calculator Modals (A, B, C, etc.) -->
+    <!-- A-Plate PSW Calculator -->
+    <div class="modal-new" id="a-plate-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">A-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="apsw-total-weight">Total Weight (kgs):</label><input type="number" id="apsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="apsw-length">Length (L) (mm):</label><input type="number" id="apsw-length" placeholder="e.g., 1655"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="apsw-width">Width (W) (mm):</label><input type="number" id="apsw-width" placeholder="e.g., 300"></div>
+                            <div class="psw-form-group"><label for="apsw-thickness-select">Lamination Thickness (mm):</label><select id="apsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="apsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="apsw-density">Density (g/cm³):</label><input type="number" id="apsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="apsw-stacking-factor">Stacking Factor:</label><input type="number" id="apsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-apsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="apsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- B-Plate PSW Calculator -->
+    <div class="modal-new" id="b-plate-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">B-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="bpsw-total-weight">Total Weight (kgs):</label><input type="number" id="bpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="bpsw-length">Length (L) (mm):</label><input type="number" id="bpsw-length" placeholder="e.g., 1000"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="bpsw-width">Width (W) (mm):</label><input type="number" id="bpsw-width" placeholder="e.g., 200"></div>
+                            <div class="psw-form-group"><label for="bpsw-thickness-select">Lamination Thickness (mm):</label><select id="bpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="bpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="bpsw-density">Density (g/cm³):</label><input type="number" id="bpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="bpsw-stacking-factor">Stacking Factor:</label><input type="number" id="bpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-bpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="bpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- C-Plate PSW Calculator -->
+    <div class="modal-new" id="c-plate-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">C-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="cpsw-total-weight">Total Weight (kgs):</label><input type="number" id="cpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="cpsw-length">Length (L) (mm):</label><input type="number" id="cpsw-length" placeholder="e.g., 1100"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="cpsw-width">Width (W) (mm):</label><input type="number" id="cpsw-width" placeholder="e.g., 180"></div>
+                            <div class="psw-form-group"><label for="cpsw-thickness-select">Lamination Thickness (mm):</label><select id="cpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="cpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="cpsw-density">Density (g/cm³):</label><input type="number" id="cpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="cpsw-stacking-factor">Stacking Factor:</label><input type="number" id="cpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-cpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="cpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rectangle/Right Angle PSW Calculator -->
+    <div class="modal-new" id="rectangle-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Rectangle: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="rectpsw-total-weight">Total Weight (kgs):</label><input type="number" id="rectpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="rectpsw-length">Length (L) (mm):</label><input type="number" id="rectpsw-length" placeholder="e.g., 1000"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="rectpsw-width">Width (W) (mm):</label><input type="number" id="rectpsw-width" placeholder="e.g., 200"></div>
+                            <div class="psw-form-group"><label for="rectpsw-thickness-select">Lamination Thickness (mm):</label><select id="rectpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="rectpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="rectpsw-density">Density (g/cm³):</label><input type="number" id="rectpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="rectpsw-stacking-factor">Stacking Factor:</label><input type="number" id="rectpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-rectpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="rectpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Half-Mitre PSW Calculator -->
+    <div class="modal-new" id="half-mitre-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Half-Mitre: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="hmpsw-total-weight">Total Weight (kgs):</label><input type="number" id="hmpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="hmpsw-length">Length (L) (mm):</label><input type="number" id="hmpsw-length" placeholder="e.g., 855"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="hmpsw-width">Width (W) (mm):</label><input type="number" id="hmpsw-width" placeholder="e.g., 380"></div>
+                            <div class="psw-form-group"><label for="hmpsw-thickness-select">Lamination Thickness (mm):</label><select id="hmpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="hmpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="hmpsw-density">Density (g/cm³):</label><input type="number" id="hmpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="hmpsw-stacking-factor">Stacking Factor:</label><input type="number" id="hmpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-hmpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="hmpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parallelogram PSW Calculator -->
+    <div class="modal-new" id="parallelogram-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Parallelogram: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="pgpsw-total-weight">Total Weight (kgs):</label><input type="number" id="pgpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="pgpsw-length">Base Length (L) (mm):</label><input type="number" id="pgpsw-length" placeholder="e.g., 1200"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="pgpsw-width">Perpendicular Height (W/h) (mm):</label><input type="number" id="pgpsw-width" placeholder="e.g., 300"></div>
+                            <div class="psw-form-group"><label for="pgpsw-thickness-select">Lamination Thickness (mm):</label><select id="pgpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="pgpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="pgpsw-density">Density (g/cm³):</label><input type="number" id="pgpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="pgpsw-stacking-factor">Stacking Factor:</label><input type="number" id="pgpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-pgpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="pgpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dual Angle Cut PSW Calculator -->
+    <div class="modal-new" id="dual-angle-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Dual Angle Cut: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-total-weight">Total Weight (kgs):</label><input type="number" id="dacpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="dacpsw-length">Length (L<sub>long</sub>) (mm):</label><input type="number" id="dacpsw-length" placeholder="e.g., 812.5"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-width">Width (W/h) (mm):</label><input type="number" id="dacpsw-width" placeholder="e.g., 295"></div>
+                            <div class="psw-form-group"><label for="dacpsw-thickness-select">Lamination Thickness (mm):</label><select id="dacpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="dacpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-angle1">Angle 1 (degrees):</label><input type="number" id="dacpsw-angle1" placeholder="e.g., 75"></div>
+                            <div class="psw-form-group"><label for="dacpsw-angle2">Angle 2 (degrees):</label><input type="number" id="dacpsw-angle2" placeholder="e.g., 45"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-density">Density (g/cm³):</label><input type="number" id="dacpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="dacpsw-stacking-factor">Stacking Factor:</label><input type="number" id="dacpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                         <p style="font-size:0.8em; color:var(--text-color-secondary); margin-top:5px;">Note: Enter 90° for straight ends. For Trapezoid, enter internal base angles.</p>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-dacpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="dacpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const { jsPDF } = window.jspdf; 
+            const bodyElement = document.body;
+            const appMainTitle = document.getElementById('app-main-title');
+            const searchIconBtn = document.getElementById('search-icon-btn');
+            const searchBarHeader = document.getElementById('search-bar-header');
+            const backFromSearchBtn = document.getElementById('back-from-search-btn');
+            const searchInputField = document.getElementById('search-input-field');
+            const clearSearchBtn = document.getElementById('clear-search-btn');
+            const mainHeaderActions = document.getElementById('main-header-actions');
+            const menuIconBtn = document.getElementById('menu-icon-btn');
+            const mainMenuDropdown = document.getElementById('main-menu-dropdown');
+            const mainItemList = document.getElementById('main-item-list');
+            const fabAddEntry = document.getElementById('fab-add-entry');
+            const addEditEntryModal = document.getElementById('add-edit-entry-modal');
+            const entryModalTitle = document.getElementById('entry-modal-title');
+            const entryForm = document.getElementById('entry-form');
+            const entryNameInput = document.getElementById('entry-name');
+            const entryDetailsTextarea = document.getElementById('entry-details');
+            const entryFileInput = document.getElementById('entry-file-input'); 
+            const entryFilePreviewContainer = document.getElementById('entry-file-preview-container'); 
+            const removeEntryFilesBtnContainer = document.getElementById('remove-entry-files-btn-container'); 
+            const removeEntryFilesBtn = document.getElementById('remove-entry-files-btn'); 
+            const saveEntryModalBtn = document.getElementById('save-entry-modal-btn');
+            const cancelEntryModalBtn = document.getElementById('cancel-entry-modal-btn');
+            const viewDetailsModal = document.getElementById('view-details-modal');
+            const detailsModalTitle = document.getElementById('details-modal-title');
+            const detailsModalFilesContainer = document.getElementById('details-modal-files-container'); 
+            const detailsModalContent = document.getElementById('details-modal-content');
+            const detailsModalActionsContainer = document.getElementById('details-modal-actions'); 
+            const detailsModalExportPdfBtn = document.getElementById('details-modal-export-pdf-btn');
+            const detailsModalEditBtn = document.getElementById('details-modal-edit-btn');
+            const detailsModalDeleteBtn = document.getElementById('details-modal-delete-btn');
+            const detailsModalCopyBtn = document.getElementById('details-modal-copy-btn'); 
+            const detailsModalDownloadTxtBtn = document.getElementById('details-modal-download-txt-btn'); 
+            const settingsModal = document.getElementById('settings-modal');
+            const themeLightSettingRadio = document.getElementById('theme-light-setting');
+            const themeDarkSettingRadio = document.getElementById('theme-dark-setting');
+            const fontSizeSmallSettingRadio = document.getElementById('fontsize-small-setting');
+            const fontSizeMediumSettingRadio = document.getElementById('fontsize-medium-setting');
+            const fontSizeLargeSettingRadio = document.getElementById('fontsize-large-setting');
+            const aboutModal = document.getElementById('about-modal');
+            const aboutModalBody = document.getElementById('about-modal-body');
+            const helpModal = document.getElementById('help-modal');
+            const helpModalBody = document.getElementById('help-modal-body');
+            const cncOptionsModal = document.getElementById('cnc-options-modal');
+            const slittingOptionsModal = document.getElementById('slitting-options-modal');
+            const weightCalculatorSelectionModal = document.getElementById('weight-calculator-selection-modal');
+            const slittingCalculatorSelectionModal = document.getElementById('slitting-calculator-selection-modal');
+            const aPlateCalculatorModal = document.getElementById('a-plate-calculator-modal');
+            const bPlateCalculatorModal = document.getElementById('b-plate-calculator-modal');
+            const cPlateCalculatorModal = document.getElementById('c-plate-calculator-modal');
+            const triangleCalculatorModal = document.getElementById('triangle-calculator-modal');
+            const angleCalculatorModal = document.getElementById('angle-calculator-modal');
+            const rightAngleCalculatorModal = document.getElementById('right-angle-calculator-modal');
+            const halfMitreCalculatorModal = document.getElementById('half-mitre-calculator-modal');
+            const parallelogramCalculatorModal = document.getElementById('parallelogram-calculator-modal');
+            const holeCalculatorModal = document.getElementById('hole-calculator-modal');
+            const coilWeightStackCalculatorModal = document.getElementById('coil-weight-stack-calculator-modal');
+            const dualAngleCutCalculatorModal = document.getElementById('dual-angle-cut-calculator-modal'); 
+            const calculateAPlateBtn = document.getElementById('calculate-a-plate-btn');
+            const calculateBPlateBtn = document.getElementById('calculate-b-plate-btn');
+            const calculateCPlateBtn = document.getElementById('calculate-c-plate-btn');
+            const calculateTriangleBtn = document.getElementById('calculate-triangle-btn');
+            const calculateAngleValBtn = document.getElementById('calculate-angle-val-btn');
+            const calculateRaBtn = document.getElementById('calculate-ra-btn');
+            const calculateHmBtn = document.getElementById('calculate-hm-btn');
+            const calculatePgBtn = document.getElementById('calculate-pg-btn');
+            const calculateHoleBtn = document.getElementById('calculate-hole-btn');
+            const calculateCoilBtn = document.getElementById('calculate-coil-btn');
+            const calculateDacBtn = document.getElementById('calculate-dac-btn'); 
+            const coilCalcModeRadios = document.querySelectorAll('input[name="coilCalcMode"]');
+            const coilCalcInputsWeight = document.getElementById('coil-calc-inputs-weight');
+            const coilCalcInputsStack = document.getElementById('coil-calc-inputs-stack');
+
+            const piecesStackCalculatorModal = document.getElementById('pieces-stack-calculator-modal');
+            const calculatePiecesStackBtn = document.getElementById('calculate-pieces-stack-btn');
+            const psCalcModeRadios = document.querySelectorAll('input[name="psCalcMode"]');
+            const psCalcInputsPieces = document.getElementById('ps-calc-inputs-pieces');
+            const psCalcInputsStack = document.getElementById('ps-calc-inputs-stack');
+
+            // Pieces/Stack from Weight (PSW) Modals
+            const plateTypeSelectorPswModal = document.getElementById('plate-type-selector-psw-modal');
+
+
+            let currentlyViewedEntry = null; let editingEntryIndex = -1;
+            const entriesLocalStorageKey = 'crgoDataBookEntries_v7_dual_angle_resp'; // Changed key for new version
+            const themeLocalStorageKey = 'crgoDataBookTheme_v4_vibrantBlue';
+            const fontSizeLocalStorageKey = 'crgoDataBookFontSize_v2';
+            const IMAGE_MAX_WIDTH = 1024; const IMAGE_MAX_HEIGHT = 768; const IMAGE_QUALITY = 0.7;
+            const MAX_RAW_FILE_SIZE_MB = 5; const IMAGE_COMPRESSION_TRIGGER_KB = 1024; 
+            let currentEntryFilesData = []; 
+
+            document.querySelectorAll('.modal-close-button-new').forEach(button => { 
+                button.addEventListener('click', (event) => { 
+                    const modalToClose = event.currentTarget.closest('.modal-new'); 
+                    if (modalToClose) { 
+                        modalToClose.classList.remove('active'); 
+                    } 
+                }); 
+            });
+            function closeAllModals(exceptModalId = null) { 
+                document.querySelectorAll('.modal-new.active').forEach(modal => { 
+                    if (!exceptModalId || modal.id !== exceptModalId) { 
+                        modal.classList.remove('active'); 
+                    } 
+                }); 
+            }
+            function applyTheme(theme) { bodyElement.classList.remove('dark-theme'); if (theme === 'dark') { bodyElement.classList.add('dark-theme'); } localStorage.setItem(themeLocalStorageKey, theme); if (themeLightSettingRadio && themeDarkSettingRadio) { theme === 'dark' ? themeDarkSettingRadio.checked = true : themeLightSettingRadio.checked = true; } }
+            function applyFontSize(size) { bodyElement.classList.remove('font-size-small', 'font-size-medium', 'font-size-large'); let cN = 'font-size-medium'; if (size === 'small') cN = 'font-size-small'; else if (size === 'large') cN = 'font-size-large'; bodyElement.classList.add(cN); localStorage.setItem(fontSizeLocalStorageKey, size); if(fontSizeSmallSettingRadio && fontSizeMediumSettingRadio && fontSizeLargeSettingRadio){ if(size === 'small') fontSizeSmallSettingRadio.checked = true; else if(size === 'large') fontSizeLargeSettingRadio.checked = true; else fontSizeMediumSettingRadio.checked = true; }}
+            function loadPreferences() { applyTheme(localStorage.getItem(themeLocalStorageKey) || 'light'); applyFontSize(localStorage.getItem(fontSizeLocalStorageKey) || 'medium'); }
+            
+            function getInitialEntries() {
+                const sE = localStorage.getItem(entriesLocalStorageKey); if (sE) { try { const pE = JSON.parse(sE); return pE.map(e => ({ ...e, isPreRegistered: typeof e.isPreRegistered === 'boolean' ? e.isPreRegistered : false, attachedFiles: Array.isArray(e.attachedFiles) ? e.attachedFiles : [] })); } catch (er) { console.error("Error parsing entries from localStorage:", er); } }
+                return [ 
+                    { name: "CRGO Core Loss (Specific)", details: "Formula: P_s = P_total / Core_Weight (W/kg).\nSpecific Core Loss is total core loss (in Watts) divided by the core weight (in kg). Used to compare material grades (e.g., M3, M4, M5, M6). Lower value is better. Typically measured at 1.5T or 1.7T and 50Hz or 60Hz.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Stacking Factor (Lamination Factor)", details: "Definition: S.F. = (Net Core Area / Gross Core Area).\nRatio of the effective magnetic cross-sectional area to the physical cross-sectional area of the core. Accounts for insulation thickness and imperfections. Typically 0.95-0.98 for CRGO.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Burr Height Limits", details: "Max permissible burr: Typically < 20-30 microns (µm) for good quality CRGO. Measured using a profilometer or micrometer. Excessive burr increases interlaminar eddy currents and core losses.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Insulation Resistance (Franklin Test)", details: "Standard: ASTM A717/A717M.\nPurpose: Measures interlaminar insulation quality. Expressed in Ω·cm²/lamination. Higher values indicate better insulation. Minimum acceptable values depend on application.", attachedFiles: [], isPreRegistered: true },
+                    { name: "CNC G-Codes (Common)", details: "G00: Rapid traverse\nG01: Linear interpolation (cutting)\nG02: Circular interpolation (CW)\nG03: Circular interpolation (CCW)\nG90: Absolute programming\nG91: Incremental programming\nM02/M30: Program end\nM03: Spindle start (CW)\nM05: Spindle stop", attachedFiles: [], isPreRegistered: true },
+                    { name: "Slitting Width Tolerance", details: "Example: For a 100mm width strip, tolerance might be ±0.1mm. This allowable variation in slit CRGO coil width is critical for accurate core assembly and minimizing gaps. Depends on slitting machine capability and customer requirements.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Transformer Core Assembly Steps", details: "1. Limb stacking\n2. Yoke stacking\n3. Interleaving pattern (e.g., 1x1, 2x2, step-lap) is crucial for reducing reluctance at joints.\n4. Ensure tightness and avoid damaging insulation during assembly and clamping.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Flux Density (Bmax) Calculation", details: "Formula: Bmax = V / (4.44 * f * N * A_core) (Tesla).\nWhere V=RMS Voltage, f=Frequency (Hz), N=Number of turns, A_core=Net core cross-sectional area (m²). This is a fundamental transformer design equation.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Building Factor Explained", details: "Definition: B.F. = Actual Core Loss / Theoretical (Epstein) Core Loss.\nA multiplier (e.g., 1.1 to 1.5, can be higher) applied to theoretical core loss to account for manufacturing stresses (cutting, punching), burrs, non-uniform flux distribution, and joint effects in an assembled core.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Lamination Weight Calculation", details: "Formula: W = L × w × t × ρ × N_L × S.F. (kg).\nL=length (m), w=width (m), t=thickness (m), ρ=density of CRGO (~7650 kg/m³), N_L=Number of laminations, S.F.=Stacking Factor.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Yoke Design Considerations", details: "Yoke cross-section usually matches limb cross-section to maintain uniform flux density. Length determined by window dimensions (height and width) required for windings. Step-lap joints or mitred corners are common for yokes to reduce core losses.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Stress Relief Annealing (SRA) Cycle", details: "Typical Cycle: Heat to ~800-820°C in a non-oxidizing (reducing or inert) atmosphere (e.g., N2+H2), hold for 1-2 hours, then slow controlled cooling. Restores magnetic properties deteriorated by mechanical stresses from cutting/punching.", attachedFiles: [], isPreRegistered: true },
+                    { name: "No-Load Loss Components in Detail", details: "Total No-Load Loss = Hysteresis Loss + Classical Eddy Current Loss + Anomalous/Excess Loss.\n1. Hysteresis Loss (P_h ∝ f × B_max^n, n≈1.6-2.0)\n2. Classical Eddy Current Loss (P_e ∝ f² × B_max² × t² / ρ_electrical)\n3. Anomalous/Excess Loss (P_a, complex, related to domain wall motion and size).", attachedFiles: [], isPreRegistered: true },
+                    { name: "Core Clamping Pressure Guidelines", details: "Optimal range: ~0.1 - 0.3 N/mm² (MPa). Too low pressure can lead to vibration and noise. Too high pressure can induce stress, damage interlaminar insulation, and increase core losses. Applied via bolts, bands, or frames.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Step-Lap Joint Advantages", details: "Multiple laminations overlap in steps at core corners (typically 3-5 steps). Reduces localized saturation and flux fringing compared to simple butt or 45° mitre joints, significantly lowering no-load losses and magnetizing current.", attachedFiles: [], isPreRegistered: true },
+                    { name: "CRGO Material Grades (ASTM & IEC)", details: "ASTM Examples: M3 (0.23mm), M4 (0.27mm), M5 (0.30mm), M6 (0.35mm). Letter 'M' indicates magnetic material, number relates to max core loss at 1.7T, 60Hz (e.g., M6 means ≤ 0.60 W/lb).\nIEC Grades (e.g., 23P090, 27P100, 30P110): First two digits are nominal thickness (0.xx mm), P indicates Grain-Oriented, last three digits are max core loss in W/kg × 100 at 1.5T, 50Hz.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Magnetostriction in CRGO", details: "Definition: Change in material dimensions in response to magnetization. Causes transformer hum (typically at twice the line frequency). Varies with flux density and material grade/stress. Minimized by SRA and proper core clamping.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Epstein Frame Test (IEC 60404-2)", details: "Standard method for measuring AC magnetic properties (core loss, permeability, B-H curve) of electrical steel strips. Uses a square frame with primary and secondary windings. Samples are typically 30mm wide, 280-305mm long.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Density of CRGO Steel (Specific)", details: "Approximately 7.65 g/cm³ or 7650 kg/m³. Used in weight and volume calculations for core design. Slight variations exist between grades but 7.65 is a common reference.", attachedFiles: [], isPreRegistered: true },
+                    { name: "Permeability (μ) and its Importance", details: "Definition: μ = B / H (Magnetic Flux Density / Magnetic Field Strength). Indicates ease of magnetization. High permeability is desired for transformer cores to minimize magnetizing current and achieve high flux density with low field strength.", attachedFiles: [], isPreRegistered: true }
+                ];
+            }
+            let entries = getInitialEntries();
+            function saveEntries() { try { localStorage.setItem(entriesLocalStorageKey, JSON.stringify(entries)); } catch (e) { console.error("Error saving entries to localStorage:", e); if (e.name === 'QuotaExceededError') { alert("Storage full. Cannot save new data. Please clear some old data or files."); } else { alert("Could not save entries. An unexpected error occurred."); } } }
+            
+            function populateList(filter = '') {
+                mainItemList.innerHTML = '';
+                const searchTerm = filter.toLowerCase();
+                const filteredEntries = entries.filter(entry => 
+                    entry.name.toLowerCase().includes(searchTerm) || 
+                    (entry.details && entry.details.toLowerCase().includes(searchTerm))
+                );
+
+                if (filteredEntries.length === 0) {
+                    const li = document.createElement('li');
+                    li.textContent = filter ? 'No entries found matching your search.' : 'The list is currently empty. Add some entries!';
+                    li.classList.add('no-results');
+                    mainItemList.appendChild(li);
+                } else {
+                    filteredEntries.forEach(entry => {
+                        const li = document.createElement('li');
+                        
+                        const iconSpan = document.createElement('span');
+                        iconSpan.classList.add('item-icon');
+                        iconSpan.innerHTML = '<i class="fas fa-file-alt"></i>';
+                        
+                        const textDiv = document.createElement('div');
+                        textDiv.classList.add('item-text');
+                        
+                        const nameDiv = document.createElement('div');
+                        nameDiv.classList.add('item-name');
+                        nameDiv.textContent = entry.name;
+                        
+                        const previewDiv = document.createElement('div');
+                        previewDiv.classList.add('item-preview');
+                        const firstLine = entry.details ? entry.details.split('\n')[0] : "";
+                        previewDiv.textContent = firstLine.substring(0, 60) + (firstLine.length > 60 ? '...' : '');
+                        
+                        textDiv.appendChild(nameDiv);
+                        textDiv.appendChild(previewDiv);
+                        li.appendChild(iconSpan);
+                        li.appendChild(textDiv);
+                        
+                        li.addEventListener('click', () => showDetailsView(entry));
+                        mainItemList.appendChild(li);
+                    });
+                }
+            }
+
+            function showDetailsView(entry) { 
+                currentlyViewedEntry = entry; 
+                if(detailsModalTitle) detailsModalTitle.textContent = entry.name; 
+                if(detailsModalContent) detailsModalContent.textContent = entry.details; 
+                
+                const dMFC = detailsModalFilesContainer; 
+                if(dMFC) {
+                    dMFC.innerHTML = ''; 
+                    if (entry.attachedFiles && entry.attachedFiles.length > 0) { 
+                        entry.attachedFiles.forEach(fD => { 
+                            if (fD.type && fD.type.startsWith('image/')) { 
+                                const iE = document.createElement('img'); iE.src = fD.dataUrl; iE.alt = fD.name || "Image"; dMFC.appendChild(iE); 
+                            } else { 
+                                const fL=document.createElement('a'); fL.href=fD.dataUrl; fL.download=fD.name||"file"; fL.classList.add('file-download-link'); 
+                                let iC='fa-file'; 
+                                if(fD.type){
+                                    if(fD.type.includes('pdf'))iC='fa-file-pdf';
+                                    else if(fD.type.includes('word'))iC='fa-file-word';
+                                    else if(fD.type.includes('excel'))iC='fa-file-excel';
+                                    else if(fD.type.includes('video'))iC='fa-file-video';
+                                    else if(fD.type.includes('audio'))iC='fa-file-audio';
+                                    else if(fD.type.includes('archive'))iC='fa-file-archive';
+                                    else if(fD.type.includes('text'))iC='fa-file-alt';
+                                } else if(fD.name){const ext=fD.name.split('.').pop().toLowerCase();if(ext==='pdf')iC='fa-file-pdf';} 
+                                fL.innerHTML=`<i class="fas ${iC}"></i> ${fD.name||'File'}`; 
+                                dMFC.appendChild(fL);
+                            }
+                        }); 
+                        dMFC.classList.remove('hidden');
+                    } else {
+                        dMFC.classList.add('hidden');
+                    } 
+                }
+                
+                const dMAC = detailsModalActionsContainer;
+                if (dMAC) {
+                    const isUserEntry = !entry.isPreRegistered;
+
+                    const actionGroupLeft = dMAC.querySelector('.action-group-left');
+                    const actionGroupRight = dMAC.querySelector('.action-group-right');
+
+                    if (detailsModalCopyBtn) detailsModalCopyBtn.classList.remove('hidden');
+                    if (detailsModalDownloadTxtBtn) detailsModalDownloadTxtBtn.classList.remove('hidden');
+                    
+                    if (detailsModalExportPdfBtn) isUserEntry ? detailsModalExportPdfBtn.classList.remove('hidden') : detailsModalExportPdfBtn.classList.add('hidden');
+                    if (detailsModalEditBtn) isUserEntry ? detailsModalEditBtn.classList.remove('hidden') : detailsModalEditBtn.classList.add('hidden');
+                    if (detailsModalDeleteBtn) isUserEntry ? detailsModalDeleteBtn.classList.remove('hidden') : detailsModalDeleteBtn.classList.add('hidden');
+                    
+                    if (actionGroupLeft) {
+                        actionGroupLeft.style.display = 'flex';
+                        actionGroupLeft.style.justifyContent = 'flex-start'; 
+                    }
+
+                    if (actionGroupRight) {
+                        const anyRightVisible = detailsModalExportPdfBtn && !detailsModalExportPdfBtn.classList.contains('hidden') || 
+                                              detailsModalEditBtn && !detailsModalEditBtn.classList.contains('hidden') || 
+                                              detailsModalDeleteBtn && !detailsModalDeleteBtn.classList.contains('hidden');
+                        actionGroupRight.style.display = anyRightVisible ? 'flex' : 'none';
+                    }
+                    
+                    const leftGroupVisible = actionGroupLeft && actionGroupLeft.style.display !== 'none';
+                    const rightGroupVisible = actionGroupRight && actionGroupRight.style.display !== 'none';
+
+                    if (!isUserEntry && leftGroupVisible && !rightGroupVisible) {
+                         actionGroupLeft.style.justifyContent = 'space-around'; 
+                    }
+
+
+                    if (!leftGroupVisible && !rightGroupVisible) { 
+                        dMAC.style.display = 'none';
+                    } else {
+                        dMAC.style.display = 'flex'; 
+                    }
+                }
+
+                closeAllModals('view-details-modal'); 
+                if(viewDetailsModal) viewDetailsModal.classList.add('active');
+            }
+
+            function handleDeleteEntry() { 
+                if (!currentlyViewedEntry || currentlyViewedEntry.isPreRegistered) { alert("Cannot delete pre-registered."); return; } 
+                if (confirm(`Delete "${currentlyViewedEntry.name}"?`)) { 
+                    const i = entries.findIndex(e => e === currentlyViewedEntry); 
+                    if (i > -1) { entries.splice(i, 1); saveEntries(); alert(`Deleted.`); viewDetailsModal.classList.remove('active'); populateList(searchInputField.value); currentlyViewedEntry = null; 
+                    } else { alert("Error."); } 
+                } 
+            }
+
+            async function handleFiles(files, previewContainer, removeBtnContainer, isEdit = false) { 
+                let tempF = []; let anyImgProc = false; previewContainer.innerHTML = ''; 
+                if (files.length === 0) { if (isEdit && currentEntryFilesData.length > 0) { currentEntryFilesData.forEach(fD => createFilePreviewElement(fD, previewContainer)); previewContainer.classList.remove('hidden'); if (removeBtnContainer) removeBtnContainer.classList.remove('hidden'); } else { previewContainer.classList.add('hidden'); if (removeBtnContainer) removeBtnContainer.classList.add('hidden'); } return { files: isEdit ? currentEntryFilesData : [], anyImageProcessed: false }; } 
+                const prom = Array.from(files).map(f => 
+                    new Promise(res => { 
+                        if (f.size > MAX_RAW_FILE_SIZE_MB * 1024 * 1024) { alert(`"${f.name}" >${MAX_RAW_FILE_SIZE_MB}MB. Skipped.`); res(null); return; } 
+                        const r = new FileReader(); 
+                        r.onload = e => { 
+                            const fDU = e.target.result; 
+                            const fI = { dataUrl: fDU, name: f.name, type: f.type, originalSize: f.size }; 
+                            if (f.type.startsWith('image/')) { 
+                                const img = new Image(); 
+                                img.onload = () => { 
+                                    const canv = document.createElement('canvas'); 
+                                    let w=img.width, h=img.height, nP=false; 
+                                    if(w>IMAGE_MAX_WIDTH||h>IMAGE_MAX_HEIGHT||f.size>IMAGE_COMPRESSION_TRIGGER_KB*1024)nP=true; 
+                                    if(nP){anyImgProc=true; if(w>h){if(w>IMAGE_MAX_WIDTH){h*=IMAGE_MAX_WIDTH/w;w=IMAGE_MAX_WIDTH;}}else{if(h>IMAGE_MAX_HEIGHT){w*=IMAGE_MAX_HEIGHT/h;h=IMAGE_MAX_HEIGHT;}}} 
+                                    canv.width=w;canv.height=h;const ctx=canv.getContext('2d'); 
+                                    try{ctx.drawImage(img,0,0,w,h);const cDU=canv.toDataURL('image/jpeg',IMAGE_QUALITY);res({...fI,dataUrl:cDU,type:'image/jpeg',processed:true});}
+                                    catch(cE){console.error("Canvas error:", cE);res({...fI,processed:false});}
+                                }; 
+                                img.onerror=()=>{console.warn(`Could not load image ${f.name}`); res({...fI,processed:false});}; 
+                                img.src=fDU;
+                            } else { 
+                                res({...fI,processed:false}); 
+                            }
+                        }; 
+                        r.onerror=()=>res(null);
+                        r.readAsDataURL(f);
+                    })
+                ); 
+                const pFD=await Promise.all(prom);
+                tempF=pFD.filter(fD=>fD!==null); 
+                if(tempF.length>0){
+                    tempF.forEach(fD=>createFilePreviewElement(fD,previewContainer));
+                    previewContainer.classList.remove('hidden');
+                    if(removeBtnContainer)removeBtnContainer.classList.remove('hidden');
+                }else{
+                    previewContainer.classList.add('hidden');
+                    if(removeBtnContainer)removeBtnContainer.classList.add('hidden');
+                } 
+                return {files:tempF,anyImageProcessed:anyImgProc};
+            }
+
+            function createFilePreviewElement(fD, cont){
+                const pID=document.createElement('div');pID.classList.add('file-preview-item');
+                if(fD.type&&fD.type.startsWith('image/')){
+                    const iPr=document.createElement('img');iPr.src=fD.dataUrl;iPr.alt=fD.name||"Img";pID.appendChild(iPr);
+                }else{
+                    const iS=document.createElement('span');iS.classList.add('file-icon');let iC='fa-file';
+                    if(fD.type){if(fD.type.includes('pdf'))iC='fa-file-pdf';else if(fD.type.includes('word'))iC='fa-file-word';else if(fD.type.includes('excel'))iC='fa-file-excel';else if(fD.type.includes('video'))iC='fa-file-video';else if(fD.type.includes('audio'))iC='fa-file-audio';else if(fD.type.includes('archive'))iC='fa-file-archive';else if(fD.type.includes('text'))iC='fa-file-alt';}
+                    else if(fD.name){const ext=fD.name.split('.').pop().toLowerCase();if(ext==='pdf')iC='fa-file-pdf';} 
+                    iS.innerHTML=`<i class="fas ${iC}"></i>`;pID.appendChild(iS);
+                } 
+                const nS=document.createElement('span');nS.classList.add('file-name');nS.textContent=fD.name||'File';pID.appendChild(nS);cont.appendChild(pID);
+            }
+
+            function openAddEntryModal(title='Add New Entry'){
+                entryModalTitle.textContent=title;
+                entryForm.reset();
+                entryFilePreviewContainer.innerHTML='';
+                entryFilePreviewContainer.classList.add('hidden');
+                if(removeEntryFilesBtnContainer)removeEntryFilesBtnContainer.classList.add('hidden');
+                currentEntryFilesData=[];
+                editingEntryIndex=-1;
+                closeAllModals('add-edit-entry-modal');
+                addEditEntryModal.classList.add('active');
+                entryNameInput.focus();
+            }
+
+            function openEditEntryModal(){
+                if(!currentlyViewedEntry||currentlyViewedEntry.isPreRegistered){alert("Cannot edit pre-registered.");return;}
+                editingEntryIndex=entries.findIndex(e=>e===currentlyViewedEntry);
+                if(editingEntryIndex===-1){alert("Error finding entry.");return;}
+                entryModalTitle.textContent='Edit Entry';
+                entryNameInput.value=currentlyViewedEntry.name;
+                entryDetailsTextarea.value=currentlyViewedEntry.details;
+                entryFileInput.value='';
+                currentEntryFilesData=[...(currentlyViewedEntry.attachedFiles||[])];
+                const eFPC=entryFilePreviewContainer;
+                eFPC.innerHTML='';
+                if(currentEntryFilesData.length>0){
+                    currentEntryFilesData.forEach(fD=>createFilePreviewElement(fD,eFPC));
+                    eFPC.classList.remove('hidden');
+                    if(removeEntryFilesBtnContainer)removeEntryFilesBtnContainer.classList.remove('hidden');
+                }else{
+                    eFPC.classList.add('hidden');
+                    if(removeEntryFilesBtnContainer)removeEntryFilesBtnContainer.classList.add('hidden');
+                }
+                closeAllModals('add-edit-entry-modal');
+                addEditEntryModal.classList.add('active');
+                entryNameInput.focus();
+            }
+
+            function handleSaveEntry(){
+                const name=entryNameInput.value.trim();
+                const details=entryDetailsTextarea.value.trim();
+                if(!name){alert('Enter name.');entryNameInput.focus();return;}
+                if(!details){alert('Enter details.');entryDetailsTextarea.focus();return;}
+                const eD={name,details,attachedFiles:currentEntryFilesData,isPreRegistered:false};
+                if(editingEntryIndex>-1){entries[editingEntryIndex]=eD;alert('Updated!');}
+                else{entries.push(eD);alert('Added!');}
+                saveEntries();
+                populateList(searchInputField.value);
+                addEditEntryModal.classList.remove('active');
+                if(viewDetailsModal.classList.contains('active')&&editingEntryIndex>-1){showDetailsView(eD);}
+                editingEntryIndex=-1;currentEntryFilesData=[];
+            }
+
+            function exportCurrentEntryToPdf(){
+                if(!currentlyViewedEntry){alert("No entry to export.");return;}
+                try{
+                    const pdf=new jsPDF();
+                    const{name:eN,details:eD,attachedFiles:aF=[]}=currentlyViewedEntry;
+                    const sFN=eN.replace(/[^a-z0-9]/gi,'_').toLowerCase()+".pdf";
+                    const m=15;const pW=pdf.internal.pageSize.getWidth();const uW=pW-(2*m);let cY=m+10;
+                    pdf.setFontSize(18);pdf.setFont("helvetica","bold");const tL=pdf.splitTextToSize(eN,uW);pdf.text(tL,m,cY);cY+=(tL.length*7)+10;
+                    aF.forEach(fD=>{if(fD.type&&fD.type.startsWith('image/')){try{const iP=pdf.getImageProperties(fD.dataUrl);const iW=uW*0.6;const iH=(iP.height*iW)/iP.width;if(cY+iH>(pdf.internal.pageSize.getHeight()-m-10)){pdf.addPage();cY=m;}pdf.addImage(fD.dataUrl,iP.fileType||'JPEG',m+(uW*0.2),cY,iW,iH);cY+=iH+10;}catch(iE){}}});
+                    pdf.setFontSize(12);pdf.setFont("helvetica","normal");const dL=pdf.splitTextToSize(eD,uW);dL.forEach(line=>{if(cY>(pdf.internal.pageSize.getHeight()-m-7)){pdf.addPage();cY=m;}pdf.text(line,m,cY);cY+=7;});
+                    const nIF=aF.filter(f=>f.type&&!f.type.startsWith('image/'));
+                    if(nIF.length>0){if(cY>(pdf.internal.pageSize.getHeight()-m-14)){pdf.addPage();cY=m;}pdf.setFont("helvetica","bold");pdf.text("Attached Files (Not Embedded):",m,cY);cY+=7;pdf.setFont("helvetica","normal");nIF.forEach(fD=>{if(cY>(pdf.internal.pageSize.getHeight()-m-7)){pdf.addPage();cY=m;}const fN=fD.name||'Unnamed';pdf.text(`- ${fN} (${fD.type||'unknown'})`,m+5,cY);cY+=7;});}
+                    pdf.save(sFN);alert(`Exported as ${sFN}`);
+                }catch(e){alert("PDF export failed.");}
+            }
+
+            function copyEntryDetails(){if(!currentlyViewedEntry||!detailsModalContent){alert("No details to copy.");return;}const textToCopy=detailsModalContent.textContent;navigator.clipboard.writeText(textToCopy).then(()=>alert("Details copied!")).catch(err=>{alert("Failed to copy.");});}
+            function downloadEntryAsText(){if(!currentlyViewedEntry||!detailsModalContent){alert("No details.");return;}const txt=detailsModalContent.textContent;const eN=currentlyViewedEntry.name.replace(/[^a-z0-9]/gi,'_').toLowerCase();const fN=`${eN}_details.txt`;const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=fN;document.body.appendChild(link);link.click();document.body.removeChild(link);URL.revokeObjectURL(link.href);alert(`Downloaded as ${fN}`);}
+            
+            loadPreferences(); 
+            populateList();
+
+            searchIconBtn?.addEventListener('click',()=>{searchBarHeader.classList.add('active');appMainTitle.style.opacity='0';mainHeaderActions.style.opacity='0';mainHeaderActions.style.pointerEvents='none';setTimeout(()=>searchInputField.focus(),150);});
+            backFromSearchBtn?.addEventListener('click',()=>{searchBarHeader.classList.remove('active');appMainTitle.style.opacity='1';mainHeaderActions.style.opacity='1';mainHeaderActions.style.pointerEvents='auto';searchInputField.value='';populateList();});
+            clearSearchBtn?.addEventListener('click',()=>{searchInputField.value='';searchInputField.focus();populateList();});
+            searchInputField?.addEventListener('input',()=>populateList(searchInputField.value));
+            menuIconBtn?.addEventListener('click',(e)=>{e.stopPropagation();closeAllModals();mainMenuDropdown.classList.toggle('active');});
+            document.addEventListener('click',(e)=>{if(mainMenuDropdown.classList.contains('active')&&!menuIconBtn.contains(e.target)&&!mainMenuDropdown.contains(e.target)){mainMenuDropdown.classList.remove('active');}if(e.target.classList.contains('modal-new')){const mC=e.target.querySelector('.modal-content-new'); if(mC && !mC.contains(e.target)){e.target.classList.remove('active');}}});
+            fabAddEntry?.addEventListener('click',()=>{closeAllModals('add-edit-entry-modal');openAddEntryModal();}); 
+            cancelEntryModalBtn?.addEventListener('click',()=>addEditEntryModal.classList.remove('active'));
+            saveEntryModalBtn?.addEventListener('click',handleSaveEntry);
+            entryFileInput?.addEventListener('change',async(e)=>{const res=await handleFiles(e.target.files,entryFilePreviewContainer,removeEntryFilesBtnContainer,editingEntryIndex>-1);currentEntryFilesData=res.files;if(res.files.length>0){let msg=`${res.files.length} file(s) selected.`;if(res.anyImageProcessed)msg+=" Images processed.";console.log(msg);}});
+            removeEntryFilesBtn?.addEventListener('click',()=>{entryFileInput.value='';entryFilePreviewContainer.innerHTML='';entryFilePreviewContainer.classList.add('hidden');if(removeEntryFilesBtnContainer)removeEntryFilesBtnContainer.classList.add('hidden');currentEntryFilesData=[];});
+            
+            detailsModalCopyBtn?.addEventListener('click', copyEntryDetails); 
+            detailsModalDownloadTxtBtn?.addEventListener('click', downloadEntryAsText);
+            detailsModalExportPdfBtn?.addEventListener('click',exportCurrentEntryToPdf);
+            detailsModalEditBtn?.addEventListener('click',()=>{viewDetailsModal.classList.remove('active');openEditEntryModal();});
+            detailsModalDeleteBtn?.addEventListener('click',handleDeleteEntry);
+            
+            [themeLightSettingRadio,themeDarkSettingRadio].forEach(r=>r?.addEventListener('change',(e)=>applyTheme(e.target.value)));
+            [fontSizeSmallSettingRadio,fontSizeMediumSettingRadio,fontSizeLargeSettingRadio].forEach(r=>r?.addEventListener('change',(e)=>applyFontSize(e.target.value)));
+            
+            if (aboutModalBody) {
+                aboutModalBody.innerHTML = `
+                <p><strong>Created & Developed by:</strong></p>
+                <p>
+                    <strong>Ajay Kumar Dwivedi</strong><br>
+                    <em>CRGO Lamination Cutting Executive</em><br>
+                    Kryfs Company Limited, Palghar, Maharashtra.<br>
+                    Dedicated to providing <strong>high-quality CRGO solutions</strong> for the power distribution sector.
+                </p>
+                <p>
+                    The "CRGO Data Book" is your digital companion for efficiently managing CRGO formulas, 
+                    technical specifications, and critical processing data – whether on the shop floor or during the design phase. 
+                    This app aims to streamline workflows and enhance productivity for professionals working with 
+                    <strong>Cold Rolled Grain Oriented (CRGO)</strong> steel.
+                </p>
+                <hr>
+                <p><strong>Special Thanks & Acknowledgements:</strong></p>
+                <p>The development of this application was made possible with the invaluable support, guidance, and contributions from the following individuals and the entire team at Kryfs, Palghar:</p>
+                <ul>
+                  <li>
+                    <strong>Umesh Patil Sir</strong> (Incharge)<br>
+                    For his exceptional <strong>leadership, continuous guidance,</strong> and unwavering support throughout the project.
+                  </li>
+                  <li>
+                    <strong>Sushant Shekhar Sir</strong><br>
+                    For his insightful <strong>technical suggestions, problem-solving assistance,</strong> and valuable feedback.
+                  </li>
+                  <li>
+                    <strong>Vijay Kumar Dwivedi</strong><br>
+                    For his constant <strong>encouragement, motivation,</strong> and constructive feedback during development.
+                  </li>
+                  <li>
+                    <strong>Rajesh Dubey</strong><br>
+                    For providing <strong>practical insights</strong> and helpful suggestions that improved the app's usability.
+                  </li>
+                  <li>
+                    <strong>Sudesh Malap</strong><br>
+                    For his dedicated support and assistance in <strong>testing and quality assurance</strong>.
+                  </li>
+                </ul>
+                <p><em>A heartfelt thank you to the <strong>entire Kryfs Palghar team</strong> for their collective support and fostering an environment of innovation.</em></p>
+                <hr>
+                <p><strong>Contact Information (Ajay Kumar Dwivedi):</strong></p>
+                <p><i class="fas fa-phone-alt"></i> +91 7972157043</p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:ajaydwivedi102@gmail.com">ajaydwivedi102@gmail.com</a></p>
+                <hr>
+                <div style="text-align:center;">
+                  <p>CRGO Data Book - v4.1.8 (Responsive)</p>
+                  <p>Powered by: <strong>CNC Operator Expertise & Team Kryfs</strong></p>
+                </div>`;
+            }
+
+            if (helpModalBody) helpModalBody.innerHTML = `<h3>Welcome to CRGO Data Book!</h3><p>This guide helps you use the app effectively.</p><h4><i class="fas fa-list-alt" style="margin-right: 5px; color: var(--accent-color);"></i> Main Features:</h4><ul><li><strong>Data Storage:</strong> Securely store technical formulas, specifications, and notes related to CRGO.</li><li><strong>File Attachment:</strong> Attach relevant files (images, PDFs, documents, videos, etc.) to your entries for comprehensive reference. Images are compressed (max 5MB/file before compression).</li><li><strong>Easy Search:</strong> Quickly find entries using the search bar. Search input auto-focuses for quick keyboard access.</li><li><strong>Sorting:</strong> Organize your entries alphabetically (A-Z or Z-A).</li><li><strong>Customization:</strong> Personalize the app with theme (Light/Dark) and font size (Small/Medium/Large) settings.</li><li><strong>Export Options:</strong> For any entry, copy details to clipboard or download as a .txt file. For user-added entries, you can also export to PDF (includes embedded images).</li><li><strong>CNC & Slitting Sub-menus:</strong> Access specific actions like adding entries categorized under CNC or Slitting, or using various specialized Weight Calculators.</li><li><strong>Calculators:</strong> A suite of calculators for CRGO shapes (A, B, C Plates, Triangle, Right Angle, Half Mitre, Parallelogram, Dual Angle Cut Plate), hole material, angle values, coil weight/stack, a general Pieces/Stack calculator, and specific Pieces/Stack from Weight calculators for various plate types. Results include formulas and calculation steps.</li></ul><h4><i class="fas fa-question-circle" style="margin-right: 5px; color: var(--accent-color);"></i> How to Use:</h4><p><strong>1. Adding an Entry:</strong></p><ul><li>Tap the floating '<strong>+</strong>' button (bottom-right) or use the "Add New Entry" option in the main menu (⋮ icon, top-right).</li><li>For specific types (e.g., CNC, Slitting, Packing, Core, Manual): Navigate through Main Menu (⋮) &rarr; [Category] &rarr; "Add New [Category] Entry".</li><li>In the 'Add/Edit Entry' modal, fill in the Name/Title and Details/Formula.</li><li>Optionally, attach files using the 'Attach File(s)' input. Previews for selected files will be shown. Images might be compressed for storage efficiency. Other file types are stored as is (up to 5MB each).</li><li>Click 'Save' to store the entry.</li></ul><p><strong>2. Using Calculators:</strong></p><ul><li>Access calculators via Main Menu (⋮) &rarr; CNC or Slitting.</li><li><strong>Weight Calculators:</strong> Select "Weight Calculator" then choose the specific shape.</li><li><strong>Pieces/Stack (General):</strong> From "Weight Calculator" list, select "Pieces/Stack (General)".</li><li><strong>Pieces/Stack from Weight (Plates):</strong> From CNC options, select "Pieces/Stack from Weight (Plates)", then choose the specific plate type.</li><li>Enter the required dimensions or values. Click "Calculate". Results, formulas, and steps will be displayed.</li><li>The '×' button on calculator modals will close them.</li></ul><p><strong>3. Viewing and Managing Entries:</strong></p><ul><li>The main screen lists all your entries. Use the search bar (tap <i class="fas fa-search"></i> icon) to filter.</li><li>Tap on any entry in the list to open the 'Details' view.</li><li>In 'Details' view:<ul><li>View name, details, and attached files.</li><li><strong>Copy & Text:</strong> Available for all entries.</li><li><strong>PDF, Edit, Delete:</strong> Available for user-added entries only.</li></ul></li></ul><p><strong>4. Sorting Entries:</strong></p><ul><li>In the main menu (⋮), choose "Sort A-Z" or "Sort Z-A" to reorder your entries alphabetically by name.</li></ul><p><strong>5. Settings:</strong></p><ul><li>Access via Main Menu (⋮) &rarr; "Settings". Customize theme and font size.</li></ul><h4><i class="fas fa-database" style="margin-right: 5px; color: var(--accent-color);"></i> Data Storage & File Sizes:</h4><p>All data is stored locally in your browser. Images are compressed (max 5MB/file before compression). Be mindful of browser storage limits.</p><h4><i class="fas fa-info-circle" style="margin-right: 5px; color: var(--accent-color);"></i> Pre-registered Entries:</h4><p>These are for reference and cannot be edited or deleted. "Copy" and "Text" actions are available for them.</p><p>We hope this CRGO Data Book serves you well in your work!</p>`;
+            
+            if (mainMenuDropdown) mainMenuDropdown.querySelectorAll('.menu-item-new').forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault(); const action = item.dataset.action; mainMenuDropdown.classList.remove('active'); 
+                    switch (action) {
+                        case 'add-new-generic': closeAllModals('add-edit-entry-modal'); openAddEntryModal(); break;
+                        case 'show-cnc-options': closeAllModals('cnc-options-modal'); if(cncOptionsModal) cncOptionsModal.classList.add('active'); break;
+                        case 'show-slitting-options': closeAllModals('slitting-options-modal'); if(slittingOptionsModal) slittingOptionsModal.classList.add('active'); break;
+                        case 'add-packing': closeAllModals('add-edit-entry-modal'); openAddEntryModal('Add Packing Entry'); break;
+                        case 'add-core': closeAllModals('add-edit-entry-modal'); openAddEntryModal('Add Core Entry'); break;
+                        case 'add-manual': closeAllModals('add-edit-entry-modal'); openAddEntryModal('Add Manual Entry'); break;
+                        case 'sort-az': entries.sort((a,b)=>a.name.localeCompare(b.name)); saveEntries(); populateList(searchInputField.value); alert("Sorted A-Z!"); break;
+                        case 'sort-za': entries.sort((a,b)=>b.name.localeCompare(a.name)); saveEntries(); populateList(searchInputField.value); alert("Sorted Z-A!"); break;
+                        case 'settings': closeAllModals('settings-modal'); if(settingsModal) settingsModal.classList.add('active'); break;
+                        case 'help': closeAllModals('help-modal'); if(helpModal) helpModal.classList.add('active'); break;
+                        case 'about': closeAllModals('about-modal'); if(aboutModal) aboutModal.classList.add('active'); break;
+                        default: console.warn('Unknown menu action:', action);
+                    }
+                });
+            });
+            if (cncOptionsModal) cncOptionsModal.querySelectorAll('.options-list a').forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault(); const action = item.dataset.action;
+                    switch(action) {
+                        case 'add-cnc-entry-from-submenu': closeAllModals('add-edit-entry-modal'); openAddEntryModal('Add New CNC Entry'); break;
+                        case 'show-weight-calculator-selection': closeAllModals('weight-calculator-selection-modal'); if(weightCalculatorSelectionModal) weightCalculatorSelectionModal.classList.add('active'); break;
+                        case 'show-plate-type-selector-psw': closeAllModals('plate-type-selector-psw-modal'); if(plateTypeSelectorPswModal) plateTypeSelectorPswModal.classList.add('active'); break;
+                        default: if(cncOptionsModal) cncOptionsModal.classList.remove('active'); 
+                    }
+                });
+            });
+            if (slittingOptionsModal) slittingOptionsModal.querySelectorAll('.options-list a').forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault(); const action = item.dataset.action;
+                    switch(action) {
+                        case 'add-slitting-entry-from-submenu': closeAllModals('add-edit-entry-modal'); openAddEntryModal('Add New Slitting Entry'); break;
+                        case 'show-slitting-calculator-selection': closeAllModals('slitting-calculator-selection-modal'); if(slittingCalculatorSelectionModal) slittingCalculatorSelectionModal.classList.add('active'); break;
+                        default: if(slittingOptionsModal) slittingOptionsModal.classList.remove('active');
+                    }
+                });
+            });
+            
+            if (weightCalculatorSelectionModal) weightCalculatorSelectionModal.querySelectorAll('.options-list a').forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault(); const calculatorType = item.dataset.calculatorType;
+                    switch(calculatorType) {
+                        case 'a_plate': closeAllModals('a-plate-calculator-modal'); if(aPlateCalculatorModal) aPlateCalculatorModal.classList.add('active'); break;
+                        case 'b_plate': closeAllModals('b-plate-calculator-modal'); if(bPlateCalculatorModal) bPlateCalculatorModal.classList.add('active'); break;
+                        case 'c_plate': closeAllModals('c-plate-calculator-modal'); if(cPlateCalculatorModal) cPlateCalculatorModal.classList.add('active'); break;
+                        case 'triangle': closeAllModals('triangle-calculator-modal'); if(triangleCalculatorModal) triangleCalculatorModal.classList.add('active'); break;
+                        case 'angle': closeAllModals('angle-calculator-modal'); if(angleCalculatorModal) angleCalculatorModal.classList.add('active'); break;
+                        case 'right_angle': closeAllModals('right-angle-calculator-modal'); if(rightAngleCalculatorModal) rightAngleCalculatorModal.classList.add('active'); break;
+                        case 'half_mitre': closeAllModals('half-mitre-calculator-modal'); if(halfMitreCalculatorModal) halfMitreCalculatorModal.classList.add('active'); break;
+                        case 'parallelogram': closeAllModals('parallelogram-calculator-modal'); if(parallelogramCalculatorModal) parallelogramCalculatorModal.classList.add('active'); break;
+                        case 'hole': closeAllModals('hole-calculator-modal'); if(holeCalculatorModal) holeCalculatorModal.classList.add('active'); break;
+                        case 'dual_angle_cut': closeAllModals('dual-angle-cut-calculator-modal'); if(dualAngleCutCalculatorModal) dualAngleCutCalculatorModal.classList.add('active'); break;
+                        case 'pieces_stack': closeAllModals('pieces-stack-calculator-modal'); if(piecesStackCalculatorModal) piecesStackCalculatorModal.classList.add('active'); break;
+                        default: if(weightCalculatorSelectionModal) weightCalculatorSelectionModal.classList.remove('active');
+                    }
+                });
+            });
+
+            if (slittingCalculatorSelectionModal) slittingCalculatorSelectionModal.querySelectorAll('.options-list a').forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault(); const calculatorType = item.dataset.calculatorType;
+                     switch(calculatorType) {
+                        case 'coil_weight_stack': closeAllModals('coil-weight-stack-calculator-modal'); if(coilWeightStackCalculatorModal) coilWeightStackCalculatorModal.classList.add('active'); break;
+                        default: if(slittingCalculatorSelectionModal) slittingCalculatorSelectionModal.classList.remove('active');
+                    }
+                });
+            });
+
+            // Pieces/Stack from Weight (PSW) Modal Logic
+            if (plateTypeSelectorPswModal) {
+                plateTypeSelectorPswModal.querySelectorAll('#plate-type-psw-list a').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetModalId = e.currentTarget.dataset.plateCalculatorType + "-calculator-modal";
+                        const targetModal = document.getElementById(targetModalId);
+                        closeAllModals(targetModalId); 
+                        if (targetModal) targetModal.classList.add('active');
+                    });
+                });
+            }
+            document.querySelectorAll('.modal-new[id$="-psw-calculator-modal"]').forEach(modal => {
+                const thicknessSelect = modal.querySelector('select[id$="-thickness-select"]');
+                const thicknessCustomInput = modal.querySelector('input[id$="-thickness-custom"]');
+                if (thicknessSelect && thicknessCustomInput) {
+                    thicknessSelect.addEventListener('change', function() {
+                        if (this.value === 'custom') {
+                            thicknessCustomInput.style.display = 'block';
+                            thicknessCustomInput.value = ''; 
+                            thicknessCustomInput.focus();
+                        } else {
+                            thicknessCustomInput.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+
+            const DENSITY = 7.65; const STACK_FACTOR = 0.97; const PI_BY_4 = Math.PI / 4; const COIL_CONSTANT = 0.0000234;
+            function displayCalcResult(rB, title, val, formula, calc, unit = "kg", constInfo = `Density (D): ${DENSITY}g/cm³, Stacking Factor (SF): ${STACK_FACTOR}`) { if (!rB) return; rB.innerHTML = `${title}<br><strong>Result:</strong> ${val.toFixed(3)} ${unit}<br><div class="calculator-formula-box"><strong>Constants Used:</strong><br>${constInfo}<br><br><strong>Formula:</strong><br><em>${formula}</em><br><br><strong>Your Calculation:</strong><br>${calc}</div>`; rB.style.display='block';}
+            function displayAngleResult(rB, title, val, formula, calc, unit="mm"){if (!rB) return; rB.innerHTML = `${title}<br><strong>Result:</strong> ${val.toFixed(4)} ${unit}<br><div class="calculator-formula-box"><strong>Formula:</strong><br><em>${formula}</em><br><br><strong>Calculation:</strong><br>${calc}</div>`; rB.style.display='block';}
+            window.calculateAPlateWeight=()=>{const l=parseFloat(document.getElementById("a-plate-length").value),w=parseFloat(document.getElementById("a-plate-width").value),s=parseFloat(document.getElementById("a-plate-stack").value),rB=document.getElementById("a-plate-result-box");if(!rB)return;if(isNaN(l)||isNaN(w)||isNaN(s)||l<=0||w<=0||s<=0){rB.innerHTML="<span class='error-message'>Invalid input. Enter positive numbers.</span>";rB.style.display='block';return;}const eL=l-w;if(eL<=0){rB.innerHTML="<span class='error-message'>Length (L) must be greater than Width (W).</span>";rB.style.display='block';return;}const wt=(eL*w*s*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,"<strong>Plate Type:</strong> A Plate",wt,"(L-W)×W×S×D×SF ÷ 10⁶",`(${l} - ${w}) × ${w} × ${s} × ${DENSITY} × ${STACK_FACTOR} ÷ 1,000,000`);}
+            window.calculateBPlateWeight=()=>{const l=parseFloat(document.getElementById("b-plate-length").value),w=parseFloat(document.getElementById("b-plate-width").value),s=parseFloat(document.getElementById("b-plate-stack").value),rB=document.getElementById("b-plate-result-box");if(!rB)return;if(isNaN(l)||isNaN(w)||isNaN(s)||l<=0||w<=0||s<=0){rB.innerHTML="<span class='error-message'>Invalid input. Enter positive numbers.</span>";rB.style.display='block';return;}const eL=l-(w/2);if(eL<=0){rB.innerHTML="<span class='error-message'>Length (L) must be greater than Width/2 (W/2).</span>";rB.style.display='block';return;}const wt=(eL*w*s*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,"<strong>Plate Type:</strong> B Plate",wt,"(L-W/2)×W×S×D×SF ÷ 10⁶",`(${l} - ${w/2}) × ${w} × ${s} × ${DENSITY} × ${STACK_FACTOR} ÷ 1,000,000`);}
+            window.calculateCPlateWeight=()=>{const l=parseFloat(document.getElementById("c-plate-length").value),w=parseFloat(document.getElementById("c-plate-width").value),s=parseFloat(document.getElementById("c-plate-stack").value),rB=document.getElementById("c-plate-result-box");if(!rB)return;if(isNaN(l)||isNaN(w)||isNaN(s)||l<=0||w<=0||s<=0){rB.innerHTML="<span class='error-message'>Invalid input. Enter positive numbers.</span>";rB.style.display='block';return;}const eL=l-(w/4)-w;if(eL<=0){rB.innerHTML="<span class='error-message'>Effective length (L - W/4 - W) must be positive.</span>";rB.style.display='block';return;}const wt=(eL*w*s*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,"<strong>Plate Type:</strong> C Plate",wt,"(L-W/4-W)×W×S×D×SF ÷ 10⁶",`(${l} - ${w/4} - ${w}) × ${w} × ${s} × ${DENSITY} × ${STACK_FACTOR} ÷ 1,000,000`);}
+            window.calculateTriangleWeight=()=>{const type=document.getElementById("triangle-type").value.toUpperCase();const size=parseFloat(document.getElementById("triangle-size").value);const stack=parseFloat(document.getElementById("triangle-stack").value);const rB=document.getElementById("triangle-result-box");if(!rB)return;if(type!=='B'&&type!=='C'){rB.innerHTML="<span class='error-message'>Triangle Type must be 'B' or 'C'.</span>";rB.style.display='block';return;}if(isNaN(size)||isNaN(stack)||size<=0||stack<=0){rB.innerHTML="<span class='error-message'>Enter valid positive numbers for Size and Stack.</span>";rB.style.display='block';return;}const m=(type==="C"?0.25:0.5); const wt=(size*size*stack*m*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,`<strong>Triangle Type:</strong> ${type}`,wt,`Size² × Stack × ${type==="B"?"0.5 (for B type)":"0.25 (for C type)"} × D × SF ÷ 10⁶`,`${size}² × ${stack} × ${m} × ${DENSITY} × ${STACK_FACTOR} ÷ 1,000,000`,"kg");}
+            window.calculateAngleValue=()=>{const deg=parseFloat(document.getElementById("angle-degree").value);const size=parseFloat(document.getElementById("angle-size").value);const rB=document.getElementById("angle-result-box");if(!rB)return;if(isNaN(deg)||isNaN(size)||size<=0){rB.innerHTML="<span class='error-message'>Enter valid Angle (degrees) and a positive Size.</span>";rB.style.display='block';return;}if(deg<=0||deg>=180){rB.innerHTML="<span class='error-message'>Angle must be between 0 and 180 degrees (exclusive).</span>";rB.style.display='block';return;}const rad=deg*(Math.PI/180);const sinV=Math.sin(rad);if(Math.abs(sinV)<1e-9){rB.innerHTML="<span class='error-message'>Angle results in sine of zero (e.g., 0 or 180 deg). Cannot divide.</span>";rB.style.display='block';return;}const cVal=size/sinV;displayAngleResult(rB,`<strong>Input Angle:</strong> ${deg}°, <strong>Input Size:</strong> ${size}mm`,cVal,`Value = Size / sin(Angle_rad)<br>Ratio (Value/Size) = 1 / sin(Angle_rad)`, `Angle (Radians) = ${deg}° × (π/180) = ${rad.toFixed(4)}<br>sin(${deg}°) = ${sinV.toFixed(4)}<br>Calculated Value = ${size} / ${sinV.toFixed(4)}`);}
+            window.calculateRightAngleWeight=()=>{const l=parseFloat(document.getElementById("ra-length").value),w=parseFloat(document.getElementById("ra-width").value),s=parseFloat(document.getElementById("ra-stack").value),rB=document.getElementById("ra-result-box");if(!rB)return;if(isNaN(l)||isNaN(w)||isNaN(s)||l<=0||w<=0||s<=0){rB.innerHTML="<span class='error-message'>Enter valid positive values.</span>";rB.style.display='block';return;}const wt=(l*w*s*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,"<strong>Shape:</strong> Right Angle Plate",wt,"L × W × S × D × SF ÷ 1,000,000",`${l} × ${w} × ${s} × ${DENSITY} × ${STACK_FACTOR} ÷ 1,000,000`);}
+            window.calculateHalfMitreWeight=()=>{const l=parseFloat(document.getElementById("hm-length").value),w=parseFloat(document.getElementById("hm-width").value),s=parseFloat(document.getElementById("hm-stack").value),rB=document.getElementById("hm-result-box");if(!rB)return;if(isNaN(l)||isNaN(w)||isNaN(s)||l<=0||w<=0||s<=0){rB.innerHTML="<span class='error-message'>Enter valid positive values.</span>";rB.style.display='block';return;}const eL=l-(w/2);if(eL<=0){rB.innerHTML="<span class='error-message'>Length (L) must be greater than Width/2 (W/2).</span>";rB.style.display='block';return;}const wt=(eL*w*s*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,"<strong>Shape:</strong> Half-Mitre Plate",wt,"(L - W/2) × W × S × D × SF ÷ 1,000,000",`(${l} - ${w/2}) × ${w} × ${s} × ${DENSITY} × ${STACK_FACTOR} ÷ 1,000,000`);}
+            window.calculateParallelogramWeight=()=>{const l=parseFloat(document.getElementById("pg-length").value),w=parseFloat(document.getElementById("pg-width").value),s=parseFloat(document.getElementById("pg-stack").value),rB=document.getElementById("pg-result-box");if(!rB)return;if(isNaN(l)||isNaN(w)||isNaN(s)||l<=0||w<=0||s<=0){rB.innerHTML="<span class='error-message'>Enter valid values.</span>";rB.style.display='block';return;}const eL=l-w;if(eL<=0){rB.innerHTML="<span class='error-message'>For this formula, Length (L) must be > Width (W).</span>";rB.style.display='block';return;}const wt=(eL*w*s*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,"<strong>Shape:</strong> Parallelogram",wt,"(L-W) × W × S × D × SF ÷ 1,000,000 (Assuming effective length L-W)",`(${l}-${w}) × ${w} × ${s} × ${DENSITY} × ${STACK_FACTOR} ÷ 1,000,000`);}
+            window.calculateHoleWeight=()=>{const num=parseInt(document.getElementById("hole-num").value);const dia=parseFloat(document.getElementById("hole-diameter").value);const s=parseFloat(document.getElementById("hole-stack").value);const rB=document.getElementById("hole-result-box");if(!rB)return;if(isNaN(num)||isNaN(dia)||isNaN(s)||num<=0||dia<=0||s<=0){rB.innerHTML="<span class='error-message'>Enter valid positive values.</span>";rB.style.display='block';return;}const wt=(num*PI_BY_4*dia*dia*s*DENSITY*STACK_FACTOR)/1000000;displayCalcResult(rB,`<strong>Material Removed (${num} Hole(s)):</strong>`,wt,`NumHoles × (π/4) × Dia² × S × D × SF ÷ 10⁶`,`${num} × ${PI_BY_4.toFixed(4)} × ${dia}² × ${s} × ${DENSITY} × ${STACK_FACTOR} ÷ 10⁶`);}
+            
+            window.calculateCoilValues = function() {
+                const mode = document.querySelector('input[name="coilCalcMode"]:checked').value;
+                const rB = document.getElementById("coil-result-box");
+                if(!rB) return;
+                const K = COIL_CONSTANT; 
+                rB.innerHTML = ""; 
+                rB.style.display = 'none';
+
+                if (mode === 'weight') {
+                    const id = parseFloat(document.getElementById("coil-id-for-weight").value);
+                    const width = parseFloat(document.getElementById("coil-width-for-weight").value);
+                    const stack = parseFloat(document.getElementById("coil-stack-for-weight").value);
+                    if(isNaN(id) || isNaN(width) || isNaN(stack) || id < 0 || width <= 0 || stack <= 0){
+                        rB.innerHTML="<span class='error-message'>Please enter valid values:<br>ID of Coil (mm) &ge; 0<br>Width (mm) > 0<br>Stack (mm) > 0</span>";
+                        rB.style.display='block'; return;
+                    }
+                    const weight = ((id + stack) * stack * width * K);
+                    const formulaStr = `Weight = ((ID + Stack) × Stack × Width × K)`;
+                    const calcStr = `((${id} + ${stack}) × ${stack} × ${width} × ${K.toExponential(5)}) = ${weight.toFixed(4)}`;
+                    displayCalcResult(rB,`<strong>Mode:</strong> Calculate Weight from Stack`,weight,formulaStr,calcStr,"kgs", `K (Slitting Constant) = ${K.toExponential(5)}`);
+                } else { // mode === 'stack'
+                    const id = parseFloat(document.getElementById("coil-id-for-stack").value);
+                    const width = parseFloat(document.getElementById("coil-width-for-stack").value);
+                    const weight = parseFloat(document.getElementById("coil-weight-for-stack").value);
+
+                    if(isNaN(id) || isNaN(width) || isNaN(weight) || id < 0 || width <= 0 || weight <= 0){
+                        rB.innerHTML="<span class='error-message'>Please enter valid values:<br>ID of Coil (mm) &ge; 0<br>Width (mm) > 0<br>Weight (kgs) > 0</span>";
+                        rB.style.display='block'; return;
+                    }
+                    const termUnderSqrt = (id * id) + (4 * weight / (width * K));
+                    if (termUnderSqrt < 0) {
+                        rB.innerHTML = "<span class='error-message'>Invalid inputs: Calculation leads to a negative value under the square root. Please check your input values.</span>";
+                        rB.style.display = 'block'; return;
+                    }
+                    const stack = (Math.sqrt(termUnderSqrt) - id) / 2;
+                     if (stack < 0) {
+                        rB.innerHTML = "<span class='error-message'>Calculated stack is negative, which is not possible. Please verify input values.</span>";
+                        rB.style.display = 'block'; return;
+                    }
+                    const formulaStr = `Stack = ( √(ID² + (4 × Weight / (Width × K))) - ID ) / 2`;
+                    const calcStr = `( √(${id}² + (4 × ${weight} / (${width} × ${K.toExponential(5)}))) - ${id} ) / 2 = ${stack.toFixed(3)}`;
+                    displayCalcResult(rB,`<strong>Mode:</strong> Calculate Stack from Weight`,stack,formulaStr,calcStr,"mm", `K (Slitting Constant) = ${K.toExponential(5)}`);
+                }
+            }
+            
+            if (coilCalcModeRadios) coilCalcModeRadios.forEach(radio => radio.addEventListener('change', (e) => { 
+                const resultBox = document.getElementById("coil-result-box");
+                if (e.target.value === 'weight') { 
+                    if(coilCalcInputsWeight) coilCalcInputsWeight.classList.remove('hidden'); 
+                    if(coilCalcInputsStack) coilCalcInputsStack.classList.add('hidden'); 
+                } else { 
+                    if(coilCalcInputsWeight) coilCalcInputsWeight.classList.add('hidden'); 
+                    if(coilCalcInputsStack) coilCalcInputsStack.classList.remove('hidden'); 
+                } 
+                if(resultBox) {
+                    resultBox.style.display = 'none'; 
+                    resultBox.innerHTML = ''; 
+                }
+            }));
+            
+            window.cot = function(degrees) { if (degrees % 180 === 0) return Infinity; if (degrees % 90 === 0 && degrees % 180 !== 0) return 0; const radians = degrees * (Math.PI / 180); const tanVal = Math.tan(radians); if (Math.abs(tanVal) < 1e-12) return Infinity; return 1 / tanVal; }
+            window.valSyntax = function(numberStr) { return `<span class="val">${numberStr}</span>`; }
+            window.opSyntax = function(operatorStr) { return `<span class="op">${operatorStr}</span>`; }
+            window.resSyntax = function(numberStr) { return `<span class="res">${numberStr}</span>`; }
+
+            window.calculateDualAngleCutWeight = function() {
+                const L_input = parseFloat(document.getElementById('dac-length').value); const W_or_h_input = parseFloat(document.getElementById('dac-width').value);
+                let angle1_deg = parseFloat(document.getElementById('dac-angle1').value); let angle2_deg = parseFloat(document.getElementById('dac-angle2').value);
+                const S_mm = parseFloat(document.getElementById('dac-stack').value); const D_actual = parseFloat(document.getElementById('dac-density').value);
+                const SF_actual = parseFloat(document.getElementById('dac-stacking-factor').value);
+                const resultBox = document.getElementById('dac-result-box'); const detailsBox = document.getElementById('dac-details-box');
+                if(!resultBox || !detailsBox) return;
+                resultBox.innerHTML = "Calculating..."; detailsBox.style.display = 'none'; detailsBox.innerHTML = "";             
+                if (isNaN(L_input)||isNaN(W_or_h_input)||isNaN(angle1_deg)||isNaN(angle2_deg)||isNaN(S_mm)||isNaN(D_actual)||isNaN(SF_actual)||L_input<=0||W_or_h_input<=0||S_mm<=0||D_actual<=0||SF_actual<=0||SF_actual>1||angle1_deg<=0||angle1_deg>=180||angle2_deg<=0||angle2_deg>=180) { resultBox.innerHTML = `<span class="error-message">Error: Invalid input. Check all fields and ensure angles are >0 & <180.</span>`; return; }
+                let isRectangle=(angle1_deg===90&&angle2_deg===90); let L_long_display=L_input.toFixed(2); let L_short_display_val="N/A"; let weight_kg_val; let syntax_to_show=""; let actual_calculation_steps=""; let shape_type=""; let syntax_explanation_for_trapezoid="";
+                const DENSITY_CONST_TEXT = `${D_actual.toFixed(2)}g/cm³`; const SF_CONST_TEXT = `${SF_actual.toFixed(2)}`;
+                if(isRectangle){
+                    shape_type="Rectangle"; L_short_display_val="N/A (Rectangle)";
+                    const area_rect_mm2=L_input*W_or_h_input; weight_kg_val=(area_rect_mm2*S_mm*D_actual*SF_actual)/1000000; 
+                    syntax_to_show=`Weight (kg) = (L × W × S × D × SF) ÷ 1,000,000`;
+                    actual_calculation_steps = `  ${opSyntax("=")} (${valSyntax(L_input.toFixed(2))} ${opSyntax("×")} ${valSyntax(W_or_h_input.toFixed(2))} ${opSyntax("×")} ${valSyntax(S_mm.toFixed(2))} ${opSyntax("×")} ${valSyntax(D_actual.toString())} ${opSyntax("×")} ${valSyntax(SF_actual.toString())}) ${opSyntax("÷")} ${valSyntax("1,000,000")}\n`;
+                    actual_calculation_steps += `  ${opSyntax("=")} ${valSyntax((L_input * W_or_h_input * S_mm * D_actual * SF_actual).toFixed(3))} ${opSyntax("÷")} ${valSyntax("1,000,000")} ${opSyntax("=")} ${resSyntax(weight_kg_val.toFixed(3))} kg`;
+                } else { 
+                    shape_type = "Trapezoid / Dual Angle Cut"; const L_long_val = L_input; const h_trapezoid = W_or_h_input;
+                    const cotA1 = cot(angle1_deg); const cotA2 = cot(angle2_deg);
+                    if (!isFinite(cotA1) || !isFinite(cotA2)) { resultBox.innerHTML = `<span class="error-message">Error: cotangent undefined for one or both angles (angle cannot be 0 or 180). Ensure angles are valid.</span>`; detailsBox.style.display = 'none'; return; }
+                    const reduction1 = h_trapezoid * cotA1; const reduction2 = h_trapezoid * cotA2;
+                    const L_short_calc = L_long_val - reduction1 - reduction2; 
+                    if (L_short_calc <= 0) { resultBox.innerHTML = `<span class='error-message'>Error: Calculated L<sub>short</sub> (${L_short_calc.toFixed(2)}mm) is not positive. Adjust angles or L<sub>long</sub>.</span>`; detailsBox.style.display = 'none'; return; }
+                    L_short_display_val = L_short_calc.toFixed(2) + " mm";
+                    const area_trap_mm2 = ((L_long_val + L_short_calc) / 2) * h_trapezoid;
+                    weight_kg_val = (area_trap_mm2 * S_mm * D_actual * SF_actual) / 1000000; 
+                    syntax_to_show = `Weight (kg) = (Area<sub>trap</sub> × S × D × SF) ÷ 1,000,000`;
+                    syntax_explanation_for_trapezoid = `Area<sub>trap</sub> = ((L<sub>long</sub> + L<sub>short</sub>) / 2) × h<br>L<sub>short</sub> = L<sub>long</sub> - (h × cot(Angle1)) - (h × cot(Angle2))`;
+                    actual_calculation_steps  = `<strong>Step 1: Calculate L<sub>short</sub> (L1)</strong>\n`;
+                    actual_calculation_steps += `  L<sub>short</sub> ${opSyntax("=")} ${valSyntax(L_long_val.toFixed(2))} ${opSyntax("-")} (${valSyntax(h_trapezoid.toFixed(2))} ${opSyntax("×")} cot(${angle1_deg}°${opSyntax("=")}${cotA1.toFixed(3)})) ${opSyntax("-")} (${valSyntax(h_trapezoid.toFixed(2))} ${opSyntax("×")} cot(${angle2_deg}°${opSyntax("=")}${cotA2.toFixed(3)})) ${opSyntax("=")} ${resSyntax(L_short_calc.toFixed(2))} mm\n\n`;
+                    actual_calculation_steps += `<strong>Step 2: Calculate Area<sub>trapezoid</sub></strong> (using calculated L<sub>short</sub>)\n`;
+                    actual_calculation_steps += `  Area ${opSyntax("=")} ((${valSyntax(L_long_val.toFixed(2))} ${opSyntax("+")} ${valSyntax(L_short_calc.toFixed(2))}) ${opSyntax("÷")} 2) ${opSyntax("×")} ${valSyntax(h_trapezoid.toFixed(2))} ${opSyntax("=")} ${resSyntax(area_trap_mm2.toFixed(2))} mm²\n\n`;
+                    actual_calculation_steps += `<strong>Step 3: Calculate Weight</strong>\n`;
+                    actual_calculation_steps += `  Weight ${opSyntax("=")} (${valSyntax(area_trap_mm2.toFixed(2))} ${opSyntax("×")} ${valSyntax(S_mm.toFixed(2))} ${opSyntax("×")} ${valSyntax(D_actual.toString())} ${opSyntax("×")} ${valSyntax(SF_actual.toString())}) ${opSyntax("÷")} ${valSyntax("1,000,000")} ${opSyntax("=")} ${resSyntax(weight_kg_val.toFixed(3))} kg`;
+                }
+                resultBox.innerHTML = `Calculated Weight: <strong>${weight_kg_val.toFixed(3)} kgs</strong>`;
+                let detailsHtml = `<div class="detail-item"><strong>Shape Detected:</strong> <span class="value">${shape_type}</span></div>`;
+                detailsHtml += `<div class="detail-item"><strong>Input L (L<sub>long</sub>):</strong> <span class="value">${L_long_display} mm</span></div>`;
+                if(shape_type.includes("Trapezoid")) { detailsHtml += `<div class="detail-item"><strong>Side L1 (L<sub>short</sub>):</strong> <span class="value">${L_short_display_val}</span></div>`;}
+                detailsHtml += `<div class="detail-item"><strong>Calculated Weight:</strong> <span class="value">${weight_kg_val.toFixed(3)} kg</span> (approx. ${weight_kg_val.toFixed(2)} kg)</div>`;
+                detailsHtml += `<div class="detail-item"><strong>Displayed Syntax:</strong> <div class="syntax-display-block">${syntax_to_show}</div>`;
+                if (syntax_explanation_for_trapezoid) { detailsHtml += `<div class="syntax-explanation">${syntax_explanation_for_trapezoid}</div>`; }
+                detailsHtml += `</div>`; 
+                detailsHtml += `<div class="detail-item"><strong>Actual Calculation (using your inputs D=${D_actual}, SF=${SF_actual}):</strong> <div class="actual-calculation-block">${actual_calculation_steps}</div></div>`;
+                detailsHtml += `<div class="note">Note: All lengths and stack are in mm. Density (D) is ${D_actual} g/cm³. Stacking Factor (SF) is ${SF_actual}. The division by 1,000,000 converts volume (mm³) × density (g/cm³) to weight (kg).</div>`;
+                detailsBox.innerHTML = detailsHtml; detailsBox.style.display = 'block'; 
+            }
+
+            window.calculatePiecesStack = function() { 
+                const mode = document.querySelector('input[name="psCalcMode"]:checked').value;
+                const resultBox = document.getElementById("pieces-stack-result-box");
+                if (!resultBox) return; 
+                resultBox.innerHTML = "";
+                resultBox.style.display = 'none'; 
+
+                if (mode === 'pieces') {
+                    const totalStackInput = document.getElementById("ps-total-stack");
+                    const thicknessPerPieceInput = document.getElementById("ps-thickness-per-piece");
+                    if (!totalStackInput || !thicknessPerPieceInput) return;
+
+                    const totalStack = parseFloat(totalStackInput.value);
+                    const thicknessPerPiece = parseFloat(thicknessPerPieceInput.value);
+
+                    if (isNaN(totalStack) || isNaN(thicknessPerPiece) || totalStack <= 0 || thicknessPerPiece <= 0) {
+                        resultBox.innerHTML = "<span class='error-message'>Please enter valid positive values for Total Stack and Thickness per Piece.</span>";
+                        resultBox.style.display = 'block';
+                        return;
+                    }
+
+                    const numberOfPieces = totalStack / thicknessPerPiece;
+                    const roundedPieces = Math.round(numberOfPieces); 
+                    const actualStackForRounded = roundedPieces * thicknessPerPiece;
+
+                    let resultHTML = `<strong>Pieces (Exact):</strong> <span class="result-value">${numberOfPieces.toFixed(3)}</span><br>`;
+                    resultHTML += `<strong>Pieces (Rounded):</strong> <span class="result-value">${roundedPieces}</span><br>`;
+                    resultHTML += `<strong>Actual Stack for ${roundedPieces} Pieces:</strong> <span class="result-value">${actualStackForRounded.toFixed(3)} mm</span><br>`;
+                    
+                    resultHTML += `<div class="calculator-formula-box">`;
+                    resultHTML += `<strong>Formula (Pieces):</strong><br><em>Number of Pieces = Total Stack / Thickness per Piece</em><br>`;
+                    resultHTML += `<strong>Your Calculation (Pieces):</strong><br>${valSyntax(totalStack.toString())} mm ${opSyntax("/")} ${valSyntax(thicknessPerPiece.toString())} mm/piece ${opSyntax("=")} ${resSyntax(numberOfPieces.toFixed(3))} pieces<br><br>`;
+                    resultHTML += `<strong>Formula (Actual Stack for Rounded Pieces):</strong><br><em>Actual Stack = Rounded Pieces × Thickness per Piece</em><br>`;
+                    resultHTML += `<strong>Your Calculation (Actual Stack):</strong><br>${valSyntax(roundedPieces.toString())} pieces ${opSyntax("×")} ${valSyntax(thicknessPerPiece.toString())} mm/piece ${opSyntax("=")} ${resSyntax(actualStackForRounded.toFixed(3))} mm`;
+                    resultHTML += `</div>`;
+                    
+                    resultBox.innerHTML = resultHTML;
+                    resultBox.style.display = 'block';
+
+                } else { // mode === 'stack'
+                    const totalPiecesInput = document.getElementById("ps-total-pieces");
+                    const thicknessPerPieceForStackInput = document.getElementById("ps-thickness-per-piece-for-stack");
+                    if (!totalPiecesInput || !thicknessPerPieceForStackInput) return;
+
+                    const totalPieces = parseFloat(totalPiecesInput.value);
+                    const thicknessPerPieceForStack = parseFloat(thicknessPerPieceForStackInput.value);
+
+                    if (isNaN(totalPieces) || isNaN(thicknessPerPieceForStack) || totalPieces <= 0 || thicknessPerPieceForStack <= 0) {
+                        resultBox.innerHTML = "<span class='error-message'>Please enter valid positive values for Total Pieces and Thickness per Piece.</span>";
+                        resultBox.style.display = 'block';
+                        return;
+                    }
+
+                    const calculatedStack = totalPieces * thicknessPerPieceForStack;
+
+                    let resultHTML = `<strong>Calculated Total Stack:</strong> <span class="result-value">${calculatedStack.toFixed(3)} mm</span><br>`;
+                    
+                    resultHTML += `<div class="calculator-formula-box">`;
+                    resultHTML += `<strong>Formula:</strong><br><em>Total Stack = Total Pieces × Thickness per Piece</em><br>`;
+                    resultHTML += `<strong>Your Calculation:</strong><br>${valSyntax(totalPieces.toString())} pieces ${opSyntax("×")} ${valSyntax(thicknessPerPieceForStack.toString())} mm/piece ${opSyntax("=")} ${resSyntax(calculatedStack.toFixed(3))} mm`;
+                    resultHTML += `</div>`;
+
+                    resultBox.innerHTML = resultHTML;
+                    resultBox.style.display = 'block';
+                }
+            }
+            
+            if(psCalcModeRadios) psCalcModeRadios.forEach(radio => radio.addEventListener('change', (e) => {
+                const resultBox = document.getElementById("pieces-stack-result-box");
+                if (e.target.value === 'pieces') {
+                    if (psCalcInputsPieces) psCalcInputsPieces.classList.remove('hidden');
+                    if (psCalcInputsStack) psCalcInputsStack.classList.add('hidden');
+                } else { 
+                    if (psCalcInputsPieces) psCalcInputsPieces.classList.add('hidden');
+                    if (psCalcInputsStack) psCalcInputsStack.classList.remove('hidden');
+                }
+                if(resultBox) {
+                    resultBox.style.display = 'none';
+                    resultBox.innerHTML = '';
+                }
+            }));
+
+            // PSW Calculators Setup
+            function calculatePiecesStackFromWeight(plateType, inputs, resultBoxId) {
+                const resultBox = document.getElementById(resultBoxId);
+                if (!resultBox) { console.error("Result box not found for ID:", resultBoxId); return; }
+                resultBox.innerHTML = "";
+                resultBox.style.display = 'none';
+
+                const { totalWeight, L, W, thickness, density, stackingFactor, angle1, angle2 } = inputs;
+                
+                if (isNaN(totalWeight) || isNaN(L) || isNaN(W) || isNaN(thickness) || isNaN(density) || isNaN(stackingFactor) ||
+                    totalWeight <= 0 || L <= 0 || W <= 0 || thickness <= 0 || density <= 0 || stackingFactor <= 0 || stackingFactor > 1) {
+                    resultBox.innerHTML = "<span class='error-message'>Please enter valid positive values for all common fields.</span>";
+                    resultBox.style.display = 'block';
+                    return;
+                }
+
+                let singlePieceVolume_mm3;
+                let singlePieceWeight_kg;
+                let formulaName = "";
+                let formulaSyntax = "";
+                let calcStepSyntax = "";
+                
+                switch (plateType) {
+                    case 'A':
+                        if (L <= W) { resultBox.innerHTML = "<span class='error-message'>Length (L) must be greater than Width (W) for A-Plate.</span>"; resultBox.style.display = 'block'; return; }
+                        singlePieceVolume_mm3 = (L - W) * W * thickness;
+                        formulaName = "A-Plate";
+                        formulaSyntax = `Wt<sub>1pc</sub> = ((L - W) × W × T × D × SF) ÷ 10<sup>6</sup>`;
+                        calcStepSyntax = `((${valSyntax(L.toFixed(2))} ${opSyntax('-')} ${valSyntax(W.toFixed(2))}) ${opSyntax('×')} ${valSyntax(W.toFixed(2))} ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} ${opSyntax('×')} ${valSyntax(density.toString())} ${opSyntax('×')} ${valSyntax(stackingFactor.toString())}) ${opSyntax('÷')} ${valSyntax('1,000,000')}`;
+                        break;
+                    case 'B':
+                        if (L <= W / 2) { resultBox.innerHTML = `<span class='error-message'>Length (L) must be greater than Width/2 for B-Plate.</span>`; resultBox.style.display = 'block'; return; }
+                        singlePieceVolume_mm3 = (L - W / 2) * W * thickness;
+                        formulaName = "B-Plate";
+                        formulaSyntax = `Wt<sub>1pc</sub> = ((L - W/2) × W × T × D × SF) ÷ 10<sup>6</sup>`;
+                        calcStepSyntax = `((${valSyntax(L.toFixed(2))} ${opSyntax('-')} ${valSyntax(W.toFixed(2))}/2) ${opSyntax('×')} ${valSyntax(W.toFixed(2))} ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} ${opSyntax('×')} ${valSyntax(density.toString())} ${opSyntax('×')} ${valSyntax(stackingFactor.toString())}) ${opSyntax('÷')} ${valSyntax('1,000,000')}`;
+                        break;
+                    case 'C':
+                        const L_eff_C = L - (W / 4) - W;
+                        if (L_eff_C <= 0) { resultBox.innerHTML = "<span class='error-message'>Effective length (L - W/4 - W) must be positive for C-Plate.</span>"; resultBox.style.display = 'block'; return; }
+                        singlePieceVolume_mm3 = L_eff_C * W * thickness;
+                        formulaName = "C-Plate";
+                        formulaSyntax = `Wt<sub>1pc</sub> = ((L - W/4 - W) × W × T × D × SF) ÷ 10<sup>6</sup>`;
+                        calcStepSyntax = `((${valSyntax(L.toFixed(2))} ${opSyntax('-')} ${valSyntax(W.toFixed(2))}/4 ${opSyntax('-')} ${valSyntax(W.toFixed(2))}) ${opSyntax('×')} ${valSyntax(W.toFixed(2))} ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} ${opSyntax('×')} ${valSyntax(density.toString())} ${opSyntax('×')} ${valSyntax(stackingFactor.toString())}) ${opSyntax('÷')} ${valSyntax('1,000,000')}`;
+                        break;
+                    case 'Rectangle':
+                        singlePieceVolume_mm3 = L * W * thickness;
+                        formulaName = "Rectangle / Right Angle Plate";
+                        formulaSyntax = `Wt<sub>1pc</sub> = (L × W × T × D × SF) ÷ 10<sup>6</sup>`;
+                        calcStepSyntax = `(${valSyntax(L.toFixed(2))} ${opSyntax('×')} ${valSyntax(W.toFixed(2))} ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} ${opSyntax('×')} ${valSyntax(density.toString())} ${opSyntax('×')} ${valSyntax(stackingFactor.toString())}) ${opSyntax('÷')} ${valSyntax('1,000,000')}`;
+                        break;
+                    case 'HalfMitre':
+                         if (L <= W / 2) { resultBox.innerHTML = `<span class='error-message'>Length (L) must be greater than Width/2 for Half-Mitre.</span>`; resultBox.style.display = 'block'; return; }
+                        singlePieceVolume_mm3 = (L - W / 2) * W * thickness;
+                        formulaName = "Half-Mitre Plate";
+                        formulaSyntax = `Wt<sub>1pc</sub> = ((L - W/2) × W × T × D × SF) ÷ 10<sup>6</sup>`;
+                        calcStepSyntax = `((${valSyntax(L.toFixed(2))} ${opSyntax('-')} ${valSyntax(W.toFixed(2))}/2) ${opSyntax('×')} ${valSyntax(W.toFixed(2))} ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} ${opSyntax('×')} ${valSyntax(density.toString())} ${opSyntax('×')} ${valSyntax(stackingFactor.toString())}) ${opSyntax('÷')} ${valSyntax('1,000,000')}`;
+                        break;
+                    case 'Parallelogram': 
+                        singlePieceVolume_mm3 = L * W * thickness; // L is base, W is perpendicular height
+                        formulaName = "Parallelogram";
+                        formulaSyntax = `Wt<sub>1pc</sub> = (Base × Height × T × D × SF) ÷ 10<sup>6</sup>`;
+                        calcStepSyntax = `(${valSyntax(L.toFixed(2))} ${opSyntax('×')} ${valSyntax(W.toFixed(2))} ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} ${opSyntax('×')} ${valSyntax(density.toString())} ${opSyntax('×')} ${valSyntax(stackingFactor.toString())}) ${opSyntax('÷')} ${valSyntax('1,000,000')}`;
+                        break;
+                    case 'DualAngle':
+                        if (isNaN(angle1) || isNaN(angle2) || angle1 <= 0 || angle1 >= 180 || angle2 <= 0 || angle2 >= 180) {
+                            resultBox.innerHTML = "<span class='error-message'>Please enter valid angles (0-180 exclusive) for Dual Angle Cut.</span>"; resultBox.style.display = 'block'; return;
+                        }
+                        const h_trapezoid = W; // W is height for trapezoid
+                        const cotA1 = cot(angle1); const cotA2 = cot(angle2);
+                        if (!isFinite(cotA1) || !isFinite(cotA2)) { resultBox.innerHTML = `<span class="error-message">Cotangent undefined for one or both angles. Ensure angles are valid.</span>`; resultBox.style.display = 'block'; return; }
+                        const L_short_calc = L - (h_trapezoid * cotA1) - (h_trapezoid * cotA2);
+                        if (L_short_calc <= 0) { resultBox.innerHTML = `<span class='error-message'>Calculated L<sub>short</sub> (${L_short_calc.toFixed(2)}mm) is not positive. Adjust inputs.</span>`; resultBox.style.display = 'block'; return; }
+                        const area_trap_mm2 = ((L + L_short_calc) / 2) * h_trapezoid;
+                        singlePieceVolume_mm3 = area_trap_mm2 * thickness;
+                        formulaName = "Dual Angle Cut Plate";
+                        formulaSyntax = `Area<sub>trap</sub> = ((L<sub>long</sub> + L<sub>short</sub>) / 2) × h<br>L<sub>short</sub> = L<sub>long</sub> - (h × cot(A1)) - (h × cot(A2))<br>Wt<sub>1pc</sub> = (Area<sub>trap</sub> × T × D × SF) ÷ 10<sup>6</sup>`;
+                        calcStepSyntax = `L<sub>short</sub> = ${valSyntax(L.toFixed(2))} - (${valSyntax(h_trapezoid.toFixed(2))} × cot(${angle1}°)) - (${valSyntax(h_trapezoid.toFixed(2))} × cot(${angle2}°)) = ${resSyntax(L_short_calc.toFixed(2))}mm<br>`;
+                        calcStepSyntax += `Area = ((${valSyntax(L.toFixed(2))} + ${valSyntax(L_short_calc.toFixed(2))}) / 2) × ${valSyntax(h_trapezoid.toFixed(2))} = ${resSyntax(area_trap_mm2.toFixed(2))}mm²<br>`;
+                        calcStepSyntax += `Wt<sub>1pc</sub> = (${valSyntax(area_trap_mm2.toFixed(2))} ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} ${opSyntax('×')} ${valSyntax(density.toString())} ${opSyntax('×')} ${valSyntax(stackingFactor.toString())}) ${opSyntax('÷')} ${valSyntax('1,000,000')}`;
+                        break;
+                    default:
+                        resultBox.innerHTML = "<span class='error-message'>Invalid plate type.</span>"; resultBox.style.display = 'block'; return;
+                }
+
+                singlePieceWeight_kg = (singlePieceVolume_mm3 * density * stackingFactor) / 1000000;
+
+                if (singlePieceWeight_kg <= 1e-9) { // Check for effectively zero or negative weight
+                    resultBox.innerHTML = "<span class='error-message'>Calculated single piece weight is too small or zero. Check dimensions, especially thickness.</span>";
+                    resultBox.style.display = 'block';
+                    return;
+                }
+
+                const totalPieces = totalWeight / singlePieceWeight_kg;
+                const totalStack_mm = totalPieces * thickness;
+
+                let resultHTML = `<strong>Total Pieces:</strong> <span class="result-value">${totalPieces.toFixed(2)}</span> (approx.)<br>`;
+                resultHTML += `<strong>Calculated Net Stack:</strong> <span class="result-value">${totalStack_mm.toFixed(2)} mm</span><br>`;
+                
+                resultHTML += `<div class="calculator-formula-box">`;
+                resultHTML += `<strong>Syntax for Single Piece Weight (${formulaName}):</strong><br>`;
+                resultHTML += `<em>${formulaSyntax}</em><br>`;
+                resultHTML += `Calculation: ${calcStepSyntax} ${opSyntax('=')} ${resSyntax(singlePieceWeight_kg.toFixed(6))} kg<br><br>`; // Increased precision for single piece weight
+
+                resultHTML += `<strong>Syntax for Total Pieces:</strong><br>`;
+                resultHTML += `<em>Total Pieces = Total Weight / Wt<sub>1pc</sub></em><br>`;
+                resultHTML += `Calculation: ${valSyntax(totalWeight.toFixed(2))} kg ${opSyntax('÷')} ${valSyntax(singlePieceWeight_kg.toFixed(6))} kg/piece ${opSyntax('=')} ${resSyntax(totalPieces.toFixed(2))} pieces<br><br>`;
+
+                resultHTML += `<strong>Syntax for Total Stack:</strong><br>`;
+                resultHTML += `<em>Total Stack = Total Pieces × Thickness</em><br>`;
+                resultHTML += `Calculation: ${valSyntax(totalPieces.toFixed(2))} pieces ${opSyntax('×')} ${valSyntax(thickness.toFixed(3))} mm/piece ${opSyntax('=')} ${resSyntax(totalStack_mm.toFixed(2))} mm`;
+                resultHTML += `</div>`;
+                
+                resultBox.innerHTML = resultHTML;
+                resultBox.style.display = 'block';
+            }
+
+            function setupCalculator(platePrefix, plateTypeForFormula) {
+                const calcButton = document.getElementById(`calculate-${platePrefix}-btn`);
+                if (calcButton) {
+                    calcButton.addEventListener('click', () => {
+                        const thicknessSelect = document.getElementById(`${platePrefix}-thickness-select`);
+                        const thicknessCustomInput = document.getElementById(`${platePrefix}-thickness-custom`);
+                        let currentThickness;
+                        if (thicknessSelect.value === 'custom') {
+                            currentThickness = parseFloat(thicknessCustomInput.value);
+                        } else {
+                            currentThickness = parseFloat(thicknessSelect.value);
+                        }
+
+                        const inputs = {
+                            totalWeight: parseFloat(document.getElementById(`${platePrefix}-total-weight`)?.value),
+                            L: parseFloat(document.getElementById(`${platePrefix}-length`)?.value),
+                            W: parseFloat(document.getElementById(`${platePrefix}-width`)?.value),
+                            thickness: currentThickness,
+                            density: parseFloat(document.getElementById(`${platePrefix}-density`)?.value),
+                            stackingFactor: parseFloat(document.getElementById(`${platePrefix}-stacking-factor`)?.value),
+                            angle1: plateTypeForFormula === 'DualAngle' ? parseFloat(document.getElementById(`${platePrefix}-angle1`)?.value) : null,
+                            angle2: plateTypeForFormula === 'DualAngle' ? parseFloat(document.getElementById(`${platePrefix}-angle2`)?.value) : null,
+                        };
+                        calculatePiecesStackFromWeight(plateTypeForFormula, inputs, `${platePrefix}-result-box`);
+                    });
+                } else {
+                    // console.warn(`Button with ID calculate-${platePrefix}-btn not found.`);
+                }
+            }
+
+            setupCalculator('apsw', 'A');
+            setupCalculator('bpsw', 'B');
+            setupCalculator('cpsw', 'C');
+            setupCalculator('rectpsw', 'Rectangle');
+            setupCalculator('hmpsw', 'HalfMitre');
+            setupCalculator('pgpsw', 'Parallelogram');
+            setupCalculator('dacpsw', 'DualAngle');
+            
+            if(calculatePiecesStackBtn) calculatePiecesStackBtn.addEventListener('click', calculatePiecesStack); 
+            if(calculateAPlateBtn) calculateAPlateBtn.addEventListener('click', calculateAPlateWeight); 
+            if(calculateBPlateBtn) calculateBPlateBtn.addEventListener('click', calculateBPlateWeight); 
+            if(calculateCPlateBtn) calculateCPlateBtn.addEventListener('click', calculateCPlateWeight);
+            if(calculateTriangleBtn) calculateTriangleBtn.addEventListener('click', calculateTriangleWeight); 
+            if(calculateAngleValBtn) calculateAngleValBtn.addEventListener('click', calculateAngleValue);
+            if(calculateRaBtn) calculateRaBtn.addEventListener('click', calculateRightAngleWeight); 
+            if(calculateHmBtn) calculateHmBtn.addEventListener('click', calculateHalfMitreWeight);
+            if(calculatePgBtn) calculatePgBtn.addEventListener('click', calculateParallelogramWeight); 
+            if(calculateHoleBtn) calculateHoleBtn.addEventListener('click', calculateHoleWeight);
+            if(calculateCoilBtn) calculateCoilBtn.addEventListener('click', calculateCoilValues);
+            if(calculateDacBtn) calculateDacBtn.addEventListener('click', calculateDualAngleCutWeight);
+            
+        });
+    </script>
+</body>
+</html>
