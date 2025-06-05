@@ -29,7 +29,7 @@
             --text-color-on-primary: #FFFFFF;
             --text-color-on-accent: #FFFFFF; 
             
-            --bg-color-body: #f8f9fa; 
+            --bg-color-body: #f0f2f5; /* Slightly off-white for body */
             --bg-color-app: #FFFFFF; 
             --bg-color-list-item-hover: var(--bg-accent-light); 
             --border-color: #dee2e6; 
@@ -45,8 +45,8 @@
             --z-modal-backdrop: 1000; --z-modal-content: 1001; --z-main-menu: 1005;
             --z-options-modal: 1010; --z-calculator-selection-modal: 1015; --z-specific-calculator-modal: 1020;
             --transition-speed: 0.25s; --fast-transition-speed: 0.15s;
-            --border-radius-main: 8px;
-            --border-radius-elements: 4px;
+            --border-radius-main: 12px; /* Slightly more rounded for modern look */
+            --border-radius-elements: 6px; /* Slightly more rounded for elements */
 
             --calc-input-border: var(--border-color);
             --calc-input-focus-border: var(--accent-color); 
@@ -77,29 +77,29 @@
             --dac-res-color: var(--text-accent-strong); 
         }
         body.dark-theme {
-            --accent-color: hsl(195, 65%, 55%); 
-            --accent-hover-color: hsl(195, 65%, 45%); 
+            --accent-color: hsl(195, 70%, 55%); /* Slightly brighter accent for dark theme */
+            --accent-hover-color: hsl(195, 70%, 65%); 
             --bg-accent-light: color-mix(in srgb, var(--accent-color) 15%, var(--bg-color-app)); 
-            --text-accent-strong: hsl(195, 60%, 75%); 
+            --text-accent-strong: hsl(195, 65%, 75%); 
 
             --primary-color: var(--text-accent-strong);
-            --primary-dark-color: hsl(195, 70%, 65%);
-            --primary-light-color: hsl(195, 55%, 80%);
+            --primary-dark-color: hsl(195, 75%, 60%);
+            --primary-light-color: hsl(195, 60%, 80%);
             
             --text-color-primary: #e8eaed; 
             --text-color-secondary: #bdc1c6; 
             --text-color-on-primary: #000000;
-            --text-color-on-accent: #FFFFFF; 
+            --text-color-on-accent: #0a192f; /* Darker text on accent for better contrast */
             
-            --bg-color-body: #17181a; 
-            --bg-color-app: #202124; 
+            --bg-color-body: #0a192f; /* Dark blueish background */
+            --bg-color-app: #172a45; /* Slightly lighter container */
             --bg-color-list-item-hover: color-mix(in srgb, var(--accent-color) 10%, var(--bg-color-app)); 
-            --border-color: #3c4043; 
+            --border-color: #2c3e50; /* Darker border */
             --link-color: var(--accent-color);
 
             --calc-input-border: var(--border-color);
             --calc-input-focus-border: var(--accent-color);
-            --calc-input-bg: #2f3136; 
+            --calc-input-bg: #0f2138; /* Darker input background */
             --calc-input-text: var(--text-color-primary);
             --calc-button-bg: var(--accent-color);
             --calc-button-hover-bg: var(--accent-hover-color);
@@ -110,15 +110,15 @@
             --calc-formula-border: var(--accent-color);
             --calc-formula-text: var(--text-color-primary);
 
-            --dac-details-bg: #282c34; 
-            --dac-details-border: #424242; 
+            --dac-details-bg: #1e3a5f; /* Darker details background */
+            --dac-details-border: #2c3e50; 
             --dac-details-text: var(--text-color-primary);
             --dac-detail-item-label-color: var(--text-accent-strong); 
             --dac-detail-item-value-color: var(--accent-color); 
             --dac-syntax-bg: var(--bg-accent-light); 
             --dac-syntax-text: var(--text-accent-strong); 
             --dac-syntax-border: var(--accent-color); 
-            --dac-actual-bg: color-mix(in srgb, var(--accent-color) 10%, #282c34); 
+            --dac-actual-bg: color-mix(in srgb, var(--accent-color) 10%, #1e3a5f); 
             --dac-actual-text: var(--text-color-primary); 
             --dac-actual-border: var(--accent-color); 
             --dac-val-color: var(--accent-hover-color); 
@@ -126,55 +126,163 @@
             --dac-res-color: var(--text-accent-strong); 
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-family); font-size: var(--font-size-root); background-color: var(--bg-color-body); color: var(--text-color-primary); line-height: 1.6; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 10px; transition: background-color var(--transition-speed), color var(--transition-speed); }
-        body.font-size-small { --font-size-base: 0.875rem; } body.font-size-medium { --font-size-base: 1rem; } body.font-size-large { --font-size-base: 1.125rem; }
-        .app-container, #auth-container { 
+        body { 
+            font-family: var(--font-family); 
+            font-size: var(--font-size-root); 
+            background-color: var(--bg-color-body); 
+            color: var(--text-color-primary); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; /* Allow auth and app containers to stack */
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px; /* Increased padding */
+            transition: background-color var(--transition-speed), color var(--transition-speed); 
+        }
+        body.font-size-small { --font-size-base: 0.875rem; } 
+        body.font-size-medium { --font-size-base: 1rem; } 
+        body.font-size-large { --font-size-base: 1.125rem; }
+        
+        .app-container { 
             width: 100%; 
-            max-width: 450px; /* Default for mobile */
+            max-width: 450px; 
+            height: calc(100vh - 40px); /* Adjusted for body padding */
+            max-height: 800px; 
             background-color: var(--bg-color-app); 
             border-radius: var(--border-radius-main); 
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
             display: flex; 
             flex-direction: column; 
             overflow: hidden; 
             position: relative; 
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed), max-width var(--transition-speed); 
-            margin: 0 auto; /* Center on larger screens by default */
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed), max-width var(--transition-speed), opacity 0.3s ease, transform 0.3s ease; 
+            margin: 0 auto; 
         }
-        .app-container { /* Specific for app when shown */
-             height: calc(100vh - 20px); 
-             max-height: 800px; 
+        body.dark-theme .app-container { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25); }
+
+        /* Authentication Container Styles (Inspired by Screenshot) */
+        #auth-container {
+            width: 100%;
+            max-width: 400px; /* Slightly narrower than app */
+            padding: 30px;
+            background-color: var(--bg-color-app); /* Will be overridden by dark theme if active */
+            border-radius: var(--border-radius-main);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px; /* Space if app container is also visible (though usually not) */
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
         }
-        #auth-container { /* Specific for auth form */
-            padding: 25px;
-            margin-top: 50px; /* Give some space from top */
+        body.dark-theme #auth-container {
+            background-color: #1e2a3a; /* Darker than app container for contrast */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         #auth-container h2 {
             text-align: center;
+            margin-bottom: 10px;
+            color: var(--text-color-primary); /* White on dark, dark on light */
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        #auth-container .auth-tagline {
+            text-align: center;
+            color: var(--accent-color); /* Bright blue/cyan */
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        #auth-container .auth-instruction {
+            text-align: center;
+            color: var(--text-color-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+        #auth-container .form-group { margin-bottom: 20px; }
+        #auth-container label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 500; 
+            color: var(--text-color-secondary); /* Lighter label */
+            font-size: 0.9rem;
+        }
+        #auth-container input[type="email"], 
+        #auth-container input[type="password"] {
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--border-radius-elements);
+            background-color: var(--calc-input-bg); 
+            color: var(--text-color-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        body.dark-theme #auth-container input[type="email"], 
+        body.dark-theme #auth-container input[type="password"] {
+            background-color: #2c3e50; /* Darker input fields */
+            border-color: #34495e;
+        }
+        #auth-container input[type="email"]:focus, 
+        #auth-container input[type="password"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 30%, transparent);
+        }
+        #auth-container .auth-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            color: var(--text-accent-strong);
+            font-size: 0.85rem;
         }
-        #auth-container .form-group { margin-bottom: 15px; }
-        #auth-container label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--text-color-primary); }
-        #auth-container input[type="email"], #auth-container input[type="password"] {
-            width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius-elements);
-            background-color: var(--calc-input-bg); color: var(--text-color-primary);
+        #auth-container .auth-options label {
+            color: var(--text-color-secondary);
+            display: flex;
+            align-items: center;
+            margin-bottom: 0; /* Reset margin */
         }
-        #auth-container button {
-            width: 100%; padding: 12px; background-color: var(--accent-color); color: var(--text-color-on-accent);
-            border: none; border-radius: var(--border-radius-elements); font-weight: 500; cursor: pointer;
-            transition: background-color 0.2s;
+        #auth-container .auth-options input[type="checkbox"] {
+            margin-right: 6px;
+            accent-color: var(--accent-color);
         }
-        #auth-container button:hover { background-color: var(--accent-hover-color); }
-        #auth-container .switch-auth-mode { text-align: center; margin-top: 15px; font-size: 0.9em; }
-        #auth-container .switch-auth-mode a { color: var(--link-color); cursor: pointer; text-decoration: underline; }
-        #auth-error-message { color: #c0392b; text-align: center; margin-bottom: 10px; font-weight: bold; min-height:1.2em; } /* Added min-height */
+        #auth-container .auth-options a,
+        #auth-container .switch-auth-mode a { 
+            color: var(--accent-color); 
+            cursor: pointer; 
+            text-decoration: none; 
+        }
+        #auth-container .auth-options a:hover,
+        #auth-container .switch-auth-mode a:hover {
+            text-decoration: underline;
+        }
+        #auth-container button.auth-button { /* Specific class for auth buttons */
+            width: 100%; 
+            padding: 14px; 
+            background: linear-gradient(135deg, hsl(205, 70%, 50%), hsl(225, 70%, 55%)); /* Gradient button */
+            color: var(--text-color-on-primary);
+            border: none; 
+            border-radius: var(--border-radius-elements); 
+            font-weight: 600; 
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        body.dark-theme #auth-container button.auth-button {
+             background: linear-gradient(135deg, var(--accent-color), var(--accent-hover-color));
+             box-shadow: 0 4px 15px color-mix(in srgb, var(--accent-color) 25%, transparent);
+        }
+        #auth-container button.auth-button:hover {
+            filter: brightness(1.1);
+        }
+        #auth-container button.auth-button:active {
+            transform: scale(0.98);
+        }
+        #auth-container .switch-auth-mode { text-align: center; margin-top: 25px; font-size: 0.9em; color: var(--text-color-secondary); }
+        #auth-error-message { color: #e74c3c; text-align: center; margin-bottom: 15px; font-weight: 500; min-height:1.2em; font-size: 0.9rem; }
 
-        body.dark-theme .app-container { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); }
+
         .app-header { background-color: var(--bg-color-app); color: var(--text-color-primary); height: var(--header-height); padding: 0 12px 0 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, color var(--transition-speed); position:relative; z-index: 10; border-bottom: 1px solid var(--border-color); }
-        .app-title { font-size: 1.3rem; font-weight: 600; color: var(--text-accent-strong); transition: opacity var(--transition-speed) ease, font-size var(--transition-speed); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100% - 130px); /* Adjusted for user email and logout button */ }
-        .user-info-header { font-size: 0.8em; color: var(--text-color-secondary); margin-right: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; } /* Added for user email */
-        #logout-btn { background: none; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 5px 10px; font-size: 0.85rem; border-radius: var(--border-radius-elements); cursor: pointer; transition: background-color 0.2s, color 0.2s; margin-left: 8px;} /* Added for logout button */
+        .app-title { font-size: 1.3rem; font-weight: 600; color: var(--text-accent-strong); transition: opacity var(--transition-speed) ease, font-size var(--transition-speed); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100% - 130px); }
+        .user-info-header { font-size: 0.8em; color: var(--text-color-secondary); margin-right: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+        #logout-btn { background: none; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 5px 10px; font-size: 0.85rem; border-radius: var(--border-radius-elements); cursor: pointer; transition: background-color 0.2s, color 0.2s; margin-left: 8px;}
         #logout-btn:hover { background-color: var(--accent-color); color: var(--text-color-on-accent); }
         
         .header-actions { display: flex; align-items: center; }
@@ -345,6 +453,8 @@
         }
         .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
         .input-group > div { flex: 1; }
+
+        /* PIECES/STACK CALCULATOR SPECIFIC UI STYLES (using global theme vars) */
         .psw-calculator-ui-wrapper {
             background-color: var(--bg-color-body); 
             border-radius: var(--border-radius-elements);
@@ -365,7 +475,9 @@
             margin-bottom: 18px;
             border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
         }
-         .psw-calc-section:last-child { margin-bottom: 0; }
+         .psw-calc-section:last-child {
+            margin-bottom: 0;
+        }
         .psw-calc-section-title {
             font-size: 1.05rem; 
             font-weight: 600;
@@ -377,76 +489,236 @@
             align-items: center;
             transition: font-size var(--transition-speed);
         }
-         .psw-calc-section-title i { margin-right: 8px; color: var(--accent-color); font-size: 1.1em; }
-        .psw-input-row { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
+         .psw-calc-section-title i {
+            margin-right: 8px;
+            color: var(--accent-color); 
+            font-size: 1.1em;
+        }
+        .psw-input-row { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+        }
         .psw-input-row:last-child { margin-bottom: 0; }
-        .psw-form-group { flex: 1 1 calc(50% - 7.5px); display: flex; flex-direction: column; min-width: calc(50% - 7.5px); }
-        .psw-form-group.full-width { flex-basis: 100%; min-width: 100%; }
-        .psw-form-group label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.9rem; color: var(--text-color-secondary); min-height: 1.4em; line-height: 1.4em; }
+
+        .psw-form-group { 
+            flex: 1 1 calc(50% - 7.5px); 
+            display: flex; 
+            flex-direction: column; 
+            min-width: calc(50% - 7.5px); 
+        }
+        .psw-form-group.full-width { 
+            flex-basis: 100%; 
+            min-width: 100%;
+        }
+
+        .psw-form-group label { 
+            display: block; 
+            margin-bottom: 6px; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+            color: var(--text-color-secondary); 
+            min-height: 1.4em; 
+            line-height: 1.4em;
+        }
         .psw-form-group input[type="number"], 
         .psw-form-group select { 
-            width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: var(--border-radius-elements); 
-            font-size: 0.95rem; background-color: var(--calc-input-bg); color: var(--text-color-primary); 
-            transition: border-color 0.2s ease, box-shadow 0.2s ease; line-height: normal; height: 40px; box-sizing: border-box;
+            width: 100%; 
+            padding: 10px 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--border-radius-elements); 
+            font-size: 0.95rem; 
+            background-color: var(--calc-input-bg); 
+            color: var(--text-color-primary); 
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            line-height: normal; 
+            height: 40px; 
+            box-sizing: border-box;
         }
-        .psw-form-group input[type="number"][id$="-thickness-custom"] { margin-top: 5px; }
+        .psw-form-group input[type="number"][id$="-thickness-custom"] {
+             margin-top: 5px; 
+        }
+
         .psw-form-group input[type="number"]:focus, 
-        .psw-form-group select:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent); }
+        .psw-form-group select:focus { 
+            outline: none; 
+            border-color: var(--accent-color); 
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent); 
+        }
+        
         #pieces-stack-calculator-modal .calculator-button-container button, 
-        .modal-new[id$="-psw-calculator-modal"] .calculator-button-container button {
-            background: linear-gradient(145deg, var(--accent-color), var(--accent-hover-color)); color: var(--text-color-on-accent);
-            font-weight: 500; padding: 12px 24px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border:none; display: inline-flex; align-items: center; gap: 8px; 
+        .modal-new[id$="-psw-calculator-modal"] .calculator-button-container button
+        {
+            background: linear-gradient(145deg, var(--accent-color), var(--accent-hover-color));
+            color: var(--text-color-on-accent);
+            font-weight: 500;
+            padding: 12px 24px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border:none;
+            display: inline-flex; 
+            align-items: center;
+            gap: 8px; 
         }
          #pieces-stack-calculator-modal .calculator-button-container button:hover,
-         .modal-new[id$="-psw-calculator-modal"] .calculator-button-container button:hover {
-            background: linear-gradient(145deg, var(--accent-hover-color), var(--accent-color)); box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+         .modal-new[id$="-psw-calculator-modal"] .calculator-button-container button:hover
+         {
+            background: linear-gradient(145deg, var(--accent-hover-color), var(--accent-color));
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-        #pieces-stack-result-box, .calculator-result-box[id$="-psw-result-box"] { padding: 0; border-left: none; background: transparent; color: var(--text-color-primary); }
-        #pieces-stack-result-box strong, .calculator-result-box[id$="-psw-result-box"] strong { color: var(--text-color-primary); font-weight: 600; }
-        body.dark-theme #pieces-stack-result-box strong, body.dark-theme .calculator-result-box[id$="-psw-result-box"] strong { color: var(--text-color-primary); }
-        #pieces-stack-result-box .result-value, .calculator-result-box[id$="-psw-result-box"] .result-value { color: var(--accent-color); font-size: 1.1em; font-weight: 700; }
-        #pieces-stack-result-box .calculator-formula-box, .calculator-result-box[id$="-psw-result-box"] .calculator-formula-box {
-            margin-top: 12px; background-color: color-mix(in srgb, var(--border-color) 20%, var(--bg-accent-light));
-            border-left: 3px solid var(--accent-color); padding: 10px 14px;
+        #pieces-stack-result-box, 
+        .calculator-result-box[id$="-psw-result-box"] 
+        { 
+            padding: 0; 
+            border-left: none; 
+            background: transparent; 
+            color: var(--text-color-primary); 
         }
-        body.dark-theme #pieces-stack-result-box .calculator-formula-box, body.dark-theme .calculator-result-box[id$="-psw-result-box"] .calculator-formula-box { background-color: color-mix(in srgb, var(--border-color) 30%, var(--bg-accent-light)); }
-        #about-modal-body .fa-phone-alt, #about-modal-body .fa-envelope { margin-right: 8px; color: var(--accent-color); }
+        #pieces-stack-result-box strong,
+        .calculator-result-box[id$="-psw-result-box"] strong
+        { 
+            color: var(--text-color-primary); 
+            font-weight: 600;
+        }
+        body.dark-theme #pieces-stack-result-box strong,
+        body.dark-theme .calculator-result-box[id$="-psw-result-box"] strong
+        {
+            color: var(--text-color-primary);
+        }
+        #pieces-stack-result-box .result-value,
+        .calculator-result-box[id$="-psw-result-box"] .result-value
+        {
+            color: var(--accent-color); 
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+        #pieces-stack-result-box .calculator-formula-box,
+        .calculator-result-box[id$="-psw-result-box"] .calculator-formula-box
+        {
+            margin-top: 12px;
+            background-color: color-mix(in srgb, var(--border-color) 20%, var(--bg-accent-light));
+            border-left: 3px solid var(--accent-color);
+            padding: 10px 14px;
+        }
+        body.dark-theme #pieces-stack-result-box .calculator-formula-box,
+        body.dark-theme .calculator-result-box[id$="-psw-result-box"] .calculator-formula-box
+        {
+            background-color: color-mix(in srgb, var(--border-color) 30%, var(--bg-accent-light));
+        }
+        /* About Modal Contact Icon Styling */
+        #about-modal-body .fa-phone-alt, #about-modal-body .fa-envelope {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
         .error-message { color: #c0392b; font-weight: bold; display: block; margin-top: 5px; }
+
+        /* --- START RESPONSIVE STYLES (MEDIA QUERIES) --- */
+        
+        /* Tablet Styles (e.g., iPads, etc.) */
         @media screen and (min-width: 768px) {
-            .app-container, #auth-container { max-width: 700px; }
+            .app-container, #auth-container {
+                max-width: 700px; /* Wider container for tablets */
+            }
             .app-container { max-height: 90vh; margin: 20px auto; }
             #auth-container { margin-top: 80px; }
-            .app-title { font-size: 1.5rem; }
-            .header-actions .icon-button { font-size: 1.4rem; padding: 12px; }
-            .item-list li { padding: 16px 20px; }
-            .item-list li .item-text .item-preview { max-width: 450px; }
-            .fab { width: 60px; height: 60px; font-size: 1.8rem; bottom: 30px; right: 30px; }
-            .modal-content-new { max-width: 650px; padding: 28px; }
-            .modal-title-new { font-size: 1.6rem; }
-            .settings-section h3 { font-size: 1.3rem; }
-            .psw-calculator-ui-wrapper { padding: 20px; }
-            .psw-calc-section-title { font-size: 1.15rem; }
-            .psw-form-group label { font-size: 0.95rem; }
-            .psw-form-group input[type="number"], .psw-form-group select { font-size: 1rem; height: 44px; }
-            .calculator-button-container button { padding: 14px 28px; font-size: 1.05rem; }
-             #details-modal-files-container img { max-height: 280px; }
+
+            .app-title {
+                font-size: 1.5rem; /* Slightly larger title */
+            }
+            .header-actions .icon-button {
+                font-size: 1.4rem;
+                padding: 12px;
+            }
+            .item-list li {
+                padding: 16px 20px; /* More padding in list items */
+            }
+            .item-list li .item-text .item-preview {
+                max-width: 450px; /* Allow more preview text */
+            }
+            .fab {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+                bottom: 30px;
+                right: 30px;
+            }
+            .modal-content-new {
+                max-width: 650px; /* Wider modals */
+                padding: 28px;
+            }
+            .modal-title-new {
+                font-size: 1.6rem; /* Larger modal titles */
+            }
+            .settings-section h3 {
+                font-size: 1.3rem;
+            }
+            .psw-calculator-ui-wrapper {
+                padding: 20px;
+            }
+            .psw-calc-section-title {
+                font-size: 1.15rem;
+            }
+            .psw-form-group label {
+                font-size: 0.95rem;
+            }
+            .psw-form-group input[type="number"],
+            .psw-form-group select {
+                font-size: 1rem;
+                height: 44px;
+            }
+            .calculator-button-container button {
+                padding: 14px 28px;
+                font-size: 1.05rem;
+            }
+             #details-modal-files-container img { 
+                max-height: 280px; 
+            }
         }
+
+        /* Small Laptop/Desktop Styles */
         @media screen and (min-width: 1024px) {
-            .app-container, #auth-container { max-width: 850px; }
-            .app-title { font-size: 1.65rem; }
-            .item-list li .item-text .item-preview { max-width: 600px; }
-            .modal-content-new { max-width: 750px; }
-            .modal-title-new { font-size: 1.75rem; }
-            .input-group { gap: 15px; }
-            #details-modal-files-container img { max-height: 320px; }
+            .app-container, #auth-container {
+                max-width: 850px; /* Even wider for small laptops */
+            }
+            .app-title {
+                font-size: 1.65rem;
+            }
+            .item-list li .item-text .item-preview {
+                max-width: 600px;
+            }
+            .modal-content-new {
+                max-width: 750px;
+            }
+            .modal-title-new {
+                font-size: 1.75rem;
+            }
+            .input-group { 
+                 gap: 15px;
+            }
+            #details-modal-files-container img { 
+                max-height: 320px; 
+            }
         }
+
+        /* Larger Desktop Styles */
         @media screen and (min-width: 1280px) {
-            .app-container, #auth-container { max-width: 960px; }
-             .app-title { font-size: 1.8rem; }
-            .modal-content-new { max-width: 800px; }
-            .psw-calculator-ui-wrapper { padding: 24px; }
-             #details-modal-files-container img { max-height: 350px; }
+            .app-container, #auth-container {
+                max-width: 960px; /* Max width for large desktops */
+            }
+             .app-title {
+                font-size: 1.8rem;
+            }
+            .modal-content-new {
+                max-width: 800px;
+            }
+            .psw-calculator-ui-wrapper {
+                padding: 24px;
+            }
+             #details-modal-files-container img { 
+                max-height: 350px; 
+            }
         }
+        /* --- END RESPONSIVE STYLES --- */
     </style>
 </head>
 
@@ -454,25 +726,62 @@
 
     <div id="auth-container">
         <div id="auth-error-message" class="hidden"></div>
+        <!-- Login Form -->
         <div id="login-form">
-            <h2>Login</h2>
-            <div class="form-group"> <label for="login-email">Email:</label> <input type="email" id="login-email" required> </div>
-            <div class="form-group"> <label for="login-password">Password:</label> <input type="password" id="login-password" required> </div>
-            <button id="login-btn">Login</button>
+            <h2>Welcome Back! 👋</h2>
+            <p class="auth-tagline">Your CRGO Data Awaits</p>
+            <p class="auth-instruction">Please login to continue.</p>
+            <div class="form-group">
+                <label for="login-email">Email ID</label>
+                <input type="email" id="login-email" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required placeholder="Enter your password">
+            </div>
+            <div class="auth-options">
+                <label for="remember-me">
+                    <input type="checkbox" id="remember-me"> Remember Me
+                </label>
+                <a id="forgot-password-link">Forgot Password?</a>
+            </div>
+            <button id="login-btn" class="auth-button">Login</button>
             <p class="switch-auth-mode">Don't have an account? <a id="show-signup-link">Sign Up</a></p>
         </div>
+
+        <!-- Signup Form (Hidden by default) -->
         <div id="signup-form" class="hidden">
-            <h2>Sign Up</h2>
-            <div class="form-group"> <label for="signup-email">Email:</label> <input type="email" id="signup-email" required> </div>
-            <div class="form-group"> <label for="signup-password">Password:</label> <input type="password" id="signup-password" required> </div>
-            <button id="signup-btn">Sign Up</button>
+            <h2>Create Account 🚀</h2>
+            <p class="auth-tagline">Join the CRGO Hub</p>
+            <p class="auth-instruction">Let's get you started.</p>
+            <div class="form-group">
+                <label for="signup-email">Email ID</label>
+                <input type="email" id="signup-email" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" required placeholder="Choose a strong password (min. 6 chars)">
+            </div>
+            <button id="signup-btn" class="auth-button">Sign Up</button>
             <p class="switch-auth-mode">Already have an account? <a id="show-login-link">Login</a></p>
+        </div>
+        
+        <!-- Password Reset Form (Hidden by default) -->
+        <div id="reset-password-form" class="hidden">
+            <h2>Reset Password 🔑</h2>
+            <p class="auth-instruction">Enter your email to receive a password reset link.</p>
+            <div class="form-group">
+                <label for="reset-email">Email ID</label>
+                <input type="email" id="reset-email" required placeholder="Your registered email">
+            </div>
+            <button id="reset-password-btn" class="auth-button">Send Reset Link</button>
+            <p class="switch-auth-mode"><a id="back-to-login-link">Back to Login</a></p>
         </div>
     </div>
 
     <div class="app-container hidden" id="main-app-content">
         <header class="app-header">
-            <div class="app-title" id="app-main-title">CRGO Data Book</div>
+            <div class="app-title" id="app-main-title">CRGO Data Hub</div>
             <div class="search-bar-header" id="search-bar-header">
                 <button class="icon-button" id="back-from-search-btn" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
                 <input type="text" id="search-input-field" placeholder="Search entries...">
@@ -524,16 +833,262 @@
     <div class="modal-new" id="parallelogram-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Parallelogram Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="pg-length">Base Length (L) in mm:</label><input type="number" id="pg-length" placeholder="e.g., 1200"><label for="pg-width">Perpendicular Height (W/h) in mm:</label><input type="number" id="pg-width" placeholder="e.g., 300"><label for="pg-stack">Stack (S) in mm:</label><input type="number" id="pg-stack" placeholder="e.g., 194"><div class="calculator-button-container"><button id="calculate-pg-btn">Calculate</button></div><div class="calculator-result-box" id="pg-result-box"></div></div></div></div>
     <div class="modal-new" id="hole-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Hole Material Weight Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><label for="hole-num">Number of Holes:</label><input type="number" id="hole-num" placeholder="e.g., 1" value="1"><label for="hole-diameter">Hole Diameter (mm):</label><input type="number" id="hole-diameter" placeholder="e.g., 16"><label for="hole-stack">Stack (S) in mm:</label><input type="number" id="hole-stack" placeholder="e.g., 70"><div class="calculator-button-container"><button id="calculate-hole-btn">Calculate</button></div><div class="calculator-result-box" id="hole-result-box"></div></div></div></div>
     <div class="modal-new" id="coil-weight-stack-calculator-modal"><div class="modal-content-new"><div class="modal-header-new"><h2 class="modal-title-new">Coil Weight/Stack Calculator</h2><button class="modal-close-button-new">&times;</button></div><div class="modal-body-new"><div class="calculator-mode-selector"><input type="radio" name="coilCalcMode" id="calc-mode-weight" value="weight" checked><label for="calc-mode-weight">Calculate Weight</label><input type="radio" name="coilCalcMode" id="calc-mode-stack" value="stack"><label for="calc-mode-stack">Calculate Stack</label></div><div id="coil-calc-inputs-weight"><label for="coil-id-for-weight">ID of Coil (mm):</label><input type="number" id="coil-id-for-weight" placeholder="e.g., 500"><label for="coil-width-for-weight">Width (W) in mm:</label><input type="number" id="coil-width-for-weight" placeholder="e.g., 420"><label for="coil-stack-for-weight">Stack Height (S) in mm:</label><input type="number" id="coil-stack-for-weight" placeholder="e.g., 75"></div><div id="coil-calc-inputs-stack" class="hidden"><label for="coil-id-for-stack">ID of Coil (mm):</label><input type="number" id="coil-id-for-stack" placeholder="e.g., 500"><label for="coil-width-for-stack">Width (W) in mm:</label><input type="number" id="coil-width-for-stack" placeholder="e.g., 300"><label for="coil-weight-for-stack">Weight (kgs):</label><input type="number" id="coil-weight-for-stack" placeholder="e.g., 190"></div><div class="calculator-button-container"><button id="calculate-coil-btn">Calculate</button></div><div class="calculator-result-box" id="coil-result-box"></div></div></div></div>
-    <div class="modal-new" id="dual-angle-cut-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">Dual Angle Cut Weight Calculator</h2><button class="modal-close-button-new">&times;</button></div> <div class="modal-body-new"> <label for="dac-length">Length (L / L<sub>long</sub>) (mm):</label><input type="number" id="dac-length" placeholder="e.g., 812.5" value="812.5"> <label for="dac-width">Width (W / h) (mm):</label><input type="number" id="dac-width" placeholder="e.g., 295" value="295"> <div class="input-group"> <div><label for="dac-angle1">Angle 1 (degrees):</label><input type="number" id="dac-angle1" placeholder="e.g., 75" value="75"></div> <div><label for="dac-angle2">Angle 2 (degrees):</label><input type="number" id="dac-angle2" placeholder="e.g., 45" value="45"></div> </div> <p style="font-size:0.8em; color:var(--text-color-secondary); margin-top:-10px; margin-bottom:15px;">Note: Enter 90° for straight ends (Rectangle). For Trapezoid, enter internal base angles.</p> <label for="dac-stack">Stack (S) (mm):</label><input type="number" id="dac-stack" placeholder="e.g., 196" value="196"> <label for="dac-density">Density (D) (g/cm³):</label><input type="number" id="dac-density" value="7.65" step="0.01"> <label for="dac-stacking-factor">Stacking Factor (SF):</label><input type="number" id="dac-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"> <div class="calculator-button-container"><button id="calculate-dac-btn">Calculate Weight</button></div> <div class="calculator-result-box" id="dac-result-box">Please enter values and calculate.</div> <div class="calculator-details-box" id="dac-details-box" style="display:none;"></div> </div> </div> </div>
-    <div class="modal-new" id="pieces-stack-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"> <h2 class="modal-title-new">Pieces/Stack Calculator (General)</h2> <button class="modal-close-button-new">&times;</button> </div> <div class="modal-body-new"> <div class="calculator-mode-selector"> <input type="radio" name="psCalcMode" id="ps-calc-mode-pieces" value="pieces" checked> <label for="ps-calc-mode-pieces"><i class="fas fa-th-list"></i> Calculate Pieces</label> <input type="radio" name="psCalcMode" id="ps-calc-mode-stack" value="stack"> <label for="ps-calc-mode-stack"><i class="fas fa-layer-group"></i> Calculate Stack</label> </div> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div id="ps-calc-inputs-pieces"> <div class="psw-form-group full-width"><label for="ps-total-stack">Total Stack Height (mm):</label><input type="number" id="ps-total-stack" placeholder="e.g., 150"></div> <div class="psw-form-group full-width"><label for="ps-thickness-per-piece">Lamination Thickness (mm):</label><input type="number" id="ps-thickness-per-piece" placeholder="e.g., 0.23" step="0.01"></div> </div> <div id="ps-calc-inputs-stack" class="hidden"> <div class="psw-form-group full-width"><label for="ps-total-pieces">Total Number of Pieces:</label><input type="number" id="ps-total-pieces" placeholder="e.g., 652"></div> <div class="psw-form-group full-width"><label for="ps-thickness-per-piece-for-stack">Lamination Thickness (mm):</label><input type="number" id="ps-thickness-per-piece-for-stack" placeholder="e.g., 0.23" step="0.01"></div> </div> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-pieces-stack-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="pieces-stack-result-box"></div></div> </div> </div> </div> </div>
-    <div class="modal-new" id="a-plate-psw-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">A-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div> <div class="modal-body-new"> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div class="psw-input-row"> <div class="psw-form-group"><label for="apsw-total-weight">Total Weight (kgs):</label><input type="number" id="apsw-total-weight" placeholder="e.g., 100"></div> <div class="psw-form-group"><label for="apsw-length">Length (L) (mm):</label><input type="number" id="apsw-length" placeholder="e.g., 1655"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="apsw-width">Width (W) (mm):</label><input type="number" id="apsw-width" placeholder="e.g., 300"></div> <div class="psw-form-group"><label for="apsw-thickness-select">Lamination Thickness (mm):</label><select id="apsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="apsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="apsw-density">Density (g/cm³):</label><input type="number" id="apsw-density" value="7.65" step="0.01"></div> <div class="psw-form-group"><label for="apsw-stacking-factor">Stacking Factor:</label><input type="number" id="apsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div> </div> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-apsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="apsw-result-box"></div></div> </div> </div> </div> </div>
-    <div class="modal-new" id="b-plate-psw-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">B-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div> <div class="modal-body-new"> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div class="psw-input-row"> <div class="psw-form-group"><label for="bpsw-total-weight">Total Weight (kgs):</label><input type="number" id="bpsw-total-weight" placeholder="e.g., 100"></div> <div class="psw-form-group"><label for="bpsw-length">Length (L) (mm):</label><input type="number" id="bpsw-length" placeholder="e.g., 1000"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="bpsw-width">Width (W) (mm):</label><input type="number" id="bpsw-width" placeholder="e.g., 200"></div> <div class="psw-form-group"><label for="bpsw-thickness-select">Lamination Thickness (mm):</label><select id="bpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="bpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="bpsw-density">Density (g/cm³):</label><input type="number" id="bpsw-density" value="7.65" step="0.01"></div> <div class="psw-form-group"><label for="bpsw-stacking-factor">Stacking Factor:</label><input type="number" id="bpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div> </div> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-bpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="bpsw-result-box"></div></div> </div> </div> </div> </div>
-    <div class="modal-new" id="c-plate-psw-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">C-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div> <div class="modal-body-new"> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div class="psw-input-row"> <div class="psw-form-group"><label for="cpsw-total-weight">Total Weight (kgs):</label><input type="number" id="cpsw-total-weight" placeholder="e.g., 100"></div> <div class="psw-form-group"><label for="cpsw-length">Length (L) (mm):</label><input type="number" id="cpsw-length" placeholder="e.g., 1100"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="cpsw-width">Width (W) (mm):</label><input type="number" id="cpsw-width" placeholder="e.g., 180"></div> <div class="psw-form-group"><label for="cpsw-thickness-select">Lamination Thickness (mm):</label><select id="cpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="cpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="cpsw-density">Density (g/cm³):</label><input type="number" id="cpsw-density" value="7.65" step="0.01"></div> <div class="psw-form-group"><label for="cpsw-stacking-factor">Stacking Factor:</label><input type="number" id="cpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div> </div> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-cpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="cpsw-result-box"></div></div> </div> </div> </div> </div>
-    <div class="modal-new" id="rectangle-psw-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">Rectangle: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div> <div class="modal-body-new"> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div class="psw-input-row"> <div class="psw-form-group"><label for="rectpsw-total-weight">Total Weight (kgs):</label><input type="number" id="rectpsw-total-weight" placeholder="e.g., 100"></div> <div class="psw-form-group"><label for="rectpsw-length">Length (L) (mm):</label><input type="number" id="rectpsw-length" placeholder="e.g., 1000"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="rectpsw-width">Width (W) (mm):</label><input type="number" id="rectpsw-width" placeholder="e.g., 200"></div> <div class="psw-form-group"><label for="rectpsw-thickness-select">Lamination Thickness (mm):</label><select id="rectpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="rectpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="rectpsw-density">Density (g/cm³):</label><input type="number" id="rectpsw-density" value="7.65" step="0.01"></div> <div class="psw-form-group"><label for="rectpsw-stacking-factor">Stacking Factor:</label><input type="number" id="rectpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div> </div> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-rectpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="rectpsw-result-box"></div></div> </div> </div> </div> </div>
-    <div class="modal-new" id="half-mitre-psw-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">Half-Mitre: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div> <div class="modal-body-new"> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div class="psw-input-row"> <div class="psw-form-group"><label for="hmpsw-total-weight">Total Weight (kgs):</label><input type="number" id="hmpsw-total-weight" placeholder="e.g., 100"></div> <div class="psw-form-group"><label for="hmpsw-length">Length (L) (mm):</label><input type="number" id="hmpsw-length" placeholder="e.g., 855"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="hmpsw-width">Width (W) (mm):</label><input type="number" id="hmpsw-width" placeholder="e.g., 380"></div> <div class="psw-form-group"><label for="hmpsw-thickness-select">Lamination Thickness (mm):</label><select id="hmpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="hmpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="hmpsw-density">Density (g/cm³):</label><input type="number" id="hmpsw-density" value="7.65" step="0.01"></div> <div class="psw-form-group"><label for="hmpsw-stacking-factor">Stacking Factor:</label><input type="number" id="hmpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div> </div> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-hmpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="hmpsw-result-box"></div></div> </div> </div> </div> </div>
-    <div class="modal-new" id="parallelogram-psw-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">Parallelogram: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div> <div class="modal-body-new"> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div class="psw-input-row"> <div class="psw-form-group"><label for="pgpsw-total-weight">Total Weight (kgs):</label><input type="number" id="pgpsw-total-weight" placeholder="e.g., 100"></div> <div class="psw-form-group"><label for="pgpsw-length">Base Length (L) (mm):</label><input type="number" id="pgpsw-length" placeholder="e.g., 1200"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="pgpsw-width">Perpendicular Height (W/h) (mm):</label><input type="number" id="pgpsw-width" placeholder="e.g., 300"></div> <div class="psw-form-group"><label for="pgpsw-thickness-select">Lamination Thickness (mm):</label><select id="pgpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="pgpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="pgpsw-density">Density (g/cm³):</label><input type="number" id="pgpsw-density" value="7.65" step="0.01"></div> <div class="psw-form-group"><label for="pgpsw-stacking-factor">Stacking Factor:</label><input type="number" id="pgpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div> </div> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-pgpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="pgpsw-result-box"></div></div> </div> </div> </div> </div>
-    <div class="modal-new" id="dual-angle-psw-calculator-modal"> <div class="modal-content-new"> <div class="modal-header-new"><h2 class="modal-title-new">Dual Angle Cut: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div> <div class="modal-body-new"> <div class="psw-calculator-ui-wrapper"> <div class="psw-calc-section"> <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4> <div class="psw-input-row"> <div class="psw-form-group"><label for="dacpsw-total-weight">Total Weight (kgs):</label><input type="number" id="dacpsw-total-weight" placeholder="e.g., 100"></div> <div class="psw-form-group"><label for="dacpsw-length">Length (L<sub>long</sub>) (mm):</label><input type="number" id="dacpsw-length" placeholder="e.g., 812.5"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="dacpsw-width">Width (W/h) (mm):</label><input type="number" id="dacpsw-width" placeholder="e.g., 295"></div> <div class="psw-form-group"><label for="dacpsw-thickness-select">Lamination Thickness (mm):</label><select id="dacpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="dacpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="dacpsw-angle1">Angle 1 (degrees):</label><input type="number" id="dacpsw-angle1" placeholder="e.g., 75"></div> <div class="psw-form-group"><label for="dacpsw-angle2">Angle 2 (degrees):</label><input type="number" id="dacpsw-angle2" placeholder="e.g., 45"></div> </div> <div class="psw-input-row"> <div class="psw-form-group"><label for="dacpsw-density">Density (g/cm³):</label><input type="number" id="dacpsw-density" value="7.65" step="0.01"></div> <div class="psw-form-group"><label for="dacpsw-stacking-factor">Stacking Factor:</label><input type="number" id="dacpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div> </div> <p style="font-size:0.8em; color:var(--text-color-secondary); margin-top:5px;">Note: Enter 90° for straight ends. For Trapezoid, enter internal base angles.</p> </div> <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-dacpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div> <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="dacpsw-result-box"></div></div> </div> </div> </div> </div>
+    <div class="modal-new" id="dual-angle-cut-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Dual Angle Cut Weight Calculator</h2><button class="modal-close-button-new">&times;</button></div>
+            <div class="modal-body-new">
+                <label for="dac-length">Length (L / L<sub>long</sub>) (mm):</label><input type="number" id="dac-length" placeholder="e.g., 812.5" value="812.5">
+                <label for="dac-width">Width (W / h) (mm):</label><input type="number" id="dac-width" placeholder="e.g., 295" value="295">
+                <div class="input-group">
+                    <div><label for="dac-angle1">Angle 1 (degrees):</label><input type="number" id="dac-angle1" placeholder="e.g., 75" value="75"></div>
+                    <div><label for="dac-angle2">Angle 2 (degrees):</label><input type="number" id="dac-angle2" placeholder="e.g., 45" value="45"></div>
+                </div>
+                <p style="font-size:0.8em; color:var(--text-color-secondary); margin-top:-10px; margin-bottom:15px;">Note: Enter 90° for straight ends (Rectangle). For Trapezoid, enter internal base angles.</p>
+                <label for="dac-stack">Stack (S) (mm):</label><input type="number" id="dac-stack" placeholder="e.g., 196" value="196">
+                <label for="dac-density">Density (D) (g/cm³):</label><input type="number" id="dac-density" value="7.65" step="0.01">
+                <label for="dac-stacking-factor">Stacking Factor (SF):</label><input type="number" id="dac-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0">
+                <div class="calculator-button-container"><button id="calculate-dac-btn">Calculate Weight</button></div>
+                <div class="calculator-result-box" id="dac-result-box">Please enter values and calculate.</div>
+                <div class="calculator-details-box" id="dac-details-box" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-new" id="pieces-stack-calculator-modal"> <!-- Original Pieces/Stack Calculator -->
+        <div class="modal-content-new">
+            <div class="modal-header-new">
+                <h2 class="modal-title-new">Pieces/Stack Calculator (General)</h2>
+                <button class="modal-close-button-new">&times;</button>
+            </div>
+            <div class="modal-body-new">
+                <div class="calculator-mode-selector">
+                    <input type="radio" name="psCalcMode" id="ps-calc-mode-pieces" value="pieces" checked>
+                    <label for="ps-calc-mode-pieces"><i class="fas fa-th-list"></i> Calculate Pieces</label>
+                    <input type="radio" name="psCalcMode" id="ps-calc-mode-stack" value="stack">
+                    <label for="ps-calc-mode-stack"><i class="fas fa-layer-group"></i> Calculate Stack</label>
+                </div>
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div id="ps-calc-inputs-pieces">
+                            <div class="psw-form-group full-width"><label for="ps-total-stack">Total Stack Height (mm):</label><input type="number" id="ps-total-stack" placeholder="e.g., 150"></div>
+                            <div class="psw-form-group full-width"><label for="ps-thickness-per-piece">Lamination Thickness (mm):</label><input type="number" id="ps-thickness-per-piece" placeholder="e.g., 0.23" step="0.01"></div>
+                        </div>
+                        <div id="ps-calc-inputs-stack" class="hidden">
+                            <div class="psw-form-group full-width"><label for="ps-total-pieces">Total Number of Pieces:</label><input type="number" id="ps-total-pieces" placeholder="e.g., 652"></div>
+                            <div class="psw-form-group full-width"><label for="ps-thickness-per-piece-for-stack">Lamination Thickness (mm):</label><input type="number" id="ps-thickness-per-piece-for-stack" placeholder="e.g., 0.23" step="0.01"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-pieces-stack-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="pieces-stack-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pieces/Stack from Weight Calculator Modals (A, B, C, etc.) -->
+    <!-- A-Plate PSW Calculator -->
+    <div class="modal-new" id="a-plate-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">A-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="apsw-total-weight">Total Weight (kgs):</label><input type="number" id="apsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="apsw-length">Length (L) (mm):</label><input type="number" id="apsw-length" placeholder="e.g., 1655"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="apsw-width">Width (W) (mm):</label><input type="number" id="apsw-width" placeholder="e.g., 300"></div>
+                            <div class="psw-form-group"><label for="apsw-thickness-select">Lamination Thickness (mm):</label><select id="apsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="apsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="apsw-density">Density (g/cm³):</label><input type="number" id="apsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="apsw-stacking-factor">Stacking Factor:</label><input type="number" id="apsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-apsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="apsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- B-Plate PSW Calculator -->
+    <div class="modal-new" id="b-plate-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">B-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="bpsw-total-weight">Total Weight (kgs):</label><input type="number" id="bpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="bpsw-length">Length (L) (mm):</label><input type="number" id="bpsw-length" placeholder="e.g., 1000"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="bpsw-width">Width (W) (mm):</label><input type="number" id="bpsw-width" placeholder="e.g., 200"></div>
+                            <div class="psw-form-group"><label for="bpsw-thickness-select">Lamination Thickness (mm):</label><select id="bpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="bpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="bpsw-density">Density (g/cm³):</label><input type="number" id="bpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="bpsw-stacking-factor">Stacking Factor:</label><input type="number" id="bpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-bpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="bpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <!-- C-Plate PSW Calculator -->
+    <div class="modal-new" id="c-plate-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">C-Plate: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="cpsw-total-weight">Total Weight (kgs):</label><input type="number" id="cpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="cpsw-length">Length (L) (mm):</label><input type="number" id="cpsw-length" placeholder="e.g., 1100"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="cpsw-width">Width (W) (mm):</label><input type="number" id="cpsw-width" placeholder="e.g., 180"></div>
+                            <div class="psw-form-group"><label for="cpsw-thickness-select">Lamination Thickness (mm):</label><select id="cpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="cpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="cpsw-density">Density (g/cm³):</label><input type="number" id="cpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="cpsw-stacking-factor">Stacking Factor:</label><input type="number" id="cpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-cpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="cpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rectangle/Right Angle PSW Calculator -->
+    <div class="modal-new" id="rectangle-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Rectangle: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="rectpsw-total-weight">Total Weight (kgs):</label><input type="number" id="rectpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="rectpsw-length">Length (L) (mm):</label><input type="number" id="rectpsw-length" placeholder="e.g., 1000"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="rectpsw-width">Width (W) (mm):</label><input type="number" id="rectpsw-width" placeholder="e.g., 200"></div>
+                            <div class="psw-form-group"><label for="rectpsw-thickness-select">Lamination Thickness (mm):</label><select id="rectpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="rectpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="rectpsw-density">Density (g/cm³):</label><input type="number" id="rectpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="rectpsw-stacking-factor">Stacking Factor:</label><input type="number" id="rectpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-rectpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="rectpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Half-Mitre PSW Calculator -->
+    <div class="modal-new" id="half-mitre-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Half-Mitre: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="hmpsw-total-weight">Total Weight (kgs):</label><input type="number" id="hmpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="hmpsw-length">Length (L) (mm):</label><input type="number" id="hmpsw-length" placeholder="e.g., 855"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="hmpsw-width">Width (W) (mm):</label><input type="number" id="hmpsw-width" placeholder="e.g., 380"></div>
+                            <div class="psw-form-group"><label for="hmpsw-thickness-select">Lamination Thickness (mm):</label><select id="hmpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="hmpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="hmpsw-density">Density (g/cm³):</label><input type="number" id="hmpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="hmpsw-stacking-factor">Stacking Factor:</label><input type="number" id="hmpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-hmpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="hmpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parallelogram PSW Calculator -->
+    <div class="modal-new" id="parallelogram-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Parallelogram: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="pgpsw-total-weight">Total Weight (kgs):</label><input type="number" id="pgpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="pgpsw-length">Base Length (L) (mm):</label><input type="number" id="pgpsw-length" placeholder="e.g., 1200"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="pgpsw-width">Perpendicular Height (W/h) (mm):</label><input type="number" id="pgpsw-width" placeholder="e.g., 300"></div>
+                            <div class="psw-form-group"><label for="pgpsw-thickness-select">Lamination Thickness (mm):</label><select id="pgpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="pgpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="pgpsw-density">Density (g/cm³):</label><input type="number" id="pgpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="pgpsw-stacking-factor">Stacking Factor:</label><input type="number" id="pgpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-pgpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="pgpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dual Angle Cut PSW Calculator -->
+    <div class="modal-new" id="dual-angle-psw-calculator-modal">
+        <div class="modal-content-new">
+            <div class="modal-header-new"><h2 class="modal-title-new">Dual Angle Cut: Pieces/Stack from Weight</h2><button class="modal-close-button-new" data-close-modal>&times;</button></div>
+            <div class="modal-body-new">
+                 <div class="psw-calculator-ui-wrapper">
+                    <div class="psw-calc-section">
+                        <h4 class="psw-calc-section-title"><i class="fas fa-keyboard"></i> Input Parameters</h4>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-total-weight">Total Weight (kgs):</label><input type="number" id="dacpsw-total-weight" placeholder="e.g., 100"></div>
+                            <div class="psw-form-group"><label for="dacpsw-length">Length (L<sub>long</sub>) (mm):</label><input type="number" id="dacpsw-length" placeholder="e.g., 812.5"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-width">Width (W/h) (mm):</label><input type="number" id="dacpsw-width" placeholder="e.g., 295"></div>
+                            <div class="psw-form-group"><label for="dacpsw-thickness-select">Lamination Thickness (mm):</label><select id="dacpsw-thickness-select"><option value="0.23">0.23</option><option value="0.27" selected>0.27</option><option value="0.30">0.30</option><option value="0.35">0.35</option><option value="custom">Custom</option></select><input type="number" id="dacpsw-thickness-custom" placeholder="Custom" step="0.01" style="display:none; margin-top:5px;"></div>
+                        </div>
+                        <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-angle1">Angle 1 (degrees):</label><input type="number" id="dacpsw-angle1" placeholder="e.g., 75"></div>
+                            <div class="psw-form-group"><label for="dacpsw-angle2">Angle 2 (degrees):</label><input type="number" id="dacpsw-angle2" placeholder="e.g., 45"></div>
+                        </div>
+                         <div class="psw-input-row">
+                            <div class="psw-form-group"><label for="dacpsw-density">Density (g/cm³):</label><input type="number" id="dacpsw-density" value="7.65" step="0.01"></div>
+                            <div class="psw-form-group"><label for="dacpsw-stacking-factor">Stacking Factor:</label><input type="number" id="dacpsw-stacking-factor" value="0.97" step="0.01" min="0.01" max="1.0"></div>
+                        </div>
+                         <p style="font-size:0.8em; color:var(--text-color-secondary); margin-top:5px;">Note: Enter 90° for straight ends. For Trapezoid, enter internal base angles.</p>
+                    </div>
+                    <div class="calculator-button-container" style="margin-bottom: 18px;"><button id="calculate-dacpsw-btn"><i class="fas fa-calculator"></i> Calculate</button></div>
+                    <div class="psw-calc-section"><h4 class="psw-calc-section-title"><i class="fas fa-poll"></i> Result</h4><div class="calculator-result-box" id="dacpsw-result-box"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
@@ -622,6 +1177,12 @@
             const logoutBtn = document.getElementById('logout-btn');
             const userEmailDisplay = document.getElementById('user-email-display');
             const authErrorMessage = document.getElementById('auth-error-message');
+            const rememberMeCheckbox = document.getElementById('remember-me');
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
+            const resetPasswordForm = document.getElementById('reset-password-form');
+            const resetEmailInput = document.getElementById('reset-email');
+            const resetPasswordBtn = document.getElementById('reset-password-btn');
+            const backToLoginLink = document.getElementById('back-to-login-link');
             
             const calculatorModalIds = ["a-plate-calculator-modal", "b-plate-calculator-modal", "c-plate-calculator-modal", "triangle-calculator-modal", "angle-calculator-modal", "right-angle-calculator-modal", "half-mitre-calculator-modal", "parallelogram-calculator-modal", "hole-calculator-modal", "dual-angle-cut-calculator-modal", "pieces-stack-calculator-modal", "coil-weight-stack-calculator-modal", "a-plate-psw-calculator-modal", "b-plate-psw-calculator-modal", "c-plate-psw-calculator-modal", "rectangle-psw-calculator-modal", "half-mitre-psw-calculator-modal", "parallelogram-psw-calculator-modal", "dual-angle-psw-calculator-modal"];
             const calculatorModals = {};
@@ -678,8 +1239,11 @@
                 }
             }
             
-            showSignupLink?.addEventListener('click', (e) => { e.preventDefault(); loginFormEl?.classList.add('hidden'); signupFormEl?.classList.remove('hidden'); if(authErrorMessage) {authErrorMessage.classList.add('hidden'); authErrorMessage.textContent = '';} });
-            showLoginLink?.addEventListener('click', (e) => { e.preventDefault(); signupFormEl?.classList.add('hidden'); loginFormEl?.classList.remove('hidden'); if(authErrorMessage) {authErrorMessage.classList.add('hidden'); authErrorMessage.textContent = ''; }});
+            showSignupLink?.addEventListener('click', (e) => { e.preventDefault(); loginFormEl?.classList.add('hidden'); signupFormEl?.classList.remove('hidden'); resetPasswordForm?.classList.add('hidden'); if(authErrorMessage) {authErrorMessage.classList.add('hidden'); authErrorMessage.textContent = '';} });
+            showLoginLink?.addEventListener('click', (e) => { e.preventDefault(); signupFormEl?.classList.add('hidden'); loginFormEl?.classList.remove('hidden'); resetPasswordForm?.classList.add('hidden'); if(authErrorMessage) {authErrorMessage.classList.add('hidden'); authErrorMessage.textContent = ''; }});
+            forgotPasswordLink?.addEventListener('click', (e) => { e.preventDefault(); loginFormEl?.classList.add('hidden'); signupFormEl?.classList.add('hidden'); resetPasswordForm?.classList.remove('hidden'); if(authErrorMessage) {authErrorMessage.classList.add('hidden'); authErrorMessage.textContent = '';} });
+            backToLoginLink?.addEventListener('click', (e) => { e.preventDefault(); resetPasswordForm?.classList.add('hidden'); loginFormEl?.classList.remove('hidden'); if(authErrorMessage) {authErrorMessage.classList.add('hidden'); authErrorMessage.textContent = '';} });
+
             function displayAuthError(message) { if(authErrorMessage){ authErrorMessage.textContent = message; authErrorMessage.classList.remove('hidden');} }
 
             signupBtn?.addEventListener('click', async () => {
@@ -691,14 +1255,43 @@
                 catch (error) { console.error("Signup error:", error); displayAuthError(error.message); }
                 finally { if(signupBtn) { signupBtn.textContent = "Sign Up"; signupBtn.disabled = false; } }
             });
+
             loginBtn?.addEventListener('click', async () => {
                 const email = loginEmailInput?.value.trim(); const password = loginPasswordInput?.value.trim();
+                const remember = rememberMeCheckbox?.checked;
                 if (!email || !password) { displayAuthError("Please enter email and password."); return; }
                 if(loginBtn) { loginBtn.textContent = "Logging in..."; loginBtn.disabled = true; }
-                try { await auth.signInWithEmailAndPassword(email, password); loginFormEl?.reset(); if(authErrorMessage)authErrorMessage.classList.add('hidden'); } 
+                try {
+                    const persistence = remember ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
+                    await auth.setPersistence(persistence);
+                    await auth.signInWithEmailAndPassword(email, password); 
+                    loginFormEl?.reset(); if(authErrorMessage)authErrorMessage.classList.add('hidden'); 
+                } 
                 catch (error) { console.error("Login error:", error); displayAuthError(error.message); }
                 finally { if(loginBtn) { loginBtn.textContent = "Login"; loginBtn.disabled = false; } }
             });
+
+            resetPasswordBtn?.addEventListener('click', async () => {
+                const email = resetEmailInput?.value.trim();
+                if (!email) { displayAuthError("Please enter your email address."); return; }
+                if(resetPasswordBtn) { resetPasswordBtn.textContent = "Sending..."; resetPasswordBtn.disabled = true; }
+                try {
+                    await auth.sendPasswordResetEmail(email);
+                    if(authErrorMessage) {
+                        authErrorMessage.textContent = "Password reset email sent! Check your inbox (and spam folder).";
+                        authErrorMessage.classList.remove('hidden');
+                        authErrorMessage.style.color = 'green'; // Success message color
+                    }
+                    resetPasswordForm?.reset();
+                } catch (error) {
+                    console.error("Password reset error:", error);
+                    displayAuthError(error.message);
+                    if(authErrorMessage) authErrorMessage.style.color = '#c0392b'; // Error color
+                } finally {
+                    if(resetPasswordBtn) { resetPasswordBtn.textContent = "Send Reset Link"; resetPasswordBtn.disabled = false; }
+                }
+            });
+
             logoutBtn?.addEventListener('click', async () => { try { await auth.signOut(); } catch (error) { console.error("Logout error: ", error); alert("Error logging out: " + error.message); } });
             
             async function handleSaveEntry() {
@@ -764,7 +1357,7 @@
                 try {
                     const snapshot = await db.collection('users').doc(currentUser.uid).collection('entries').get();
                     const userEntriesToExport = [];
-                    snapshot.forEach(doc => { const { id, ...dataToExport } = { id: doc.id, ...doc.data() }; userEntriesToExport.push(dataToExport); });
+                    snapshot.forEach(doc => { const { id, createdAt, lastModified, ...dataToExport } = { id: doc.id, ...doc.data() }; userEntriesToExport.push(dataToExport); });
                     if (userEntriesToExport.length === 0) { alert("No cloud data to export."); return; }
                     const jsonData = JSON.stringify(userEntriesToExport, null, 2); const blob = new Blob([jsonData], { type: 'application/json' });
                     const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url;
@@ -969,21 +1562,21 @@
             window.calculatePiecesStack = function() { const mode = document.querySelector('input[name="psCalcMode"]:checked')?.value; const resultBox = document.getElementById("pieces-stack-result-box"); if (!resultBox) return; resultBox.innerHTML = ""; resultBox.style.display = 'none'; if (mode === 'pieces') { const totalStack = parseFloat(document.getElementById("ps-total-stack")?.value); const thicknessPerPiece = parseFloat(document.getElementById("ps-thickness-per-piece")?.value); if (isNaN(totalStack) || isNaN(thicknessPerPiece) || totalStack <= 0 || thicknessPerPiece <= 0) { resultBox.innerHTML = "<span class='error-message'>Invalid input.</span>"; resultBox.style.display = 'block'; return; } const numberOfPieces = totalStack / thicknessPerPiece; const roundedPieces = Math.round(numberOfPieces); const actualStackForRounded = roundedPieces * thicknessPerPiece; let resultHTML = `<strong>Pieces(Exact):</strong><span class="result-value">${numberOfPieces.toFixed(3)}</span><br><strong>Pieces(Rounded):</strong><span class="result-value">${roundedPieces}</span><br><strong>Actual Stack for ${roundedPieces}Pcs:</strong><span class="result-value">${actualStackForRounded.toFixed(3)}mm</span><br>`; resultHTML += `<div class="calculator-formula-box"><strong>Formula(Pcs):</strong><em>Pcs=TotalStack/Thickness</em><br><strong>Calc(Pcs):</strong>${valSyntax(totalStack.toString())}/${valSyntax(thicknessPerPiece.toString())}=${resSyntax(numberOfPieces.toFixed(3))}<br><br><strong>Formula(ActualStack):</strong><em>ActualStack=RoundedPcs×Thickness</em><br><strong>Calc(ActualStack):</strong>${valSyntax(roundedPieces.toString())}×${valSyntax(thicknessPerPiece.toString())}=${resSyntax(actualStackForRounded.toFixed(3))}mm</div>`; resultBox.innerHTML = resultHTML; resultBox.style.display = 'block'; } else { const totalPieces = parseFloat(document.getElementById("ps-total-pieces")?.value); const thicknessPerPieceForStack = parseFloat(document.getElementById("ps-thickness-per-piece-for-stack")?.value); if (isNaN(totalPieces) || isNaN(thicknessPerPieceForStack) || totalPieces <= 0 || thicknessPerPieceForStack <= 0) { resultBox.innerHTML = "<span class='error-message'>Invalid input.</span>"; resultBox.style.display = 'block'; return; } const calculatedStack = totalPieces * thicknessPerPieceForStack; let resultHTML = `<strong>Calculated Stack:</strong><span class="result-value">${calculatedStack.toFixed(3)}mm</span><br>`; resultHTML += `<div class="calculator-formula-box"><strong>Formula:</strong><em>TotalStack=TotalPcs×Thickness</em><br><strong>Calc:</strong>${valSyntax(totalPieces.toString())}×${valSyntax(thicknessPerPieceForStack.toString())}=${resSyntax(calculatedStack.toFixed(3))}mm</div>`; resultBox.innerHTML = resultHTML; resultBox.style.display = 'block'; } }
             if (document.querySelectorAll('input[name="psCalcMode"]')) document.querySelectorAll('input[name="psCalcMode"]').forEach(radio => radio.addEventListener('change', (e) => { const resultBox = document.getElementById("pieces-stack-result-box"); const psCalcInputsPieces = document.getElementById('ps-calc-inputs-pieces'); const psCalcInputsStack = document.getElementById('ps-calc-inputs-stack'); if (e.target.value === 'pieces') { if(psCalcInputsPieces) psCalcInputsPieces.classList.remove('hidden'); if(psCalcInputsStack) psCalcInputsStack.classList.add('hidden'); } else { if(psCalcInputsPieces) psCalcInputsPieces.classList.add('hidden'); if(psCalcInputsStack) psCalcInputsStack.classList.remove('hidden'); } if(resultBox) { resultBox.style.display = 'none'; resultBox.innerHTML = ''; } }));
             function calculatePiecesStackFromWeight(plateType, inputs, resultBoxId) { const resultBox = document.getElementById(resultBoxId); if (!resultBox) return; resultBox.innerHTML = ""; resultBox.style.display = 'none'; const { totalWeight, L, W, thickness, density, stackingFactor, angle1, angle2 } = inputs; if (isNaN(totalWeight) || isNaN(L) || isNaN(W) || isNaN(thickness) || isNaN(density) || isNaN(stackingFactor) || totalWeight <= 0 || L <= 0 || W <= 0 || thickness <= 0 || density <= 0 || stackingFactor <= 0 || stackingFactor > 1) { resultBox.innerHTML = "<span class='error-message'>Invalid input.</span>"; resultBox.style.display = 'block'; return; } let singlePieceVolume_mm3; let formulaName = ""; let formulaSyntax = ""; let calcStepSyntax = ""; switch (plateType) { case 'A': if (L <= W) { resultBox.innerHTML = "<span class='error-message'>L>W req.</span>"; resultBox.style.display='block'; return; } singlePieceVolume_mm3 = (L - W) * W * thickness; formulaName = "A-Plate"; formulaSyntax = `Wt1pc=((L-W)×W×T×D×SF)÷1M`; calcStepSyntax = `((${valSyntax(L.toFixed(2))}-${valSyntax(W.toFixed(2))})×${valSyntax(W.toFixed(2))}×${valSyntax(thickness.toFixed(3))}×${valSyntax(density.toString())}×${valSyntax(stackingFactor.toString())})÷1M`; break; case 'B': if (L <= W / 2) { resultBox.innerHTML = `<span class='error-message'>L>W/2 req.</span>`; resultBox.style.display='block'; return; } singlePieceVolume_mm3 = (L - W / 2) * W * thickness; formulaName = "B-Plate"; formulaSyntax = `Wt1pc=((L-W/2)×W×T×D×SF)÷1M`; calcStepSyntax = `((${valSyntax(L.toFixed(2))}-${valSyntax(W.toFixed(2))}/2)×${valSyntax(W.toFixed(2))}×${valSyntax(thickness.toFixed(3))}×${valSyntax(density.toString())}×${valSyntax(stackingFactor.toString())})÷1M`; break; case 'C': const L_eff_C = L - (W / 4) - W; if (L_eff_C <= 0) { resultBox.innerHTML = "<span class='error-message'>L_eff>0 req.</span>"; resultBox.style.display='block'; return; } singlePieceVolume_mm3 = L_eff_C * W * thickness; formulaName = "C-Plate"; formulaSyntax = `Wt1pc=((L-W/4-W)×W×T×D×SF)÷1M`; calcStepSyntax = `((${valSyntax(L.toFixed(2))}-${valSyntax(W.toFixed(2))}/4-${valSyntax(W.toFixed(2))})×${valSyntax(W.toFixed(2))}×${valSyntax(thickness.toFixed(3))}×${valSyntax(density.toString())}×${valSyntax(stackingFactor.toString())})÷1M`; break; case 'Rectangle': singlePieceVolume_mm3 = L * W * thickness; formulaName = "Rectangle"; formulaSyntax = `Wt1pc=(L×W×T×D×SF)÷1M`; calcStepSyntax = `(${valSyntax(L.toFixed(2))}×${valSyntax(W.toFixed(2))}×${valSyntax(thickness.toFixed(3))}×${valSyntax(density.toString())}×${valSyntax(stackingFactor.toString())})÷1M`; break; case 'HalfMitre': if (L <= W / 2) { resultBox.innerHTML = `<span class='error-message'>L>W/2 req.</span>`; resultBox.style.display='block'; return; } singlePieceVolume_mm3 = (L - W / 2) * W * thickness; formulaName = "Half-Mitre"; formulaSyntax = `Wt1pc=((L-W/2)×W×T×D×SF)÷1M`; calcStepSyntax = `((${valSyntax(L.toFixed(2))}-${valSyntax(W.toFixed(2))}/2)×${valSyntax(W.toFixed(2))}×${valSyntax(thickness.toFixed(3))}×${valSyntax(density.toString())}×${valSyntax(stackingFactor.toString())})÷1M`; break; case 'Parallelogram': singlePieceVolume_mm3 = L * W * thickness; formulaName = "Parallelogram"; formulaSyntax = `Wt1pc=(Base×H×T×D×SF)÷1M`; calcStepSyntax = `(${valSyntax(L.toFixed(2))}×${valSyntax(W.toFixed(2))}×${valSyntax(thickness.toFixed(3))}×${valSyntax(density.toString())}×${valSyntax(stackingFactor.toString())})÷1M`; break; case 'DualAngle': if (isNaN(angle1) || isNaN(angle2) || angle1 <= 0 || angle1 >= 180 || angle2 <= 0 || angle2 >= 180) { resultBox.innerHTML = "<span class='error-message'>Invalid angles.</span>"; resultBox.style.display='block'; return; } const h_trap = W; const cotA1 = cot(angle1); const cotA2 = cot(angle2); if (!isFinite(cotA1) || !isFinite(cotA2)) { resultBox.innerHTML = `<span class="error-message">Cot undefined.</span>`; resultBox.style.display='block'; return; } const L_short = L - (h_trap * cotA1) - (h_trap * cotA2); if (L_short <= 0) { resultBox.innerHTML = `<span class='error-message'>Lshort not positive.</span>`; resultBox.style.display='block'; return; } const area_trap = ((L + L_short) / 2) * h_trap; singlePieceVolume_mm3 = area_trap * thickness; formulaName = "Dual Angle"; formulaSyntax = `Area=((Ll+Ls)/2)×h; Wt1pc=(Area×T×D×SF)÷1M`; calcStepSyntax = `Ls=${valSyntax(L.toFixed(2))}-(${valSyntax(h_trap.toFixed(2))}×cot(${angle1}))-(${valSyntax(h_trap.toFixed(2))}×cot(${angle2}))=${resSyntax(L_short.toFixed(2))}<br>Area=((${valSyntax(L.toFixed(2))}+${valSyntax(L_short.toFixed(2))})/2)×${valSyntax(h_trap.toFixed(2))}=${resSyntax(area_trap.toFixed(2))}<br>Wt1pc=(${valSyntax(area_trap.toFixed(2))}×${valSyntax(thickness.toFixed(3))}×${valSyntax(density.toString())}×${valSyntax(stackingFactor.toString())})÷1M`; break; default: resultBox.innerHTML = "<span class='error-message'>Invalid type.</span>"; resultBox.style.display='block'; return; } const singlePieceWeight_kg = (singlePieceVolume_mm3 * density * stackingFactor) / 1000000; if (singlePieceWeight_kg <= 1e-9) { resultBox.innerHTML = "<span class='error-message'>Single piece wt too small.</span>"; resultBox.style.display='block'; return; } const totalPieces = totalWeight / singlePieceWeight_kg; const totalStack_mm = totalPieces * thickness; let resultHTML = `<strong>Total Pieces:</strong><span class="result-value">${totalPieces.toFixed(2)}</span> (approx)<br><strong>Net Stack:</strong><span class="result-value">${totalStack_mm.toFixed(2)}mm</span><br>`; resultHTML += `<div class="calculator-formula-box"><strong>Wt1pc (${formulaName}):</strong><em>${formulaSyntax}</em><br>Calc:${calcStepSyntax}=${resSyntax(singlePieceWeight_kg.toFixed(6))}kg<br><br><strong>Total Pcs:</strong><em>TotalWt/Wt1pc</em><br>Calc:${valSyntax(totalWeight.toFixed(2))}÷${valSyntax(singlePieceWeight_kg.toFixed(6))}=${resSyntax(totalPieces.toFixed(2))}<br><br><strong>Total Stack:</strong><em>TotalPcs×Thickness</em><br>Calc:${valSyntax(totalPieces.toFixed(2))}×${valSyntax(thickness.toFixed(3))}=${resSyntax(totalStack_mm.toFixed(2))}mm</div>`; resultBox.innerHTML = resultHTML; resultBox.style.display = 'block'; }
-            function setupCalculator(platePrefix, plateTypeForFormula) { const calcButton = document.getElementById(`calculate-${platePrefix}-btn`); if (calcButton) { calcButton.addEventListener('click', () => { const thicknessSelect = document.getElementById(`${platePrefix}-thickness-select`); const thicknessCustomInput = document.getElementById(`${platePrefix}-thickness-custom`); let currentThickness; if (thicknessSelect?.value === 'custom') { currentThickness = parseFloat(thicknessCustomInput?.value); } else { currentThickness = parseFloat(thicknessSelect?.value); } const inputs = { totalWeight: parseFloat(document.getElementById(`${platePrefix}-total-weight`)?.value), L: parseFloat(document.getElementById(`${platePrefix}-length`)?.value), W: parseFloat(document.getElementById(`${platePrefix}-width`)?.value), thickness: currentThickness, density: parseFloat(document.getElementById(`${platePrefix}-density`)?.value), stackingFactor: parseFloat(document.getElementById(`${platePrefix}-stacking-factor`)?.value), angle1: plateTypeForFormula === 'DualAngle' ? parseFloat(document.getElementById(`${platePrefix}-angle1`)?.value) : null, angle2: plateTypeForFormula === 'DualAngle' ? parseFloat(document.getElementById(`${platePrefix}-angle2`)?.value) : null, }; calculatePiecesStackFromWeight(plateTypeForFormula, inputs, `${platePrefix}-result-box`); }); } }
+            function setupCalculator(platePrefix, plateTypeForFormula) { const calcButton = document.getElementById(`calculate-${platePrefix}-btn`); if (calcButton) { calcButton.addEventListener('click', () => { const thicknessSelect = document.getElementById(`${platePrefix}-thickness-select`); const thicknessCustomInput = document.getElementById(`${platePrefix}-thickness-custom`); let currentThickness; if (thicknessSelect.value === 'custom') { currentThickness = parseFloat(thicknessCustomInput.value); } else { currentThickness = parseFloat(thicknessSelect.value); } const inputs = { totalWeight: parseFloat(document.getElementById(`${platePrefix}-total-weight`)?.value), L: parseFloat(document.getElementById(`${platePrefix}-length`)?.value), W: parseFloat(document.getElementById(`${platePrefix}-width`)?.value), thickness: currentThickness, density: parseFloat(document.getElementById(`${platePrefix}-density`)?.value), stackingFactor: parseFloat(document.getElementById(`${platePrefix}-stacking-factor`)?.value), angle1: plateTypeForFormula === 'DualAngle' ? parseFloat(document.getElementById(`${platePrefix}-angle1`)?.value) : null, angle2: plateTypeForFormula === 'DualAngle' ? parseFloat(document.getElementById(`${platePrefix}-angle2`)?.value) : null, }; calculatePiecesStackFromWeight(plateTypeForFormula, inputs, `${platePrefix}-result-box`); }); } }
             setupCalculator('apsw', 'A'); setupCalculator('bpsw', 'B'); setupCalculator('cpsw', 'C'); setupCalculator('rectpsw', 'Rectangle'); setupCalculator('hmpsw', 'HalfMitre'); setupCalculator('pgpsw', 'Parallelogram'); setupCalculator('dacpsw', 'DualAngle');
             
-            const calculatePiecesStackBtn = document.getElementById('calculate-pieces-stack-btn'); if(calculatePiecesStackBtn) calculatePiecesStackBtn.addEventListener('click', calculatePiecesStack); 
-            const calculateAPlateBtn = document.getElementById('calculate-a-plate-btn'); if(calculateAPlateBtn) calculateAPlateBtn.addEventListener('click', calculateAPlateWeight); 
-            const calculateBPlateBtn = document.getElementById('calculate-b-plate-btn'); if(calculateBPlateBtn) calculateBPlateBtn.addEventListener('click', calculateBPlateWeight); 
-            const calculateCPlateBtn = document.getElementById('calculate-c-plate-btn'); if(calculateCPlateBtn) calculateCPlateBtn.addEventListener('click', calculateCPlateWeight);
-            const calculateTriangleBtn = document.getElementById('calculate-triangle-btn'); if(calculateTriangleBtn) calculateTriangleBtn.addEventListener('click', calculateTriangleWeight); 
-            const calculateAngleValBtn = document.getElementById('calculate-angle-val-btn'); if(calculateAngleValBtn) calculateAngleValBtn.addEventListener('click', calculateAngleValue);
-            const calculateRaBtn = document.getElementById('calculate-ra-btn'); if(calculateRaBtn) calculateRaBtn.addEventListener('click', calculateRightAngleWeight); 
-            const calculateHmBtn = document.getElementById('calculate-hm-btn'); if(calculateHmBtn) calculateHmBtn.addEventListener('click', calculateHalfMitreWeight);
-            const calculatePgBtn = document.getElementById('calculate-pg-btn'); if(calculatePgBtn) calculatePgBtn.addEventListener('click', calculateParallelogramWeight); 
-            const calculateHoleBtn = document.getElementById('calculate-hole-btn'); if(calculateHoleBtn) calculateHoleBtn.addEventListener('click', calculateHoleWeight);
-            const calculateCoilBtn = document.getElementById('calculate-coil-btn'); if(calculateCoilBtn) calculateCoilBtn.addEventListener('click', calculateCoilValues);
-            const calculateDacBtn = document.getElementById('calculate-dac-btn'); if(calculateDacBtn) calculateDacBtn.addEventListener('click', calculateDualAngleCutWeight);
+            if(calculatePiecesStackBtn) calculatePiecesStackBtn.addEventListener('click', calculatePiecesStack); 
+            if(calculateAPlateBtn) calculateAPlateBtn.addEventListener('click', calculateAPlateWeight); 
+            if(calculateBPlateBtn) calculateBPlateBtn.addEventListener('click', calculateBPlateWeight); 
+            if(calculateCPlateBtn) calculateCPlateBtn.addEventListener('click', calculateCPlateWeight);
+            if(calculateTriangleBtn) calculateTriangleBtn.addEventListener('click', calculateTriangleWeight); 
+            if(calculateAngleValBtn) calculateAngleValBtn.addEventListener('click', calculateAngleValue);
+            if(calculateRaBtn) calculateRaBtn.addEventListener('click', calculateRightAngleWeight); 
+            if(calculateHmBtn) calculateHmBtn.addEventListener('click', calculateHalfMitreWeight);
+            if(calculatePgBtn) calculatePgBtn.addEventListener('click', calculateParallelogramWeight); 
+            if(calculateHoleBtn) calculateHoleBtn.addEventListener('click', calculateHoleWeight);
+            if(calculateCoilBtn) calculateCoilBtn.addEventListener('click', calculateCoilValues);
+            if(calculateDacBtn) calculateDacBtn.addEventListener('click', calculateDualAngleCutWeight);
 
             if (!currentUser) { localEntries = [...preRegisteredEntries]; populateList(); }
         });
@@ -994,3 +1587,5 @@
 
 </body>
 </html>
+
+
