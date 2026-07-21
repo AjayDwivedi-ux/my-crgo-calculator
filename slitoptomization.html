@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRGO Slit Optimization Plan</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- SheetJS (xlsx) Library for Multi-Sheet Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0b1120;
+            --card-bg: #151e32;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --border-color: #1e293b;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px 0;
+        }
+        .header-title {
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        .header-subtitle { color: var(--text-muted); font-size: 0.8rem; }
+        
+        .summary-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-demand { border-bottom: 3px solid var(--accent-blue); }
+        .card-rm { border-bottom: 3px solid var(--accent-purple); }
+        .card-bal { border-bottom: 3px solid var(--accent-green); }
+        .card-stat { border-bottom: 3px solid var(--accent-yellow); }
+        
+        .summary-title { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+        .summary-value { font-size: 1.4rem; font-weight: 700; }
+        .summary-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 1.8rem; opacity: 0.1; }
+
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .card-header { background-color: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border-color); padding: 12px 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+        
+        .table { color: var(--text-main); margin-bottom: 0; font-size: 0.80rem; }
+        .table th { border-bottom-color: var(--border-color); color: var(--text-muted); font-weight: 600; font-size: 0.70rem; text-transform: uppercase; padding: 10px; white-space: nowrap; }
+        .table td { border-bottom-color: var(--border-color); vertical-align: middle; padding: 8px; }
+        
+        .form-control { background-color: #0b1120; border: 1px solid var(--border-color); color: #e2e8f0; border-radius: 8px; font-size: 0.85rem; padding: 6px 10px; }
+        .form-control:focus { background-color: #0b1120; border-color: var(--accent-blue); color: white; box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25); }
+        
+        .btn-custom { border-radius: 8px; font-weight: 500; font-size: 0.85rem; padding: 6px 12px; }
+        .btn-outline-dark-custom { background-color: #1e293b; color: white; border: 1px solid #334155; }
+        .btn-outline-dark-custom:hover { background-color: #334155; color: white; }
+        .btn-danger-custom { background-color: rgba(239, 68, 68, 0.1); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.2); }
+        .btn-primary-custom { background-color: var(--accent-blue); color: white; border: none; }
+        .btn-action-delete { background-color: transparent; color: var(--accent-red); border: none; }
+        
+        .badge-status { padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; display: inline-block; }
+        .bg-reslit { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .bg-balanced { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .bg-scrap { background-color: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
+        
+        .use-rm-btn { background-color: rgba(59, 130, 246, 0.15); color: var(--accent-blue); border: 1px solid rgba(59, 130, 246, 0.3); padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
+        .use-rm-btn:hover { background-color: var(--accent-blue); color: white; }
+        
+        #print-only-header { display: none; }
+
+        @media print {
+            body { background-color: #ffffff !important; color: #000000 !important; font-size: 9px; padding: 0 !important; }
+            .btn, .btn-custom, .btn-action-delete, .use-rm-btn, .action-col { display: none !important; }
+            #print-only-header { display: block !important; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 4px; }
+            .no-print { display: none !important; }
+            .card { border: none !important; margin-bottom: 6px !important; box-shadow: none !important; }
+            .card-header { background-color: #f8f9fa !important; color: #000 !important; border: 1px solid #dee2e6 !important; font-size: 10px; font-weight: bold; border-bottom: none !important; }
+            .card-body { border: 1px solid #dee2e6 !important; padding: 0 !important; }
+            .table { margin-bottom: 0 !important; }
+            .table th, .table td { border: 1px solid #dee2e6 !important; color: #000 !important; padding: 3px !important; font-size: 9px !important; }
+            .table th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
+            .row { display: flex !important; flex-wrap: nowrap !important; }
+            .col-md-3 { flex: 0 0 25% !important; max-width: 25% !important; }
+            .summary-card { border: 1px solid #dee2e6 !important; border-radius: 0 !important; padding: 4px !important; box-shadow: none !important; }
+            .summary-title { color: #495057 !important; font-size: 7px !important; }
+            .summary-value { color: #000 !important; font-size: 11px !important; }
+            .summary-icon { display: none !important; }
+            .form-control { border: none !important; background: transparent !important; color: #000 !important; padding: 0 !important; font-size: 9px !important; box-shadow: none !important; }
+            .form-control::placeholder { color: transparent !important; }
+            .badge-status { border: none !important; padding: 0 !important; font-weight: bold !important; font-size: 8px !important; color: #000 !important; background: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-2">
+    
+    <div id="print-only-header">
+        <h2 style="margin: 0; font-size: 15px;">CRGO Slit Optimization Plan Report</h2>
+        <div style="display: flex; justify-content: space-between; margin-top: 2px; font-size: 10px;">
+            <span><strong>Company:</strong> Kryfs Power Systems</span>
+            <span id="print-date"></span>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2 no-print">
+        <div>
+            <h1 class="header-title">
+                <div style="background: #3b82f6; padding: 4px 8px; border-radius: 6px;">
+                    <i class="fas fa-industry text-white" style="font-size: 1rem;"></i>
+                </div>
+                CRGO Slit Optimization Plan
+            </h1>
+            <div class="header-subtitle">Mother Coil Slitting & CTL Cutting Optimization Engine • Kryfs Power Systems</div>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-custom btn-outline-dark-custom" onclick="loadDemoData()"><i class="fas fa-bolt"></i> Load Demo</button>
+            <button class="btn btn-custom btn-danger-custom" onclick="clearAll()"><i class="fas fa-trash-alt"></i> Clear All</button>
+            <button class="btn btn-custom btn-primary-custom" onclick="runOptimization()"><i class="fas fa-calculator"></i> Run Optimization</button>
+        </div>
+    </div>
+
+    <div class="row mb-3 g-2">
+        <div class="col-md-3">
+            <div class="summary-card card-demand">
+                <i class="fas fa-crosshairs summary-icon text-primary"></i>
+                <div class="summary-title">Total Slit Demand</div>
+                <div class="summary-value" id="tot-demand">0 kg</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card card-rm">
+                <i class="fas fa-warehouse summary-icon text-info"></i>
+                <div class="summary-title">Total RM Issued</div>
+                <div class="summary-value" id="tot-rm">0 kg</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card card-bal">
+                <i class="fas fa-balance-scale summary-icon text-success"></i>
+                <div class="summary-title">Net Balance / Scrap</div>
+                <div class="summary-value text-success" id="tot-bal">+0 kg</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card card-stat">
+                <i class="fas fa-chart-line summary-icon text-warning"></i>
+                <div class="summary-title">Optimization Status</div>
+                <div class="summary-value text-warning" style="font-size: 1rem;" id="opt-status">Cleared</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demands Section -->
+    <div class="card">
+        <div class="card-header">
+            <div><i class="fas fa-list-ul me-2 text-primary"></i> 1. Slit Required Demand (For CTL Cutting)</div>
+            <button class="btn btn-sm btn-outline-dark-custom no-print py-1 px-2" style="font-size: 0.75rem;" onclick="addDemandRow()"><i class="fas fa-plus"></i> Add Row</button>
+        </div>
+        <div class="card-body p-0">
+            <table class="table" id="demandTable">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>CRGO Grade</th>
+                        <th>Size (mm)</th>
+                        <th>Weight (kg)</th>
+                        <th class="text-center action-col" style="width: 70px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="demandBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- RM Section -->
+    <div class="card">
+        <div class="card-header">
+            <div><i class="fas fa-layer-group me-2 text-info"></i> 2. Raw Material Issue Master (Mother Coils / UPT)</div>
+            <button class="btn btn-sm btn-outline-dark-custom no-print py-1 px-2" style="font-size: 0.75rem;" onclick="addRMRow()"><i class="fas fa-plus"></i> Add UPT</button>
+        </div>
+        <div class="card-body p-0">
+            <table class="table" id="rmTable">
+                <thead>
+                    <tr>
+                        <th>UPT No</th>
+                        <th>Mother Coil Size (mm)</th>
+                        <th>Weight (kg)</th>
+                        <th class="text-center action-col" style="width: 70px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="rmBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Output Section -->
+    <div class="card">
+        <div class="card-header">
+            <div><i class="fas fa-table me-2 text-success"></i> 3. Slit Planning & Optimization Output Matrix</div>
+            <div class="d-flex gap-2 no-print">
+                <button class="btn btn-sm btn-outline-dark-custom py-1 px-2 bg-success text-white border-success" style="font-size: 0.75rem;" onclick="exportAllSheetsToExcel()"><i class="fas fa-file-excel"></i> Export All 3 Sheets to Excel</button>
+                <button class="btn btn-sm btn-outline-dark-custom py-1 px-2" style="font-size: 0.75rem;" onclick="window.print()"><i class="fas fa-print"></i> Print / PDF Report</button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table" id="outputTable">
+                    <thead>
+                        <tr>
+                            <th>UPT No</th>
+                            <th>Mother Coil Size</th>
+                            <th>Customer Name</th>
+                            <th>Grade</th>
+                            <th>Slit Size</th>
+                            <th>No. of Slits</th>
+                            <th>Total Size</th>
+                            <th>Calculated Weight (kg)</th>
+                            <th>Meter (m)</th>
+                            <th>Stack</th>
+                            <th>Status</th>
+                            <th class="action-col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="outputBody">
+                        <tr><td colspan="12" class="text-center text-muted py-3 font-italic">Data cleared. Add entries or load demo data.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // MULTIPLE ADMIN ACCOUNTS DIRECTORY
+    const authorizedAdmins = [
+        { name: "Ajay Kumar Dwivedi", email: "ajaydwivedi102@gmail.com", pass: "zetwork@7519" },
+        { name: "Yashwant Singh", email: "yashwantsingh102@gmail.com", pass: "yashwant@123" },
+        { name: "Shekhar Jha", email: "shekharjha102@gmail.com", pass: "shekhar@123" }
+    ];
+
+    // SECURITY LOGIN CHECK ON STARTUP
+    document.addEventListener('DOMContentLoaded', () => {
+        let userEmail = prompt("🔒 Enter Admin Email ID:");
+        let userPassword = prompt("🔑 Enter Admin Password:");
+        
+        let isValidUser = authorizedAdmins.some(admin => admin.email === userEmail && admin.pass === userPassword);
+
+        if (!isValidUser) {
+            alert("❌ Incorrect Email ID or Password! Access Denied.");
+            document.body.innerHTML = "<h2 style='color:red; text-align:center; margin-top:20vh;'>Access Denied. Please refresh and enter valid credentials.</h2>";
+            throw new Error("Unauthorized access.");
+        }
+
+        addDemandRow('Transformer Corp', '0.27 M3', '200', '2500'); 
+        addRMRow('1009', '960', '3500'); 
+        setupLiveCalculation();
+        document.getElementById('print-date').innerHTML = "<strong>Date:</strong> " + new Date().toLocaleString();
+    });
+
+    function addDemandRow(customer = '', grade = '', size = '', weight = '') {
+        const tbody = document.getElementById('demandBody');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><input type="text" class="form-control demand-customer" placeholder="Customer Name" value="${customer}"></td>
+            <td><input type="text" class="form-control demand-grade" placeholder="Grade (e.g. 0.27 M3, 0.23 M4)" value="${grade}"></td>
+            <td><input type="number" class="form-control demand-size" placeholder="Size (mm)" value="${size}"></td>
+            <td><input type="number" class="form-control demand-weight" placeholder="Weight (kg)" value="${weight}"></td>
+            <td class="text-center action-col"><button class="btn-action-delete" onclick="this.closest('tr').remove(); calculateTotals();"><i class="fas fa-trash"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+        setupLiveCalculation();
+        calculateTotals();
+    }
+
+    function addRMRow(upt = '', size = '', weight = '') {
+        const tbody = document.getElementById('rmBody');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><input type="text" class="form-control rm-upt" placeholder="UPT No" value="${upt}"></td>
+            <td><input type="number" class="form-control rm-size" placeholder="Size (mm)" value="${size}"></td>
+            <td><input type="number" class="form-control rm-weight" placeholder="Weight (kg)" value="${weight}"></td>
+            <td class="text-center action-col"><button class="btn-action-delete" onclick="this.closest('tr').remove(); calculateTotals();"><i class="fas fa-trash"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+        setupLiveCalculation();
+        calculateTotals();
+    }
+
+    function clearAll() {
+        document.getElementById('demandBody').innerHTML = ''; 
+        document.getElementById('rmBody').innerHTML = '';
+        document.getElementById('outputBody').innerHTML = '<tr><td colspan="12" class="text-center text-muted py-3 font-italic">Data cleared. Add entries or load demo data.</td></tr>';
+        addDemandRow(); addRMRow(); calculateTotals();
+        document.getElementById('opt-status').textContent = 'Cleared';
+        document.getElementById('opt-status').className = 'summary-value text-warning';
+    }
+
+    function loadDemoData() {
+        document.getElementById('demandBody').innerHTML = ''; 
+        document.getElementById('rmBody').innerHTML = '';
+        addDemandRow('Power Grid', '0.27 M3', '425', '2500'); 
+        addDemandRow('Volt Amp', '0.23 M4', '150', '900');
+        addDemandRow('Electro Core', '0.30 Hi-B', '90', '600');
+        addRMRow('1001', '1000', '2300'); 
+        addRMRow('1003', '960', '2000');
+        calculateTotals(); 
+        runOptimization();
+    }
+
+    function setupLiveCalculation() {
+        document.querySelectorAll('input').forEach(input => {
+            input.removeEventListener('input', calculateTotals);
+            input.addEventListener('input', calculateTotals);
+        });
+    }
+
+    function calculateTotals() {
+        let totDemand = 0; let totRM = 0;
+        document.querySelectorAll('.demand-weight').forEach(i => totDemand += Number(i.value) || 0);
+        document.querySelectorAll('.rm-weight').forEach(i => totRM += Number(i.value) || 0);
+        document.getElementById('tot-demand').textContent = totDemand.toLocaleString() + ' kg';
+        document.getElementById('tot-rm').textContent = totRM.toLocaleString() + ' kg';
+        let bal = totRM - totDemand;
+        let balEl = document.getElementById('tot-bal');
+        balEl.textContent = (bal >= 0 ? '+' : '') + bal.toLocaleString() + ' kg';
+        balEl.className = 'summary-value ' + (bal >= 0 ? 'text-success' : 'text-danger');
+    }
+
+    function useAsRM(btn, upt, size, weight) {
+        let newUpt = upt.includes('-R') ? upt + 'x' : upt + '-R1';
+        addRMRow(newUpt, size, parseFloat(weight).toFixed(2));
+        btn.disabled = true; btn.innerHTML = '<i class="fas fa-check"></i> Sent to RM';
+        calculateTotals();
+        document.getElementById('opt-status').textContent = 'Ready to Re-Run';
+        document.getElementById('opt-status').className = 'summary-value text-info';
+    }
+
+    function extractThickness(gradeStr) {
+        if (!gradeStr) return 0.27;
+        let match = gradeStr.match(/0\.\d+/);
+        return match ? parseFloat(match[0]) : 0.27;
+    }
+
+    function runOptimization() {
+        document.getElementById('print-date').innerHTML = "<strong>Date:</strong> " + new Date().toLocaleString();
+        
+        let demands = [];
+        document.querySelectorAll('#demandBody tr').forEach(tr => {
+            let customer = tr.querySelector('.demand-customer').value || 'General';
+            let grade = tr.querySelector('.demand-grade').value || 'CRGO';
+            let size = Number(tr.querySelector('.demand-size').value);
+            let weight = Number(tr.querySelector('.demand-weight').value);
+            if(size > 0 && weight > 0) demands.push({customer, grade, size, weight, fulfilled: 0});
+        });
+
+        let rms = [];
+        document.querySelectorAll('#rmBody tr').forEach(tr => {
+            let upt = tr.querySelector('.rm-upt').value || 'NA';
+            let size = Number(tr.querySelector('.rm-size').value);
+            let weight = Number(tr.querySelector('.rm-weight').value);
+            if(size > 0 && weight > 0) rms.push({upt, size, weight});
+        });
+
+        if(demands.length === 0 || rms.length === 0) return alert("Please enter at least one Demand and one RM.");
+
+        demands.sort((a, b) => b.size - a.size); 
+        let outputHTML = '';
+
+        rms.forEach(rm => {
+            let rmOutput = [];
+            let totalRMWeight = rm.weight;
+
+            let trimSize = 10;
+            let trimWeight = (trimSize / rm.size) * totalRMWeight;
+            rmOutput.push({
+                upt: rm.upt,
+                rmSize: rm.size,
+                customer: 'Edge Trim (Compulsory)',
+                grade: '-',
+                slitSize: trimSize,
+                noOfSlits: 1,
+                totalSize: trimSize,
+                calcWeight: trimWeight,
+                thickness: 0.27,
+                type: 'trim'
+            });
+
+            let remainingWidth = rm.size - trimSize;
+
+            demands.forEach(d => {
+                let weightNeeded = d.weight - d.fulfilled;
+                if (weightNeeded > 0 && d.size <= remainingWidth) {
+                    let actualSlits = Math.min(Math.floor(remainingWidth / d.size), Math.ceil(weightNeeded / ((d.size / rm.size) * totalRMWeight)));
+                    if (actualSlits > 0) {
+                        let totalSlitSize = actualSlits * d.size;
+                        let calcWeight = actualSlits * ((d.size / rm.size) * totalRMWeight);
+                        let thickness = extractThickness(d.grade);
+
+                        rmOutput.push({ 
+                            upt: rm.upt, 
+                            rmSize: rm.size, 
+                            customer: d.customer, 
+                            grade: d.grade, 
+                            slitSize: d.size, 
+                            noOfSlits: actualSlits, 
+                            totalSize: totalSlitSize, 
+                            calcWeight: calcWeight,
+                            thickness: thickness,
+                            type: 'slit' 
+                        });
+                        remainingWidth -= totalSlitSize;
+                        d.fulfilled += calcWeight;
+                    }
+                }
+            });
+
+            if (remainingWidth > 0) {
+                let weight = (remainingWidth / rm.size) * totalRMWeight;
+                let pieceType = '';
+                
+                if (remainingWidth > 20) {
+                    pieceType = 'reslit';
+                } else if (remainingWidth >= 3 && remainingWidth <= 20) {
+                    pieceType = 'trim';
+                } else {
+                    pieceType = 'scrap';
+                }
+
+                rmOutput.push({ 
+                    upt: rm.upt, 
+                    rmSize: rm.size, 
+                    customer: pieceType === 'reslit' ? 'In-House / Reslit' : 'Scrap / Loss', 
+                    grade: '-', 
+                    slitSize: remainingWidth, 
+                    noOfSlits: 1, 
+                    totalSize: remainingWidth, 
+                    calcWeight: weight,
+                    thickness: 0.27,
+                    type: pieceType 
+                });
+            }
+
+            rmOutput.forEach((row, index) => {
+                let statusBadge, slitLabel, actionBtn = '';
+                
+                let meterVal = (row.calcWeight / row.slitSize / 7.65 / row.thickness) * 1000;
+                let valExpr = (row.calcWeight / row.slitSize / 0.0000234) * 4 + 250000;
+                let stackVal = (Math.sqrt(Math.max(0, valExpr)) - 500) / 2;
+
+                if (row.type === 'slit') {
+                    statusBadge = '<span class="badge-status bg-balanced">Balanced</span>';
+                    slitLabel = `${row.slitSize.toFixed(1)} mm`;
+                } else if (row.type === 'reslit') {
+                    statusBadge = '<span class="badge-status bg-reslit">Reslit / Usable</span>';
+                    slitLabel = `${row.slitSize.toFixed(1)} mm (Reslit)`;
+                    actionBtn = `<button class="use-rm-btn" onclick="useAsRM(this, '${row.upt}', ${row.slitSize}, ${row.calcWeight})"><i class="fas fa-redo"></i> Use as RM</button>`;
+                } else if (row.type === 'trim') {
+                    statusBadge = '<span class="badge-status bg-reslit" style="color: #d97706;">Edge Trim</span>';
+                    slitLabel = `${row.slitSize.toFixed(1)} mm (Trim)`;
+                } else {
+                    statusBadge = '<span class="badge-status bg-scrap">Scrap / Loss</span>';
+                    slitLabel = `${row.slitSize.toFixed(1)} mm (Loss)`;
+                }
+
+                outputHTML += `
+                    <tr style="${index === rmOutput.length - 1 ? 'border-bottom: 2px solid #334155;' : ''}">
+                        <td><strong>${row.upt}</strong></td>
+                        <td>${row.rmSize} mm</td>
+                        <td>${row.customer}</td>
+                        <td>${row.grade}</td>
+                        <td>${slitLabel}</td>
+                        <td>${row.noOfSlits}</td>
+                        <td>${row.totalSize.toFixed(1)} mm</td>
+                        <td><strong>${row.calcWeight.toFixed(2)} kg</strong></td>
+                        <td>${meterVal.toFixed(1)} m</td>
+                        <td>${stackVal.toFixed(1)}</td>
+                        <td>${statusBadge}</td>
+                        <td class="action-col">${actionBtn}</td>
+                    </tr>
+                `;
+            });
+        });
+
+        document.getElementById('outputBody').innerHTML = outputHTML;
+        document.getElementById('opt-status').textContent = 'Optimized & Balanced';
+        document.getElementById('opt-status').className = 'summary-value text-success';
+    }
+
+    function exportAllSheetsToExcel() {
+        runOptimization();
+
+        let wb = XLSX.utils.book_new();
+
+        let demandData = [["Customer Name", "CRGO Grade", "Size (mm)", "Weight (kg)"]];
+        document.querySelectorAll('#demandBody tr').forEach(tr => {
+            let customer = tr.querySelector('.demand-customer').value;
+            let grade = tr.querySelector('.demand-grade').value;
+            let size = tr.querySelector('.demand-size').value;
+            let weight = tr.querySelector('.demand-weight').value;
+            if(size && weight) demandData.push([customer, grade, Number(size), Number(weight)]);
+        });
+        let ws1 = XLSX.utils.aoa_to_sheet(demandData);
+        XLSX.utils.book_append_sheet(wb, ws1, "Slit Required Demand");
+
+        let rmData = [["UPT No", "Mother Coil Size (mm)", "Weight (kg)"]];
+        document.querySelectorAll('#rmBody tr').forEach(tr => {
+            let upt = tr.querySelector('.rm-upt').value;
+            let size = tr.querySelector('.rm-size').value;
+            let weight = tr.querySelector('.rm-weight').value;
+            if(size && weight) rmData.push([upt, Number(size), Number(weight)]);
+        });
+        let ws2 = XLSX.utils.aoa_to_sheet(rmData);
+        XLSX.utils.book_append_sheet(wb, ws2, "Raw Material Issue Master");
+
+        let outputTable = document.getElementById('outputTable');
+        let ws3 = XLSX.utils.table_to_sheet(outputTable);
+        XLSX.utils.book_append_sheet(wb, ws3, "Optimization Output Matrix");
+
+        XLSX.writeFile(wb, "CRGO_Slit_Optimization_Plan.xlsx");
+    }
+</script>
+</body>
+</html>
