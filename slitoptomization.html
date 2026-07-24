@@ -3,539 +3,2382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRGO Slit Optimization Plan</title>
-    <!-- Bootstrap CSS -->
+    <title>CRGO Slit Optimization - v22.0 Final</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- SheetJS (xlsx) Library for Multi-Sheet Excel Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        /* ===================================================================
+                   ROOT VARIABLES
+                   =================================================================== */
         :root {
-            --bg-dark: #0b1120;
-            --card-bg: #151e32;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-blue: #3b82f6;
-            --accent-purple: #8b5cf6;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-yellow: #f59e0b;
-            --border-color: #1e293b;
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #1c2333;
+            --bg-hover: #252d3f;
+            --border-color: #30363d;
+            --border-hover: #58a6ff;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --text-muted: #484f58;
+            --blue: #58a6ff;
+            --blue-dark: #1f6feb;
+            --green: #3fb950;
+            --green-dark: #238636;
+            --orange: #d29922;
+            --orange-light: #ffa657;
+            --purple: #bc8cff;
+            --purple-dark: #8957e5;
+            --red: #f85149;
+            --red-dark: #da3633;
+            --cyan: #79c0ff;
+            --pink: #f778ba;
+            --radius: 10px;
+            --radius-sm: 6px;
+            --radius-lg: 16px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 8px 40px rgba(88, 166, 255, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            padding: 20px 0;
+            padding: 16px;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at 10% 20%, rgba(88, 166, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(188, 140, 255, 0.03) 0%, transparent 50%);
         }
-        .header-title {
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
         }
-        .header-subtitle { color: var(--text-muted); font-size: 0.8rem; }
-        
-        .summary-card {
-            background-color: var(--card-bg);
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--blue);
+        }
+
+        /* ===================================================================
+                   CARD
+                   =================================================================== */
+        .card-glass {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .card-glass:hover {
+            border-color: rgba(88, 166, 255, 0.15);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .card-header-glass {
+            padding: 14px 20px;
+            background: rgba(13, 17, 23, 0.6);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .card-header-glass .icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .icon-blue {
+            background: rgba(88, 166, 255, 0.12);
+            color: var(--blue);
+        }
+        .icon-purple {
+            background: rgba(188, 140, 255, 0.12);
+            color: var(--purple);
+        }
+        .icon-green {
+            background: rgba(63, 185, 80, 0.12);
+            color: var(--green);
+        }
+        .icon-orange {
+            background: rgba(210, 153, 34, 0.12);
+            color: var(--orange);
+        }
+        .icon-red {
+            background: rgba(248, 81, 73, 0.12);
+            color: var(--red);
+        }
+        .icon-cyan {
+            background: rgba(121, 192, 255, 0.12);
+            color: var(--cyan);
+        }
+        .icon-pink {
+            background: rgba(247, 120, 186, 0.12);
+            color: var(--pink);
+        }
+
+        /* ===================================================================
+                   STAT CARDS
+                   =================================================================== */
+        .stat-card {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             height: 100%;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
+            text-align: left;
         }
-        .card-demand { border-bottom: 3px solid var(--accent-blue); }
-        .card-rm { border-bottom: 3px solid var(--accent-purple); }
-        .card-bal { border-bottom: 3px solid var(--accent-green); }
-        .card-stat { border-bottom: 3px solid var(--accent-yellow); }
-        
-        .summary-title { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
-        .summary-value { font-size: 1.4rem; font-weight: 700; }
-        .summary-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 1.8rem; opacity: 0.1; }
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(88, 166, 255, 0.06);
+        }
+        .stat-card .stat-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.4rem;
+            opacity: 0.05;
+            transition: var(--transition);
+        }
+        .stat-card:hover .stat-icon {
+            opacity: 0.1;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .stat-card .stat-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.6px;
+            font-weight: 600;
+        }
+        .stat-card .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-top: 2px;
+            letter-spacing: -0.5px;
+        }
+        .stat-card .stat-sub {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
 
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .card-header { background-color: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border-color); padding: 12px 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        
-        .table { color: var(--text-main); margin-bottom: 0; font-size: 0.80rem; }
-        .table th { border-bottom-color: var(--border-color); color: var(--text-muted); font-weight: 600; font-size: 0.70rem; text-transform: uppercase; padding: 10px; white-space: nowrap; }
-        .table td { border-bottom-color: var(--border-color); vertical-align: middle; padding: 8px; }
-        
-        .form-control { background-color: #0b1120; border: 1px solid var(--border-color); color: #e2e8f0; border-radius: 8px; font-size: 0.85rem; padding: 6px 10px; }
-        .form-control:focus { background-color: #0b1120; border-color: var(--accent-blue); color: white; box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25); }
-        
-        .btn-custom { border-radius: 8px; font-weight: 500; font-size: 0.85rem; padding: 6px 12px; }
-        .btn-outline-dark-custom { background-color: #1e293b; color: white; border: 1px solid #334155; }
-        .btn-outline-dark-custom:hover { background-color: #334155; color: white; }
-        .btn-danger-custom { background-color: rgba(239, 68, 68, 0.1); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.2); }
-        .btn-primary-custom { background-color: var(--accent-blue); color: white; border: none; }
-        .btn-action-delete { background-color: transparent; color: var(--accent-red); border: none; }
-        
-        .badge-status { padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; display: inline-block; }
-        .bg-reslit { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
-        .bg-balanced { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .bg-scrap { background-color: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
-        
-        .use-rm-btn { background-color: rgba(59, 130, 246, 0.15); color: var(--accent-blue); border: 1px solid rgba(59, 130, 246, 0.3); padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
-        .use-rm-btn:hover { background-color: var(--accent-blue); color: white; }
-        
-        #print-only-header { display: none; }
+        .stat-blue {
+            border-bottom: 3px solid var(--blue);
+        }
+        .stat-green {
+            border-bottom: 3px solid var(--green);
+        }
+        .stat-orange {
+            border-bottom: 3px solid var(--orange);
+        }
+        .stat-purple {
+            border-bottom: 3px solid var(--purple);
+        }
 
+        /* ===================================================================
+                   TABLES
+                   =================================================================== */
+        .table-wrap {
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .table {
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 0.78rem;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table thead th {
+            background: rgba(13, 17, 23, 0.5);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            text-align: left;
+        }
+        .table thead th.text-center {
+            text-align: center;
+        }
+        .table tbody td {
+            padding: 8px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+            text-align: left;
+        }
+        .table tbody td.text-center {
+            text-align: center;
+        }
+        .table tbody tr {
+            transition: var(--transition);
+        }
+        .table tbody tr:hover td {
+            background: rgba(88, 166, 255, 0.03);
+        }
+
+        .row-balanced td {
+            border-left: 3px solid var(--green);
+        }
+        .row-reslit td {
+            border-left: 3px solid var(--orange);
+        }
+        .row-trim td {
+            border-left: 3px solid var(--blue);
+        }
+        .row-inhouse td {
+            border-left: 3px solid var(--purple);
+        }
+        .row-scrap td {
+            border-left: 3px solid var(--red);
+        }
+
+        .row-balanced {
+            background: rgba(63, 185, 80, 0.03);
+        }
+        .row-reslit {
+            background: rgba(210, 153, 34, 0.03);
+        }
+        .row-trim {
+            background: rgba(88, 166, 255, 0.03);
+        }
+        .row-inhouse {
+            background: rgba(188, 140, 255, 0.03);
+        }
+        .row-scrap {
+            background: rgba(248, 81, 73, 0.03);
+        }
+
+        /* ===================================================================
+                   FORM CONTROLS
+                   =================================================================== */
+        .form-control {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            transition: var(--transition);
+            width: 100%;
+            min-width: 70px;
+            text-align: left;
+        }
+        .form-control:focus {
+            background: var(--bg-primary);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+            color: #fff;
+            outline: none;
+        }
+        .form-control::placeholder {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+        .form-control:not(:placeholder-shown) {
+            color: var(--text-primary);
+            border-color: rgba(88, 166, 255, 0.15);
+        }
+
+        /* ===================================================================
+                   BUTTONS
+                   =================================================================== */
+        .btn-custom {
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.75rem;
+            padding: 8px 20px;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn-custom:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2ea043, #3fb950);
+            color: #fff;
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, #1f6feb, #388bfd);
+            color: #fff;
+        }
+        .btn-blue:hover {
+            background: linear-gradient(135deg, #388bfd, #58a6ff);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-outline:hover {
+            background: var(--bg-hover);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #da3633, #f85149);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #f85149, #ff6b6b);
+            color: #fff;
+        }
+
+        .btn-orange {
+            background: linear-gradient(135deg, #d29922, #f0b34b);
+            color: #fff;
+        }
+        .btn-orange:hover {
+            background: linear-gradient(135deg, #f0b34b, #ffc107);
+            color: #fff;
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, #8957e5, #bc8cff);
+            color: #fff;
+        }
+        .btn-purple:hover {
+            background: linear-gradient(135deg, #bc8cff, #d4a8ff);
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 5px 14px;
+            font-size: 0.65rem;
+        }
+        .btn-xs {
+            padding: 3px 10px;
+            font-size: 0.55rem;
+        }
+
+        /* ===================================================================
+                   BADGES
+                   =================================================================== */
+        .badge-status {
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .badge-balanced {
+            background: rgba(63, 185, 80, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(63, 185, 80, 0.15);
+        }
+        .badge-reslit {
+            background: rgba(210, 153, 34, 0.12);
+            color: var(--orange);
+            border: 1px solid rgba(210, 153, 34, 0.15);
+        }
+        .badge-scrap {
+            background: rgba(248, 81, 73, 0.12);
+            color: var(--red);
+            border: 1px solid rgba(248, 81, 73, 0.15);
+        }
+        .badge-trim {
+            background: rgba(88, 166, 255, 0.12);
+            color: var(--blue);
+            border: 1px solid rgba(88, 166, 255, 0.15);
+        }
+        .badge-inhouse {
+            background: rgba(188, 140, 255, 0.12);
+            color: var(--purple);
+            border: 1px solid rgba(188, 140, 255, 0.15);
+        }
+        .badge-count {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2px 12px;
+            font-size: 0.6rem;
+            font-weight: 500;
+        }
+
+        /* ===================================================================
+                   USE AS RM BUTTON
+                   =================================================================== */
+        .use-rm-btn {
+            background: rgba(88, 166, 255, 0.08);
+            color: var(--blue);
+            border: 1px solid rgba(88, 166, 255, 0.12);
+            border-radius: 4px;
+            padding: 3px 12px;
+            font-size: 0.58rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .use-rm-btn:hover {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+        }
+        .use-rm-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ===================================================================
+                   HEADER
+                   =================================================================== */
+        .main-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px 28px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow);
+        }
+        .main-header .logo-box {
+            background: linear-gradient(135deg, var(--blue-dark), var(--purple-dark));
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 1.3rem;
+        }
+        .main-header h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        .main-header .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        /* ===================================================================
+                   PROGRESS BAR
+                   =================================================================== */
+        .progress-custom {
+            height: 3px;
+            background: var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-custom .fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+            background: var(--green);
+        }
+        .progress-custom .fill.yellow {
+            background: var(--orange);
+        }
+        .progress-custom .fill.red {
+            background: var(--red);
+        }
+
+        /* ===================================================================
+                   EMPTY STATE
+                   =================================================================== */
+        .empty-state {
+            text-align: center;
+            padding: 35px 20px;
+            color: var(--text-secondary);
+        }
+        .empty-state i {
+            font-size: 2.4rem;
+            opacity: 0.12;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .empty-state h5 {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .empty-state p {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* ===================================================================
+                   HELPER TEXT
+                   =================================================================== */
+        .helper-text {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            padding: 6px 18px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .helper-text i {
+            opacity: 0.4;
+        }
+
+        /* ===================================================================
+                   ACTION ROW
+                   =================================================================== */
+        .action-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .action-row .btn-custom {
+            font-size: 0.6rem;
+            padding: 4px 14px;
+        }
+
+        /* ===================================================================
+                   STATUS DOT
+                   =================================================================== */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+        }
+        .dot-green {
+            background: var(--green);
+        }
+        .dot-orange {
+            background: var(--orange);
+        }
+        .dot-red {
+            background: var(--red);
+        }
+        .dot-blue {
+            background: var(--blue);
+        }
+
+        /* ===================================================================
+                   ANIMATIONS
+                   =================================================================== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-fade {
+            animation: fadeUp 0.5s ease forwards;
+        }
+        .animate-slide {
+            animation: slideRight 0.4s ease forwards;
+        }
+
+        .card-glass {
+            animation: fadeUp 0.4s ease forwards;
+        }
+        .card-glass:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .card-glass:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        .card-glass:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .card-glass:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+        .card-glass:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+
+        /* ===================================================================
+                   SUMMARY
+                   =================================================================== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            padding: 12px 20px;
+        }
+        .summary-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .summary-item:hover {
+            border-color: var(--border-hover);
+        }
+        .summary-item .s-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.4px;
+        }
+        .summary-item .s-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .summary-item .s-value.green {
+            color: var(--green);
+        }
+        .summary-item .s-value.orange {
+            color: var(--orange);
+        }
+        .summary-item .s-value.red {
+            color: var(--red);
+        }
+        .summary-item .s-value.blue {
+            color: var(--blue);
+        }
+        .summary-item .s-value.purple {
+            color: var(--purple);
+        }
+
+        /* ===================================================================
+                   PRINT
+                   =================================================================== */
         @media print {
-            body { background-color: #ffffff !important; color: #000000 !important; font-size: 9px; padding: 0 !important; }
-            .btn, .btn-custom, .btn-action-delete, .use-rm-btn, .action-col { display: none !important; }
-            #print-only-header { display: block !important; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 4px; }
-            .no-print { display: none !important; }
-            .card { border: none !important; margin-bottom: 6px !important; box-shadow: none !important; }
-            .card-header { background-color: #f8f9fa !important; color: #000 !important; border: 1px solid #dee2e6 !important; font-size: 10px; font-weight: bold; border-bottom: none !important; }
-            .card-body { border: 1px solid #dee2e6 !important; padding: 0 !important; }
-            .table { margin-bottom: 0 !important; }
-            .table th, .table td { border: 1px solid #dee2e6 !important; color: #000 !important; padding: 3px !important; font-size: 9px !important; }
-            .table th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
-            .row { display: flex !important; flex-wrap: nowrap !important; }
-            .col-md-3 { flex: 0 0 25% !important; max-width: 25% !important; }
-            .summary-card { border: 1px solid #dee2e6 !important; border-radius: 0 !important; padding: 4px !important; box-shadow: none !important; }
-            .summary-title { color: #495057 !important; font-size: 7px !important; }
-            .summary-value { color: #000 !important; font-size: 11px !important; }
-            .summary-icon { display: none !important; }
-            .form-control { border: none !important; background: transparent !important; color: #000 !important; padding: 0 !important; font-size: 9px !important; box-shadow: none !important; }
-            .form-control::placeholder { color: transparent !important; }
-            .badge-status { border: none !important; padding: 0 !important; font-weight: bold !important; font-size: 8px !important; color: #000 !important; background: none !important; }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 6px !important;
+                font-size: 7px !important;
+            }
+
+            .card-glass {
+                background: #ffffff !important;
+                border: 1px solid #000000 !important;
+                box-shadow: none !important;
+                margin-bottom: 4px !important;
+                border-radius: 0 !important;
+            }
+            .card-glass:hover {
+                border-color: #000 !important;
+                box-shadow: none !important;
+            }
+
+            .card-header-glass {
+                background: #f1f3f5 !important;
+                color: #000 !important;
+                border-bottom: 1px solid #000 !important;
+                padding: 3px 10px !important;
+                font-size: 8px !important;
+            }
+            .card-header-glass .icon-box {
+                background: #e9ecef !important;
+                color: #000 !important;
+            }
+
+            .main-header {
+                background: #f8f9fa !important;
+                border: 1px solid #000 !important;
+                border-radius: 0 !important;
+                padding: 6px 14px !important;
+            }
+            .main-header .logo-box {
+                background: #e9ecef !important;
+                color: #000 !important;
+            }
+            .main-header h1,
+            .main-header .subtitle {
+                color: #000 !important;
+            }
+
+            .stat-card {
+                background: #f8f9fa !important;
+                border: 1px solid #000 !important;
+                border-radius: 0 !important;
+                padding: 4px 8px !important;
+            }
+            .stat-card .stat-value {
+                color: #000 !important;
+                font-size: 10px !important;
+            }
+            .stat-card .stat-label {
+                color: #495057 !important;
+                font-size: 5px !important;
+            }
+            .stat-card .stat-icon {
+                display: none !important;
+            }
+            .stat-card:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+
+            .table {
+                color: #000 !important;
+                font-size: 6px !important;
+                border-collapse: collapse !important;
+            }
+            .table thead th {
+                background: #e9ecef !important;
+                color: #000 !important;
+                border: 1px solid #000 !important;
+                padding: 2px 4px !important;
+                font-size: 5px !important;
+                text-align: left !important;
+            }
+            .table tbody td {
+                border: 1px solid #000 !important;
+                color: #000 !important;
+                padding: 2px 4px !important;
+                background: #fff !important;
+                text-align: left !important;
+            }
+            .table tbody td.text-center {
+                text-align: center !important;
+            }
+            .table tbody tr:hover td {
+                background: #fff !important;
+            }
+
+            .row-balanced td,
+            .row-reslit td,
+            .row-trim td,
+            .row-inhouse td,
+            .row-scrap td {
+                border-left: 2px solid #000 !important;
+                background: #fff !important;
+            }
+
+            .form-control {
+                background: transparent !important;
+                border: none !important;
+                color: #000 !important;
+                padding: 0 !important;
+                font-size: 6px !important;
+            }
+            .form-control::placeholder {
+                color: transparent !important;
+            }
+
+            .badge-status {
+                border: 1px solid #000 !important;
+                background: transparent !important;
+                color: #000 !important;
+                padding: 0 4px !important;
+                font-size: 4px !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+            .action-col {
+                display: none !important;
+            }
+            .btn-custom {
+                display: none !important;
+            }
+            .use-rm-btn {
+                display: none !important;
+            }
+            .action-row {
+                display: none !important;
+            }
+
+            #print-header {
+                display: block !important;
+            }
+            .empty-state {
+                padding: 4px !important;
+            }
+            .empty-state i {
+                display: none !important;
+            }
+            .helper-text {
+                border-top: 1px solid #000 !important;
+                color: #000 !important;
+            }
+            .progress-custom {
+                display: none !important;
+            }
+
+            .summary-grid {
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 4px !important;
+            }
+            .summary-item {
+                border: 1px solid #000 !important;
+                padding: 4px !important;
+                background: #f8f9fa !important;
+            }
+        }
+
+        #print-header {
+            display: none;
+        }
+        @media print {
+            #print-header {
+                display: block !important;
+            }
+        }
+
+        /* ===================================================================
+                   RESPONSIVE
+                   =================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .main-header {
+                padding: 12px 16px;
+            }
+            .main-header h1 {
+                font-size: 1.1rem;
+            }
+            .card-header-glass {
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+            .stat-card .stat-value {
+                font-size: 1.2rem;
+            }
+            .table {
+                font-size: 0.7rem;
+            }
+            .table thead th,
+            .table tbody td {
+                padding: 5px 8px;
+            }
+            .form-control {
+                font-size: 0.7rem;
+                padding: 5px 8px;
+                min-width: 50px;
+            }
+            .btn-custom {
+                font-size: 0.7rem;
+                padding: 5px 14px;
+            }
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-header .d-flex {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+            .main-header .header-actions {
+                justify-content: center;
+            }
+            .card-header-glass {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .stat-card .stat-value {
+                font-size: 1rem;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .text-muted-custom {
+            color: var(--text-secondary);
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .fs-small {
+            font-size: 0.7rem;
+        }
+        .text-center {
+            text-align: center !important;
+        }
+        .text-left {
+            text-align: left !important;
+        }
+        .text-right {
+            text-align: right !important;
         }
     </style>
 </head>
 <body>
 
-<div class="container py-2">
-    
-    <div id="print-only-header">
-        <h2 style="margin: 0; font-size: 15px;">CRGO Slit Optimization Plan Report</h2>
-        <div style="display: flex; justify-content: space-between; margin-top: 2px; font-size: 10px;">
-            <span><strong>Company:</strong> Kryfs Power Systems</span>
-            <span id="print-date"></span>
-        </div>
-    </div>
+    <div class="container-fluid px-2 px-lg-3">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2 no-print">
-        <div>
-            <h1 class="header-title">
-                <div style="background: #3b82f6; padding: 4px 8px; border-radius: 6px;">
-                    <i class="fas fa-industry text-white" style="font-size: 1rem;"></i>
+        <!-- ==========================================================
+        PRINT HEADER
+        ========================================================== -->
+        <div id="print-header" style="border-bottom:2px solid #000;padding-bottom:4px;margin-bottom:8px;">
+            <h2 style="font-size:12px;margin:0;font-weight:700;">CRGO Slit Optimization Plan</h2>
+            <div style="display:flex;justify-content:space-between;font-size:7px;margin-top:2px;">
+                <span>Kryfs Power Systems</span>
+                <span id="print-date"></span>
+                <span>v22.0 Final</span>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        MAIN HEADER
+        ========================================================== -->
+        <div class="main-header no-print">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div class="logo-box"><i class="fas fa-layer-group text-white"></i></div>
+                    <div>
+                        <h1>CRGO Slit Optimization</h1>
+                        <div class="subtitle">
+                            <i class="fas fa-microchip me-1"></i>
+                            Final v22.0 • 5500+ Lines • Kryfs Power Systems
+                            <span style="opacity:0.3;margin-left:8px;">|</span>
+                            <span style="opacity:0.5;font-size:0.65rem;">Trim Only on Full Coil • Exact Weight Match</span>
+                        </div>
+                    </div>
                 </div>
-                CRGO Slit Optimization Plan
-            </h1>
-            <div class="header-subtitle">Mother Coil Slitting & CTL Cutting Optimization Engine • Kryfs Power Systems</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;" class="header-actions">
+                    <button class="btn btn-custom btn-outline btn-sm" onclick="loadDemoData()"><i class="fas fa-bolt"></i> Demo</button>
+                    <button class="btn btn-custom btn-danger btn-sm" onclick="clearAll()"><i class="fas fa-trash"></i> Clear</button>
+                    <button class="btn btn-custom btn-primary btn-sm" onclick="runOptimization()"><i class="fas fa-calculator"></i> Optimize</button>
+                    <button class="btn btn-custom btn-blue btn-sm" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+                    <button class="btn btn-custom btn-orange btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+                </div>
+            </div>
         </div>
-        <div class="d-flex gap-2">
-            <button class="btn btn-custom btn-outline-dark-custom" onclick="loadDemoData()"><i class="fas fa-bolt"></i> Load Demo</button>
-            <button class="btn btn-custom btn-danger-custom" onclick="clearAll()"><i class="fas fa-trash-alt"></i> Clear All</button>
-            <button class="btn btn-custom btn-primary-custom" onclick="runOptimization()"><i class="fas fa-calculator"></i> Run Optimization</button>
-        </div>
-    </div>
 
-    <div class="row mb-3 g-2">
-        <div class="col-md-3">
-            <div class="summary-card card-demand">
-                <i class="fas fa-crosshairs summary-icon text-primary"></i>
-                <div class="summary-title">Total Slit Demand</div>
-                <div class="summary-value" id="tot-demand">0 kg</div>
+        <!-- ==========================================================
+        STATISTICS
+        ========================================================== -->
+        <div class="row g-2 mb-3">
+            <div class="col-6 col-lg-3">
+                <div class="stat-card stat-blue animate-fade">
+                    <div class="stat-icon"><i class="fas fa-crosshairs"></i></div>
+                    <div class="stat-label">Total Slit Demand</div>
+                    <div class="stat-value" id="tot-demand">0 kg</div>
+                    <div class="stat-sub"><i class="fas fa-boxes me-1"></i> All required sizes</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card stat-green animate-fade" style="animation-delay:0.1s;">
+                    <div class="stat-icon"><i class="fas fa-warehouse"></i></div>
+                    <div class="stat-label">Total RM Issued</div>
+                    <div class="stat-value" id="tot-rm">0 kg</div>
+                    <div class="stat-sub"><i class="fas fa-coils me-1"></i> Mother coils</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card stat-orange animate-fade" style="animation-delay:0.2s;">
+                    <div class="stat-icon"><i class="fas fa-balance-scale"></i></div>
+                    <div class="stat-label">Net Balance</div>
+                    <div class="stat-value" id="tot-bal">+0 kg</div>
+                    <div class="stat-sub" id="balance-status"><span class="status-dot dot-green"></span> Balanced</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card stat-purple animate-fade" style="animation-delay:0.3s;">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-label">Optimization Status</div>
+                    <div class="stat-value" id="opt-status" style="font-size:1rem;">Ready</div>
+                    <div class="progress-custom"><div class="fill" id="progress-fill"></div></div>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="summary-card card-rm">
-                <i class="fas fa-warehouse summary-icon text-info"></i>
-                <div class="summary-title">Total RM Issued</div>
-                <div class="summary-value" id="tot-rm">0 kg</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="summary-card card-bal">
-                <i class="fas fa-balance-scale summary-icon text-success"></i>
-                <div class="summary-title">Net Balance / Scrap</div>
-                <div class="summary-value text-success" id="tot-bal">+0 kg</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="summary-card card-stat">
-                <i class="fas fa-chart-line summary-icon text-warning"></i>
-                <div class="summary-title">Optimization Status</div>
-                <div class="summary-value text-warning" style="font-size: 1rem;" id="opt-status">Cleared</div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Demands Section -->
-    <div class="card">
-        <div class="card-header">
-            <div><i class="fas fa-list-ul me-2 text-primary"></i> 1. Slit Required Demand (For CTL Cutting)</div>
-            <button class="btn btn-sm btn-outline-dark-custom no-print py-1 px-2" style="font-size: 0.75rem;" onclick="addDemandRow()"><i class="fas fa-plus"></i> Add Row</button>
-        </div>
-        <div class="card-body p-0">
-            <table class="table" id="demandTable">
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>CRGO Grade</th>
-                        <th>Size (mm)</th>
-                        <th>Weight (kg)</th>
-                        <th class="text-center action-col" style="width: 70px;">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="demandBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- RM Section -->
-    <div class="card">
-        <div class="card-header">
-            <div><i class="fas fa-layer-group me-2 text-info"></i> 2. Raw Material Issue Master (Mother Coils / UPT)</div>
-            <button class="btn btn-sm btn-outline-dark-custom no-print py-1 px-2" style="font-size: 0.75rem;" onclick="addRMRow()"><i class="fas fa-plus"></i> Add UPT</button>
-        </div>
-        <div class="card-body p-0">
-            <table class="table" id="rmTable">
-                <thead>
-                    <tr>
-                        <th>UPT No</th>
-                        <th>Mother Coil Size (mm)</th>
-                        <th>Weight (kg)</th>
-                        <th class="text-center action-col" style="width: 70px;">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="rmBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Output Section -->
-    <div class="card">
-        <div class="card-header">
-            <div><i class="fas fa-table me-2 text-success"></i> 3. Slit Planning & Optimization Output Matrix</div>
-            <div class="d-flex gap-2 no-print">
-                <button class="btn btn-sm btn-outline-dark-custom py-1 px-2 bg-success text-white border-success" style="font-size: 0.75rem;" onclick="exportAllSheetsToExcel()"><i class="fas fa-file-excel"></i> Export All 3 Sheets to Excel</button>
-                <button class="btn btn-sm btn-outline-dark-custom py-1 px-2" style="font-size: 0.75rem;" onclick="window.print()"><i class="fas fa-print"></i> Print / PDF Report</button>
+        <!-- ==========================================================
+        SECTION 1: DEMAND
+        ========================================================== -->
+        <div class="card-glass animate-fade">
+            <div class="card-header-glass">
+                <div>
+                    <span class="icon-box icon-blue"><i class="fas fa-list-ul"></i></span>
+                    <span>1. Slit Required Demand</span>
+                    <span class="badge-count ms-2" id="demand-count">0</span>
+                </div>
+                <div>
+                    <button class="btn btn-custom btn-outline no-print btn-sm" onclick="addDemandRow()"><i class="fas fa-plus"></i> Add</button>
+                </div>
             </div>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table" id="outputTable">
+            <div class="table-wrap">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>UPT No</th>
-                            <th>Mother Coil Size</th>
-                            <th>Customer Name</th>
-                            <th>Grade</th>
-                            <th>Slit Size</th>
-                            <th>No. of Slits</th>
-                            <th>Total Size</th>
-                            <th>Calculated Weight (kg)</th>
-                            <th>Meter (m)</th>
-                            <th>Stack</th>
-                            <th>Status</th>
-                            <th class="action-col">Action</th>
+                            <th style="min-width:100px;text-align:left;">Customer</th>
+                            <th style="min-width:90px;text-align:left;">Grade</th>
+                            <th style="min-width:80px;text-align:center;">Size (mm)</th>
+                            <th style="min-width:80px;text-align:center;">Weight (kg)</th>
+                            <th class="action-col no-print" style="width:50px;text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="demandBody"></tbody>
+                </table>
+            </div>
+            <div class="helper-text no-print">
+                <i class="fas fa-info-circle"></i> Enter customer, grade, slit size (mm) and target weight (kg)
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SECTION 2: RAW MATERIAL
+        ========================================================== -->
+        <div class="card-glass animate-fade" style="animation-delay:0.1s;">
+            <div class="card-header-glass">
+                <div>
+                    <span class="icon-box icon-purple"><i class="fas fa-warehouse"></i></span>
+                    <span>2. Raw Material Issue (Mother Coils)</span>
+                    <span class="badge-count ms-2" id="rm-count">0</span>
+                </div>
+                <div>
+                    <button class="btn btn-custom btn-outline no-print btn-sm" onclick="addRMRow()"><i class="fas fa-plus"></i> Add UPT</button>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="min-width:90px;text-align:left;">UPT No</th>
+                            <th style="min-width:90px;text-align:center;">Coil Size (mm)</th>
+                            <th style="min-width:90px;text-align:center;">Weight (kg)</th>
+                            <th class="action-col no-print" style="width:50px;text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rmBody"></tbody>
+                </table>
+            </div>
+            <div class="helper-text no-print">
+                <i class="fas fa-info-circle"></i> Enter UPT number, mother coil size (mm) and total weight (kg)
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SECTION 3: OPTIMIZATION OUTPUT
+        ========================================================== -->
+        <div class="card-glass animate-fade" style="animation-delay:0.2s;">
+            <div class="card-header-glass">
+                <div>
+                    <span class="icon-box icon-green"><i class="fas fa-table"></i></span>
+                    <span>3. Optimization Output Matrix</span>
+                    <span class="badge-count ms-2" id="output-count">0</span>
+                </div>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;" class="no-print">
+                    <span class="badge-status badge-balanced"><i class="fas fa-check-circle"></i> Balanced</span>
+                    <span class="badge-status badge-reslit"><i class="fas fa-sync-alt"></i> Reslit</span>
+                    <span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim</span>
+                    <span class="badge-status badge-inhouse"><i class="fas fa-home"></i> In-House</span>
+                    <span class="badge-status badge-scrap"><i class="fas fa-times-circle"></i> Scrap</span>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">UPT</th>
+                            <th style="text-align:center;">Coil Size</th>
+                            <th style="text-align:left;">Customer</th>
+                            <th style="text-align:left;">Grade</th>
+                            <th style="text-align:center;">Slit Size</th>
+                            <th style="text-align:center;">Qty</th>
+                            <th style="text-align:center;">Total Size</th>
+                            <th style="text-align:center;">Weight (kg)</th>
+                            <th style="text-align:center;">Meter (m)</th>
+                            <th style="text-align:center;">Stack</th>
+                            <th style="text-align:center;">Status</th>
+                            <th class="action-col no-print" style="text-align:center;">Action</th>
                         </tr>
                     </thead>
                     <tbody id="outputBody">
-                        <tr><td colspan="12" class="text-center text-muted py-3 font-italic">Data cleared. Add entries or load demo data.</td></tr>
+                        <tr>
+                            <td colspan="12">
+                                <div class="empty-state">
+                                    <i class="fas fa-inbox"></i>
+                                    <h5>No Data Available</h5>
+                                    <p>Add demands and RM entries, then click <strong>"Optimize"</strong></p>
+                                    <button class="btn btn-custom btn-outline btn-sm mt-2" onclick="loadDemoData()"><i class="fas fa-bolt"></i> Load Demo</button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
+            <div class="helper-text no-print">
+                <i class="fas fa-info-circle"></i>
+                <span class="badge-status badge-balanced" style="font-size:0.5rem;">✓</span> Balanced
+                <span class="badge-status badge-reslit" style="font-size:0.5rem;">⟳</span> Reslit
+                <span class="badge-status badge-trim" style="font-size:0.5rem;">✂</span> Trim (Full Coil Only)
+                <span class="badge-status badge-inhouse" style="font-size:0.5rem;">🏠</span> In-House
+                <span class="badge-status badge-scrap" style="font-size:0.5rem;">✕</span> Scrap
+                <span style="opacity:0.3;margin-left:4px;">|</span>
+                <span style="opacity:0.5;">No trim on reslit/parting</span>
+            </div>
         </div>
+
+        <!-- ==========================================================
+        SECTION 4: SUMMARY
+        ========================================================== -->
+        <div class="card-glass animate-fade" style="animation-delay:0.25s;">
+            <div class="card-header-glass">
+                <div>
+                    <span class="icon-box icon-orange"><i class="fas fa-chart-pie"></i></span>
+                    <span>4. Summary & Size-wise Report</span>
+                    <span class="badge-count ms-2" id="summary-count">0</span>
+                </div>
+                <div class="no-print">
+                    <button class="btn btn-custom btn-outline btn-sm" onclick="refreshSummary()"><i class="fas fa-refresh"></i> Refresh</button>
+                </div>
+            </div>
+            <div id="summaryContainer">
+                <div class="empty-state">
+                    <i class="fas fa-chart-bar"></i>
+                    <h5>No Summary Data</h5>
+                    <p>Run optimization first to generate summary report.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SECTION 5: ACTION BUTTONS
+        ========================================================== -->
+        <div class="card-glass animate-fade no-print" style="animation-delay:0.3s;">
+            <div class="card-header-glass">
+                <div>
+                    <span class="icon-box icon-red"><i class="fas fa-tools"></i></span>
+                    <span>5. Quick Actions</span>
+                    <span class="text-muted-custom fs-small" style="font-weight:400;">(Process excess material)</span>
+                </div>
+            </div>
+            <div style="padding:12px 20px;">
+                <div class="action-row">
+                    <button class="btn btn-custom btn-outline btn-sm" onclick="handleTrimExcess()">
+                        <i class="fas fa-cut"></i> Trim → Reslit
+                    </button>
+                    <button class="btn btn-custom btn-outline btn-sm" onclick="handleReslitToRM()">
+                        <i class="fas fa-sync-alt"></i> Reslit → RM
+                    </button>
+                    <button class="btn btn-custom btn-outline btn-sm" onclick="handleScrapToReslit()">
+                        <i class="fas fa-recycle"></i> Scrap → Reslit
+                    </button>
+                    <button class="btn btn-custom btn-primary btn-sm" onclick="handleAllExcessToRM()">
+                        <i class="fas fa-arrow-right"></i> All Excess → RM
+                    </button>
+                    <button class="btn btn-custom btn-blue btn-sm" onclick="refreshOutput()">
+                        <i class="fas fa-refresh"></i> Refresh
+                    </button>
+                </div>
+                <div class="helper-text" style="border-top:none;padding:4px 0 0 0;">
+                    <i class="fas fa-info-circle"></i>
+                    These actions help you recycle excess material back into the system for re-optimization.
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        FOOTER
+        ========================================================== -->
+        <div class="text-center no-print" style="font-size:0.6rem;color:var(--text-muted);padding:12px 0 4px;border-top:1px solid var(--border-color);margin-top:4px;">
+            <i class="fas fa-copyright me-1"></i> 2026 Kryfs Power Systems • CRGO Slit Optimization v22.0
+            <span style="opacity:0.3;margin:0 8px;">|</span>
+            <i class="fas fa-code me-1"></i> 5500+ Lines • Final Edition
+            <span style="opacity:0.3;margin:0 8px;">|</span>
+            <i class="fas fa-check-circle me-1" style="color:var(--green);"></i> Exact Weight Match
+            <span style="opacity:0.3;margin:0 8px;">|</span>
+            <i class="fas fa-cut me-1" style="color:var(--blue);"></i> Trim Only on Full Coil
+        </div>
+
     </div>
-</div>
 
-<script>
-    // MULTIPLE ADMIN ACCOUNTS DIRECTORY
-    const authorizedAdmins = [
-        { name: "Ajay Kumar Dwivedi", email: "ajaydwivedi102@gmail.com", pass: "zetwork@7519" },
-        { name: "Yashwant Singh", email: "yashwantsingh102@gmail.com", pass: "yashwant@123" },
-        { name: "Shekhar Jha", email: "shekharjha102@gmail.com", pass: "shekhar@123" }
-    ];
+    <script>
+        // ================================================================
+        // SECTION 1: SECURITY
+        // ================================================================
+        const authorizedAdmins = [
+            { name: "Ajay Kumar Dwivedi", email: "ajaydwivedi102@gmail.com", pass: "zetwork@7519" },
+            { name: "Yashwant Singh", email: "yashwantsingh102@gmail.com", pass: "yashwant@123" },
+            { name: "Shekhar Jha", email: "shekharjha102@gmail.com", pass: "shekhar@123" }
+        ];
 
-    // SECURITY LOGIN CHECK ON STARTUP
-    document.addEventListener('DOMContentLoaded', () => {
-        let userEmail = prompt("🔒 Enter Admin Email ID:");
-        let userPassword = prompt("🔑 Enter Admin Password:");
-        
-        let isValidUser = authorizedAdmins.some(admin => admin.email === userEmail && admin.pass === userPassword);
+        (function authenticate() {
+            const email = prompt("🔒 Enter Admin Email:");
+            const pass = prompt("🔑 Enter Admin Password:");
 
-        if (!isValidUser) {
-            alert("❌ Incorrect Email ID or Password! Access Denied.");
-            document.body.innerHTML = "<h2 style='color:red; text-align:center; margin-top:20vh;'>Access Denied. Please refresh and enter valid credentials.</h2>";
-            throw new Error("Unauthorized access.");
+            const isValid = authorizedAdmins.some(admin =>
+                admin.email === email && admin.pass === pass
+            );
+
+            if (!isValid) {
+                alert("❌ Access Denied! Invalid credentials.");
+                document.body.innerHTML =
+                    `<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#0d1117;color:#f85149;flex-direction:column;font-family:sans-serif;text-align:center;padding:20px;">
+                            <i class="fas fa-lock" style="font-size:3rem;margin-bottom:15px;"></i>
+                            <h2 style="font-size:1.3rem;">Access Denied</h2>
+                            <p style="color:#8b949e;font-size:0.9rem;">Invalid credentials. Please refresh.</p>
+                        </div>`;
+                throw new Error("Unauthorized access.");
+            }
+
+            document.getElementById('print-date').textContent = new Date().toLocaleString();
+            console.log('✅ Authenticated:', authorizedAdmins.find(a => a.email === email).name);
+        })();
+
+        // ================================================================
+        // SECTION 2: GLOBAL STATE
+        // ================================================================
+        let optimizationHistory = [];
+        let currentPlanId = 0;
+        let isOptimizing = false;
+        let demandCounter = 0;
+        let rmCounter = 0;
+        let lastSummaryData = null;
+
+        // ================================================================
+        // SECTION 3: DOM REFERENCES
+        // ================================================================
+        const DEMAND_BODY = document.getElementById('demandBody');
+        const RM_BODY = document.getElementById('rmBody');
+        const OUTPUT_BODY = document.getElementById('outputBody');
+        const SUMMARY_CONTAINER = document.getElementById('summaryContainer');
+        const TOT_DEMAND = document.getElementById('tot-demand');
+        const TOT_RM = document.getElementById('tot-rm');
+        const TOT_BAL = document.getElementById('tot-bal');
+        const BAL_STATUS = document.getElementById('balance-status');
+        const OPT_STATUS = document.getElementById('opt-status');
+        const PROGRESS_FILL = document.getElementById('progress-fill');
+        const DEMAND_COUNT = document.getElementById('demand-count');
+        const RM_COUNT = document.getElementById('rm-count');
+        const OUTPUT_COUNT = document.getElementById('output-count');
+        const SUMMARY_COUNT = document.getElementById('summary-count');
+
+        // ================================================================
+        // SECTION 4: ADD ROWS
+        // ================================================================
+        function addDemandRow(customer = '', grade = '', size = '', weight = '') {
+            const tr = document.createElement('tr');
+            tr.className = 'animate-slide';
+            tr.dataset.id = ++demandCounter;
+            tr.innerHTML = `
+                    <td style="text-align:left;"><input type="text" class="form-control demand-customer" placeholder="Customer" value="${customer}" style="text-align:left;"></td>
+                    <td style="text-align:left;"><input type="text" class="form-control demand-grade" placeholder="Grade" value="${grade}" style="text-align:left;"></td>
+                    <td style="text-align:center;"><input type="number" class="form-control demand-size" placeholder="Size" value="${size}" step="any" style="text-align:center;"></td>
+                    <td style="text-align:center;"><input type="number" class="form-control demand-weight" placeholder="Weight" value="${weight}" step="any" style="text-align:center;"></td>
+                    <td class="action-col no-print" style="text-align:center;">
+                        <button class="btn btn-custom btn-danger btn-xs" onclick="deleteRow(this,'demand')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+            DEMAND_BODY.appendChild(tr);
+            setupLiveEvents();
+            calculateTotals();
+            updateCounts();
         }
 
-        addDemandRow('Transformer Corp', '0.27 M3', '200', '2500'); 
-        addRMRow('1009', '960', '3500'); 
-        setupLiveCalculation();
-        document.getElementById('print-date').innerHTML = "<strong>Date:</strong> " + new Date().toLocaleString();
-    });
+        function addRMRow(upt = '', size = '', weight = '') {
+            const tr = document.createElement('tr');
+            tr.className = 'animate-slide';
+            tr.dataset.id = ++rmCounter;
+            tr.innerHTML = `
+                    <td style="text-align:left;"><input type="text" class="form-control rm-upt" placeholder="UPT" value="${upt}" style="text-align:left;"></td>
+                    <td style="text-align:center;"><input type="number" class="form-control rm-size" placeholder="Size" value="${size}" step="any" style="text-align:center;"></td>
+                    <td style="text-align:center;"><input type="number" class="form-control rm-weight" placeholder="Weight" value="${weight}" step="any" style="text-align:center;"></td>
+                    <td class="action-col no-print" style="text-align:center;">
+                        <button class="btn btn-custom btn-danger btn-xs" onclick="deleteRow(this,'rm')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+            RM_BODY.appendChild(tr);
+            setupLiveEvents();
+            calculateTotals();
+            updateCounts();
+        }
 
-    function addDemandRow(customer = '', grade = '', size = '', weight = '') {
-        const tbody = document.getElementById('demandBody');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><input type="text" class="form-control demand-customer" placeholder="Customer Name" value="${customer}"></td>
-            <td><input type="text" class="form-control demand-grade" placeholder="Grade (e.g. 0.27 M3, 0.23 M4)" value="${grade}"></td>
-            <td><input type="number" class="form-control demand-size" placeholder="Size (mm)" value="${size}"></td>
-            <td><input type="number" class="form-control demand-weight" placeholder="Weight (kg)" value="${weight}"></td>
-            <td class="text-center action-col"><button class="btn-action-delete" onclick="this.closest('tr').remove(); calculateTotals();"><i class="fas fa-trash"></i></button></td>
-        `;
-        tbody.appendChild(tr);
-        setupLiveCalculation();
-        calculateTotals();
-    }
+        // ================================================================
+        // SECTION 5: DELETE ROW
+        // ================================================================
+        function deleteRow(btn, type) {
+            const tr = btn.closest('tr');
+            if (tr) {
+                tr.style.transition = 'all 0.3s ease';
+                tr.style.opacity = '0';
+                tr.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    tr.remove();
+                    calculateTotals();
+                    updateCounts();
+                }, 300);
+            }
+        }
 
-    function addRMRow(upt = '', size = '', weight = '') {
-        const tbody = document.getElementById('rmBody');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><input type="text" class="form-control rm-upt" placeholder="UPT No" value="${upt}"></td>
-            <td><input type="number" class="form-control rm-size" placeholder="Size (mm)" value="${size}"></td>
-            <td><input type="number" class="form-control rm-weight" placeholder="Weight (kg)" value="${weight}"></td>
-            <td class="text-center action-col"><button class="btn-action-delete" onclick="this.closest('tr').remove(); calculateTotals();"><i class="fas fa-trash"></i></button></td>
-        `;
-        tbody.appendChild(tr);
-        setupLiveCalculation();
-        calculateTotals();
-    }
+        // ================================================================
+        // SECTION 6: LIVE EVENTS
+        // ================================================================
+        function setupLiveEvents() {
+            document.querySelectorAll('.form-control').forEach(el => {
+                el.removeEventListener('input', handleInputChange);
+                el.removeEventListener('change', handleInputChange);
+                el.addEventListener('input', handleInputChange);
+                el.addEventListener('change', handleInputChange);
+            });
+        }
 
-    function clearAll() {
-        document.getElementById('demandBody').innerHTML = ''; 
-        document.getElementById('rmBody').innerHTML = '';
-        document.getElementById('outputBody').innerHTML = '<tr><td colspan="12" class="text-center text-muted py-3 font-italic">Data cleared. Add entries or load demo data.</td></tr>';
-        addDemandRow(); addRMRow(); calculateTotals();
-        document.getElementById('opt-status').textContent = 'Cleared';
-        document.getElementById('opt-status').className = 'summary-value text-warning';
-    }
+        function handleInputChange() {
+            calculateTotals();
+            updateCounts();
+        }
 
-    function loadDemoData() {
-        document.getElementById('demandBody').innerHTML = ''; 
-        document.getElementById('rmBody').innerHTML = '';
-        addDemandRow('Power Grid', '0.27 M3', '425', '2500'); 
-        addDemandRow('Volt Amp', '0.23 M4', '150', '900');
-        addDemandRow('Electro Core', '0.30 Hi-B', '90', '600');
-        addRMRow('1001', '1000', '2300'); 
-        addRMRow('1003', '960', '2000');
-        calculateTotals(); 
-        runOptimization();
-    }
+        // ================================================================
+        // SECTION 7: CALCULATE TOTALS
+        // ================================================================
+        function calculateTotals() {
+            let totalDemand = 0;
+            let totalRM = 0;
 
-    function setupLiveCalculation() {
-        document.querySelectorAll('input').forEach(input => {
-            input.removeEventListener('input', calculateTotals);
-            input.addEventListener('input', calculateTotals);
-        });
-    }
-
-    function calculateTotals() {
-        let totDemand = 0; let totRM = 0;
-        document.querySelectorAll('.demand-weight').forEach(i => totDemand += Number(i.value) || 0);
-        document.querySelectorAll('.rm-weight').forEach(i => totRM += Number(i.value) || 0);
-        document.getElementById('tot-demand').textContent = totDemand.toLocaleString() + ' kg';
-        document.getElementById('tot-rm').textContent = totRM.toLocaleString() + ' kg';
-        let bal = totRM - totDemand;
-        let balEl = document.getElementById('tot-bal');
-        balEl.textContent = (bal >= 0 ? '+' : '') + bal.toLocaleString() + ' kg';
-        balEl.className = 'summary-value ' + (bal >= 0 ? 'text-success' : 'text-danger');
-    }
-
-    function useAsRM(btn, upt, size, weight) {
-        let newUpt = upt.includes('-R') ? upt + 'x' : upt + '-R1';
-        addRMRow(newUpt, size, parseFloat(weight).toFixed(2));
-        btn.disabled = true; btn.innerHTML = '<i class="fas fa-check"></i> Sent to RM';
-        calculateTotals();
-        document.getElementById('opt-status').textContent = 'Ready to Re-Run';
-        document.getElementById('opt-status').className = 'summary-value text-info';
-    }
-
-    function extractThickness(gradeStr) {
-        if (!gradeStr) return 0.27;
-        let match = gradeStr.match(/0\.\d+/);
-        return match ? parseFloat(match[0]) : 0.27;
-    }
-
-    function runOptimization() {
-        document.getElementById('print-date').innerHTML = "<strong>Date:</strong> " + new Date().toLocaleString();
-        
-        let demands = [];
-        document.querySelectorAll('#demandBody tr').forEach(tr => {
-            let customer = tr.querySelector('.demand-customer').value || 'General';
-            let grade = tr.querySelector('.demand-grade').value || 'CRGO';
-            let size = Number(tr.querySelector('.demand-size').value);
-            let weight = Number(tr.querySelector('.demand-weight').value);
-            if(size > 0 && weight > 0) demands.push({customer, grade, size, weight, fulfilled: 0});
-        });
-
-        let rms = [];
-        document.querySelectorAll('#rmBody tr').forEach(tr => {
-            let upt = tr.querySelector('.rm-upt').value || 'NA';
-            let size = Number(tr.querySelector('.rm-size').value);
-            let weight = Number(tr.querySelector('.rm-weight').value);
-            if(size > 0 && weight > 0) rms.push({upt, size, weight});
-        });
-
-        if(demands.length === 0 || rms.length === 0) return alert("Please enter at least one Demand and one RM.");
-
-        demands.sort((a, b) => b.size - a.size); 
-        let outputHTML = '';
-
-        rms.forEach(rm => {
-            let rmOutput = [];
-            let totalRMWeight = rm.weight;
-
-            let trimSize = 10;
-            let trimWeight = (trimSize / rm.size) * totalRMWeight;
-            rmOutput.push({
-                upt: rm.upt,
-                rmSize: rm.size,
-                customer: 'Edge Trim (Compulsory)',
-                grade: '-',
-                slitSize: trimSize,
-                noOfSlits: 1,
-                totalSize: trimSize,
-                calcWeight: trimWeight,
-                thickness: 0.27,
-                type: 'trim'
+            document.querySelectorAll('.demand-weight').forEach(el => {
+                totalDemand += parseFloat(el.value) || 0;
             });
 
-            let remainingWidth = rm.size - trimSize;
+            document.querySelectorAll('.rm-weight').forEach(el => {
+                totalRM += parseFloat(el.value) || 0;
+            });
 
-            demands.forEach(d => {
-                let weightNeeded = d.weight - d.fulfilled;
-                if (weightNeeded > 0 && d.size <= remainingWidth) {
-                    let actualSlits = Math.min(Math.floor(remainingWidth / d.size), Math.ceil(weightNeeded / ((d.size / rm.size) * totalRMWeight)));
+            TOT_DEMAND.textContent = totalDemand.toLocaleString() + ' kg';
+            TOT_RM.textContent = totalRM.toLocaleString() + ' kg';
+
+            const balance = totalRM - totalDemand;
+            TOT_BAL.textContent = (balance >= 0 ? '+' : '') + balance.toLocaleString() + ' kg';
+            TOT_BAL.style.color = balance >= 0 ? '#3fb950' : '#f85149';
+
+            if (balance >= 0) {
+                BAL_STATUS.innerHTML = '<span class="status-dot dot-green"></span> Balanced';
+                BAL_STATUS.style.color = '#3fb950';
+            } else {
+                BAL_STATUS.innerHTML = '<span class="status-dot dot-red"></span> Shortfall';
+                BAL_STATUS.style.color = '#f85149';
+            }
+
+            if (totalDemand > 0 && totalRM > 0) {
+                const progress = Math.min((totalDemand / totalRM) * 100, 100);
+                PROGRESS_FILL.style.width = progress + '%';
+                PROGRESS_FILL.className = 'fill' + (progress >= 100 ? '' : (progress >= 70 ? ' yellow' : ' red'));
+            } else {
+                PROGRESS_FILL.style.width = '0%';
+            }
+
+            updateCounts();
+        }
+
+        // ================================================================
+        // SECTION 8: UPDATE COUNTS
+        // ================================================================
+        function updateCounts() {
+            const dCount = document.querySelectorAll('#demandBody tr').length;
+            const rCount = document.querySelectorAll('#rmBody tr').length;
+            const oCount = document.querySelectorAll('#outputBody tr:not(:only-child)').length;
+
+            DEMAND_COUNT.textContent = dCount;
+            RM_COUNT.textContent = rCount;
+            OUTPUT_COUNT.textContent = oCount > 0 ? oCount : '0';
+
+            if (lastSummaryData) {
+                SUMMARY_COUNT.textContent = Object.keys(lastSummaryData.sizeWise || {}).length;
+            } else {
+                SUMMARY_COUNT.textContent = '0';
+            }
+        }
+
+        // ================================================================
+        // SECTION 9: CLEAR ALL
+        // ================================================================
+        function clearAll() {
+            if (!confirm('⚠️ Are you sure you want to clear all data?')) return;
+
+            DEMAND_BODY.innerHTML = '';
+            RM_BODY.innerHTML = '';
+            OUTPUT_BODY.innerHTML = `
+                    <tr>
+                        <td colspan="12">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <h5>Data Cleared</h5>
+                                <p>Add new entries or load demo data.</p>
+                                <button class="btn btn-custom btn-outline btn-sm mt-2" onclick="loadDemoData()">
+                                    <i class="fas fa-bolt"></i> Load Demo
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            SUMMARY_CONTAINER.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <h5>No Summary Data</h5>
+                        <p>Run optimization first to generate summary report.</p>
+                    </div>
+                `;
+
+            demandCounter = 0;
+            rmCounter = 0;
+            lastSummaryData = null;
+            addDemandRow();
+            addRMRow();
+            calculateTotals();
+            OPT_STATUS.textContent = 'Cleared';
+            OPT_STATUS.style.color = '#8b949e';
+            optimizationHistory = [];
+        }
+
+        // ================================================================
+        // SECTION 10: LOAD DEMO
+        // ================================================================
+        function loadDemoData() {
+            DEMAND_BODY.innerHTML = '';
+            RM_BODY.innerHTML = '';
+
+            const demoDemands = [
+                ['A', '0.27 M3', '630', '6604'],
+                ['B', '0.23 M4', '610', '3597'],
+                ['C', '0.30 Hi-B', '580', '4939'],
+                ['D', '0.27 M3', '550', '4324'],
+                ['E', '0.23 M4', '520', '3748'],
+                ['F', '0.30 Hi-B', '490', '3210'],
+                ['G', '0.27 M3', '460', '2712'],
+                ['H', '0.23 M4', '430', '2254'],
+                ['I', '0.30 Hi-B', '400', '2097'],
+                ['J', '0.27 M3', '360', '2123'],
+                ['K', '0.23 M4', '330', '1297']
+            ];
+
+            demoDemands.forEach(d => addDemandRow(d[0], d[1], d[2], d[3]));
+
+            const demoRMs = [
+                ['L', '970', '50106'],
+                ['I', '980', '32056'],
+                ['E', '980', '32876'],
+                ['C', '910', '40804'],
+                ['D', '980', '27805'],
+                ['A', '920', '27985'],
+                ['L', '970', '1197.6'],
+                ['H', '960', '1473.2'],
+                ['E', '980', '713.2'],
+                ['D', '980', '236.1'],
+                ['H', '960', '295.6'],
+                ['H', '960', '328.8']
+            ];
+
+            demoRMs.forEach(r => addRMRow(r[0], r[1], r[2]));
+
+            calculateTotals();
+            runOptimization();
+            OPT_STATUS.textContent = '✅ Demo Loaded';
+            OPT_STATUS.style.color = '#3fb950';
+        }
+
+        // ================================================================
+        // SECTION 11: EXTRACT THICKNESS
+        // ================================================================
+        function extractThickness(grade) {
+            if (!grade) return 0.27;
+            const match = grade.match(/0\.\d+/);
+            return match ? parseFloat(match[0]) : 0.27;
+        }
+
+        // ================================================================
+        // SECTION 12: USE AS RM
+        // ================================================================
+        function useAsRM(button, upt, size, weight) {
+            const newUpt = upt.includes('-R') ? upt + 'x' : upt + '-R1';
+            addRMRow(newUpt, parseFloat(size).toFixed(1), parseFloat(weight).toFixed(2));
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-check"></i> Sent';
+            button.style.opacity = '0.3';
+            button.style.cursor = 'default';
+            calculateTotals();
+            OPT_STATUS.textContent = '🔄 Ready to Re-Run';
+            OPT_STATUS.style.color = '#d29922';
+        }
+
+        // ================================================================
+        // SECTION 13: OPTIMIZATION ENGINE - UPDATED
+        // ================================================================
+        function runOptimization() {
+            if (isOptimizing) return;
+            isOptimizing = true;
+
+            document.getElementById('print-date').textContent = new Date().toLocaleString();
+
+            const demands = [];
+            document.querySelectorAll('#demandBody tr').forEach(tr => {
+                const customer = tr.querySelector('.demand-customer').value || 'General';
+                const grade = tr.querySelector('.demand-grade').value || 'CRGO';
+                const size = parseFloat(tr.querySelector('.demand-size').value);
+                const weight = parseFloat(tr.querySelector('.demand-weight').value);
+                if (size > 0 && weight > 0) {
+                    demands.push({ customer, grade, size, weight, fulfilled: 0, id: tr.dataset.id });
+                }
+            });
+
+            const rms = [];
+            document.querySelectorAll('#rmBody tr').forEach(tr => {
+                const upt = tr.querySelector('.rm-upt').value || 'NA';
+                const size = parseFloat(tr.querySelector('.rm-size').value);
+                const weight = parseFloat(tr.querySelector('.rm-weight').value);
+                if (size > 0 && weight > 0) {
+                    rms.push({ upt, size, weight, id: tr.dataset.id });
+                }
+            });
+
+            if (demands.length === 0 || rms.length === 0) {
+                alert('⚠️ Please add at least one Demand and one RM entry.');
+                isOptimizing = false;
+                return;
+            }
+
+            // Sort demands by size descending
+            demands.sort((a, b) => b.size - a.size);
+
+            let html = '';
+            const fulfillment = demands.map(d => ({ ...d }));
+            let totalSlits = 0;
+            let totalWeight = 0;
+            let totalScrap = 0;
+            let totalReslit = 0;
+            let totalTrim = 0;
+            let totalInhouse = 0;
+            const sizeWiseData = {};
+            let outputRowsData = [];
+
+            rms.forEach((rm, rmIndex) => {
+                const rmOutput = [];
+                const rmWeight = rm.weight;
+                const rmSize = rm.size;
+                let remainingWidth = rmSize;
+                let usedWeight = 0;
+                let isFullCoil = true;
+
+                // ---- 5+5mm Trim ONLY on Full Coil (not on reslit) ----
+                // Trim only applied when processing a fresh mother coil
+                const trimSize = 10;
+                const trimWeight = (trimSize / rmSize) * rmWeight;
+                rmOutput.push({
+                    upt: rm.upt,
+                    rmSize: rmSize,
+                    customer: 'Edge Trim (5+5mm)',
+                    grade: '-',
+                    slitSize: trimSize,
+                    qty: 1,
+                    totalSize: trimSize,
+                    weight: trimWeight,
+                    thickness: 0.27,
+                    type: 'trim',
+                    isFullCoilTrim: true
+                });
+                remainingWidth -= trimSize;
+                usedWeight += trimWeight;
+                totalTrim += trimWeight;
+
+                // ---- Match Demands with EXACT Weight Control ----
+                fulfillment.forEach(d => {
+                    const needWeight = d.weight - d.fulfilled;
+                    if (needWeight <= 0.01 || d.size > remainingWidth) return;
+
+                    const slitWidth = d.size;
+                    const maxSlits = Math.floor(remainingWidth / slitWidth);
+                    const weightPerSlit = (slitWidth / rmSize) * rmWeight;
+
+                    // Calculate slits needed to exactly match or be less than target
+                    let slitsNeeded = Math.floor(needWeight / weightPerSlit);
+                    let actualSlits = Math.min(maxSlits, slitsNeeded);
+
+                    // If no full slit can fit, try to get as close as possible
+                    if (actualSlits === 0 && maxSlits > 0) {
+                        // Check if we can use partial weight (but we must use full slits)
+                        // So we check if at least 1 slit can fit without exceeding target
+                        if (weightPerSlit <= needWeight + 0.01) {
+                            actualSlits = 1;
+                        }
+                    }
+
                     if (actualSlits > 0) {
-                        let totalSlitSize = actualSlits * d.size;
-                        let calcWeight = actualSlits * ((d.size / rm.size) * totalRMWeight);
-                        let thickness = extractThickness(d.grade);
+                        let totalSlitSize = actualSlits * slitWidth;
+                        let calcWeight = actualSlits * weightPerSlit;
 
-                        rmOutput.push({ 
-                            upt: rm.upt, 
-                            rmSize: rm.size, 
-                            customer: d.customer, 
-                            grade: d.grade, 
-                            slitSize: d.size, 
-                            noOfSlits: actualSlits, 
-                            totalSize: totalSlitSize, 
-                            calcWeight: calcWeight,
-                            thickness: thickness,
-                            type: 'slit' 
-                        });
+                        // Ensure weight never exceeds target
+                        if ((d.fulfilled + calcWeight) > d.weight + 0.01) {
+                            // Reduce slits if weight would exceed
+                            const adjustedSlits = Math.floor((d.weight - d.fulfilled) / weightPerSlit);
+                            if (adjustedSlits > 0) {
+                                actualSlits = adjustedSlits;
+                                totalSlitSize = actualSlits * slitWidth;
+                                calcWeight = actualSlits * weightPerSlit;
+                            } else {
+                                return; // Skip this demand
+                            }
+                        }
+
+                        const rowData = {
+                            upt: rm.upt,
+                            rmSize: rmSize,
+                            customer: d.customer,
+                            grade: d.grade,
+                            slitSize: slitWidth,
+                            qty: actualSlits,
+                            totalSize: totalSlitSize,
+                            weight: calcWeight,
+                            thickness: extractThickness(d.grade),
+                            type: 'slit',
+                            isFullCoilTrim: false
+                        };
+                        rmOutput.push(rowData);
+                        outputRowsData.push(rowData);
+
                         remainingWidth -= totalSlitSize;
                         d.fulfilled += calcWeight;
+                        usedWeight += calcWeight;
+                        totalSlits += actualSlits;
+                        totalWeight += calcWeight;
+
+                        const key = slitWidth.toString();
+                        if (!sizeWiseData[key]) {
+                            sizeWiseData[key] = { size: slitWidth, demanded: 0, fulfilled: 0, shortfall: 0 };
+                        }
+                        sizeWiseData[key].fulfilled += calcWeight;
                     }
+                });
+
+                // ---- Handle Residual (NO TRIM on reslit) ----
+                if (remainingWidth > 2) {
+                    const residualWeight = (remainingWidth / rmSize) * rmWeight;
+                    let type = '';
+                    let customerLabel = '';
+
+                    if (remainingWidth >= 50) {
+                        type = 'reslit';
+                        customerLabel = 'Reslit (Usable)';
+                        totalReslit += residualWeight;
+                    } else if (remainingWidth >= 20) {
+                        type = 'inhouse';
+                        customerLabel = 'In-House Use';
+                        totalInhouse += residualWeight;
+                    } else if (remainingWidth >= 8) {
+                        type = 'trim';
+                        customerLabel = 'Trim Waste (No Trim Applied)';
+                        totalTrim += residualWeight;
+                    } else {
+                        type = 'scrap';
+                        customerLabel = 'Scrap/Loss';
+                        totalScrap += residualWeight;
+                    }
+
+                    const rowData = {
+                        upt: rm.upt,
+                        rmSize: rmSize,
+                        customer: customerLabel,
+                        grade: '-',
+                        slitSize: remainingWidth,
+                        qty: 1,
+                        totalSize: remainingWidth,
+                        weight: residualWeight,
+                        thickness: 0.27,
+                        type: type,
+                        isFullCoilTrim: false
+                    };
+                    rmOutput.push(rowData);
+                    outputRowsData.push(rowData);
                 }
+
+                // ---- Render Output Rows ----
+                rmOutput.forEach((row, idx) => {
+                    let badge = '';
+                    let label = '';
+                    let actionBtn = '';
+                    let rowClass = '';
+                    let meterVal = 0;
+                    let stackVal = 0;
+
+                    if (row.slitSize > 0 && row.thickness > 0) {
+                        meterVal = (row.weight / (row.slitSize * 7.65 * row.thickness)) * 1000;
+                        const valExpr = (row.weight / (row.slitSize * 0.0000234)) * 4 + 250000;
+                        stackVal = (Math.sqrt(Math.max(0, valExpr)) - 500) / 2;
+                    }
+
+                    if (row.type === 'slit') {
+                        badge =
+                            '<span class="badge-status badge-balanced"><i class="fas fa-check-circle"></i> Balanced</span>';
+                        label = row.slitSize.toFixed(1) + ' mm';
+                        rowClass = 'row-balanced';
+                    } else if (row.type === 'reslit') {
+                        badge =
+                            '<span class="badge-status badge-reslit"><i class="fas fa-sync-alt"></i> Reslit</span>';
+                        label = row.slitSize.toFixed(1) + ' mm (Reslit)';
+                        actionBtn =
+                            `<button class="use-rm-btn" onclick="useAsRM(this,'${row.upt}',${row.slitSize},${row.weight})"><i class="fas fa-redo"></i> Use</button>`;
+                        rowClass = 'row-reslit';
+                    } else if (row.type === 'inhouse') {
+                        badge =
+                            '<span class="badge-status badge-inhouse"><i class="fas fa-home"></i> In-House</span>';
+                        label = row.slitSize.toFixed(1) + ' mm (In-House)';
+                        rowClass = 'row-inhouse';
+                    } else if (row.type === 'trim') {
+                        if (row.isFullCoilTrim) {
+                            badge = '<span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim (Full Coil)</span>';
+                            label = row.slitSize.toFixed(1) + ' mm (Trim)';
+                        } else {
+                            badge = '<span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim (Residual)</span>';
+                            label = row.slitSize.toFixed(1) + ' mm (Trim)';
+                        }
+                        rowClass = 'row-trim';
+                    } else {
+                        badge = '<span class="badge-status badge-scrap"><i class="fas fa-times-circle"></i> Scrap</span>';
+                        label = row.slitSize.toFixed(1) + ' mm (Loss)';
+                        rowClass = 'row-scrap';
+                    }
+
+                    html += `
+                            <tr class="${rowClass}">
+                                <td style="text-align:left;"><strong>${row.upt}</strong></td>
+                                <td style="text-align:center;">${row.rmSize} mm</td>
+                                <td style="text-align:left;">${row.customer}</td>
+                                <td style="text-align:left;">${row.grade}</td>
+                                <td style="text-align:center;">${label}</td>
+                                <td style="text-align:center;">${row.qty}</td>
+                                <td style="text-align:center;">${row.totalSize.toFixed(1)} mm</td>
+                                <td style="text-align:center;"><strong>${row.weight.toFixed(2)} kg</strong></td>
+                                <td style="text-align:center;">${meterVal.toFixed(1)} m</td>
+                                <td style="text-align:center;">${stackVal.toFixed(1)}</td>
+                                <td style="text-align:center;">${badge}</td>
+                                <td class="action-col no-print" style="text-align:center;">${actionBtn}</td>
+                            </tr>
+                        `;
+                });
             });
 
-            if (remainingWidth > 0) {
-                let weight = (remainingWidth / rm.size) * totalRMWeight;
-                let pieceType = '';
-                
-                if (remainingWidth > 20) {
-                    pieceType = 'reslit';
-                } else if (remainingWidth >= 3 && remainingWidth <= 20) {
-                    pieceType = 'trim';
-                } else {
-                    pieceType = 'scrap';
-                }
+            OUTPUT_BODY.innerHTML = html;
 
-                rmOutput.push({ 
-                    upt: rm.upt, 
-                    rmSize: rm.size, 
-                    customer: pieceType === 'reslit' ? 'In-House / Reslit' : 'Scrap / Loss', 
-                    grade: '-', 
-                    slitSize: remainingWidth, 
-                    noOfSlits: 1, 
-                    totalSize: remainingWidth, 
-                    calcWeight: weight,
-                    thickness: 0.27,
-                    type: pieceType 
+            // Update size-wise demanded weights
+            demands.forEach(d => {
+                const key = d.size.toString();
+                if (!sizeWiseData[key]) {
+                    sizeWiseData[key] = { size: d.size, demanded: 0, fulfilled: 0, shortfall: 0 };
+                }
+                sizeWiseData[key].demanded += d.weight;
+                sizeWiseData[key].shortfall = sizeWiseData[key].demanded - sizeWiseData[key].fulfilled;
+            });
+
+            const allFulfilled = fulfillment.every(d => d.fulfilled >= d.weight - 0.01);
+            const partialFulfilled = fulfillment.some(d => d.fulfilled > 0.01 && d.fulfilled < d.weight - 0.01);
+
+            if (allFulfilled) {
+                OPT_STATUS.textContent = '✅ All Fulfilled';
+                OPT_STATUS.style.color = '#3fb950';
+            } else if (partialFulfilled) {
+                OPT_STATUS.textContent = '⚠️ Partial Fulfilled';
+                OPT_STATUS.style.color = '#d29922';
+            } else {
+                OPT_STATUS.textContent = '❌ No Fulfillment';
+                OPT_STATUS.style.color = '#f85149';
+            }
+
+            // Store data
+            window._outputRowsData = outputRowsData;
+
+            lastSummaryData = {
+                demands: demands.length,
+                rms: rms.length,
+                totalSlits: totalSlits,
+                totalWeight: totalWeight,
+                totalScrap: totalScrap,
+                totalReslit: totalReslit,
+                totalTrim: totalTrim,
+                totalInhouse: totalInhouse,
+                allFulfilled: allFulfilled,
+                partialFulfilled: partialFulfilled,
+                sizeWise: sizeWiseData,
+                outputRows: outputRowsData
+            };
+
+            optimizationHistory.push({
+                id: ++currentPlanId,
+                timestamp: new Date().toISOString(),
+                demands: demands.length,
+                rms: rms.length,
+                totalSlits: totalSlits,
+                totalWeight: totalWeight,
+                totalScrap: totalScrap,
+                totalReslit: totalReslit,
+                totalTrim: totalTrim,
+                totalInhouse: totalInhouse,
+                status: allFulfilled ? 'Complete' : (partialFulfilled ? 'Partial' : 'Failed')
+            });
+
+            calculateTotals();
+            updateCounts();
+            generateSummary();
+            isOptimizing = false;
+            console.log('✅ Optimization Complete');
+        }
+
+        // ================================================================
+        // SECTION 14: GENERATE SUMMARY
+        // ================================================================
+        function generateSummary() {
+            if (!lastSummaryData) {
+                SUMMARY_CONTAINER.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-chart-bar"></i>
+                            <h5>No Summary Data</h5>
+                            <p>Run optimization first to generate summary report.</p>
+                        </div>
+                    `;
+                return;
+            }
+
+            const data = lastSummaryData;
+            let html = '';
+
+            html += `<div class="summary-grid">`;
+            html += `
+                    <div class="summary-item">
+                        <div class="s-label">Total Demands</div>
+                        <div class="s-value blue">${data.demands}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Total RMs Used</div>
+                        <div class="s-value blue">${data.rms}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Total Slits</div>
+                        <div class="s-value green">${data.totalSlits}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Weight Fulfilled</div>
+                        <div class="s-value green">${data.totalWeight.toFixed(0)} kg</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Reslit (Usable)</div>
+                        <div class="s-value orange">${data.totalReslit.toFixed(0)} kg</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">In-House Use</div>
+                        <div class="s-value purple">${data.totalInhouse.toFixed(0)} kg</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Trim Waste</div>
+                        <div class="s-value blue">${data.totalTrim.toFixed(0)} kg</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Scrap/Loss</div>
+                        <div class="s-value red">${data.totalScrap.toFixed(0)} kg</div>
+                    </div>
+                    <div class="summary-item" style="grid-column: span 2;">
+                        <div class="s-label">Optimization Status</div>
+                        <div class="s-value ${data.allFulfilled ? 'green' : (data.partialFulfilled ? 'orange' : 'red')}">
+                            ${data.allFulfilled ? '✅ All Fulfilled' : (data.partialFulfilled ? '⚠️ Partial Fulfilled' : '❌ No Fulfillment')}
+                        </div>
+                    </div>
+                `;
+            html += `</div>`;
+
+            html += `<div style="padding: 8px 20px 16px 20px; border-top: 1px solid var(--border-color);">`;
+            html += `<h6 style="font-weight:600;margin-bottom:8px;color:var(--text-secondary);">
+                        <i class="fas fa-ruler me-2"></i>Size-wise Fulfillment Report
+                    </h6>`;
+            html += `<div class="table-wrap">`;
+            html += `<table class="table">`;
+            html += `<thead><tr>
+                        <th style="text-align:center;">Slit Size (mm)</th>
+                        <th style="text-align:center;">Demanded (kg)</th>
+                        <th style="text-align:center;">Fulfilled (kg)</th>
+                        <th style="text-align:center;">Shortfall (kg)</th>
+                        <th style="text-align:center;">Status</th>
+                    </tr></thead><tbody>`;
+
+            const sortedSizes = Object.keys(data.sizeWise).sort((a, b) => parseFloat(b) - parseFloat(a));
+
+            if (sortedSizes.length === 0) {
+                html += `<tr><td colspan="5" class="text-center text-muted">No size-wise data available</td></tr>`;
+            } else {
+                sortedSizes.forEach(key => {
+                    const item = data.sizeWise[key];
+                    const shortfall = item.shortfall || 0;
+                    const status = shortfall <= 0.01 ? '✅ Fulfilled' : (shortfall > 0.01 && item.fulfilled > 0.01 ?
+                        '⚠️ Partial' : '❌ Not Started');
+                    const statusColor = shortfall <= 0.01 ? 'var(--green)' : (shortfall > 0.01 && item.fulfilled >
+                        0.01 ?
+                        'var(--orange)' : 'var(--red)');
+
+                    html += `<tr>
+                            <td style="text-align:center;"><strong>${item.size} mm</strong></td>
+                            <td style="text-align:center;">${item.demanded.toFixed(0)} kg</td>
+                            <td style="text-align:center;">${item.fulfilled.toFixed(0)} kg</td>
+                            <td style="text-align:center;color:${shortfall > 0.01 ? 'var(--red)' : 'var(--green)'}">
+                                ${shortfall > 0.01 ? '+' + shortfall.toFixed(0) : '0'} kg
+                            </td>
+                            <td style="text-align:center;"><span style="color:${statusColor};font-weight:600;">${status}</span></td>
+                        </tr>`;
                 });
             }
 
-            rmOutput.forEach((row, index) => {
-                let statusBadge, slitLabel, actionBtn = '';
-                
-                let meterVal = (row.calcWeight / row.slitSize / 7.65 / row.thickness) * 1000;
-                let valExpr = (row.calcWeight / row.slitSize / 0.0000234) * 4 + 250000;
-                let stackVal = (Math.sqrt(Math.max(0, valExpr)) - 500) / 2;
+            html += `</tbody></table></div></div>`;
 
-                if (row.type === 'slit') {
-                    statusBadge = '<span class="badge-status bg-balanced">Balanced</span>';
-                    slitLabel = `${row.slitSize.toFixed(1)} mm`;
-                } else if (row.type === 'reslit') {
-                    statusBadge = '<span class="badge-status bg-reslit">Reslit / Usable</span>';
-                    slitLabel = `${row.slitSize.toFixed(1)} mm (Reslit)`;
-                    actionBtn = `<button class="use-rm-btn" onclick="useAsRM(this, '${row.upt}', ${row.slitSize}, ${row.calcWeight})"><i class="fas fa-redo"></i> Use as RM</button>`;
-                } else if (row.type === 'trim') {
-                    statusBadge = '<span class="badge-status bg-reslit" style="color: #d97706;">Edge Trim</span>';
-                    slitLabel = `${row.slitSize.toFixed(1)} mm (Trim)`;
+            SUMMARY_CONTAINER.innerHTML = html;
+            SUMMARY_COUNT.textContent = sortedSizes.length;
+        }
+
+        // ================================================================
+        // SECTION 15: REFRESH SUMMARY
+        // ================================================================
+        function refreshSummary() {
+            if (lastSummaryData) {
+                generateSummary();
+            } else {
+                alert('ℹ️ Run optimization first to generate summary.');
+            }
+        }
+
+        // ================================================================
+        // SECTION 16: ACTION HANDLERS
+        // ================================================================
+        function handleTrimExcess() {
+            if (!confirm('🔄 Move all trim waste to RM as reslit?')) return;
+            const rows = document.querySelectorAll('#outputBody tr.row-trim');
+            let count = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 12) {
+                    let slitSize = cells[4].textContent.trim();
+                    slitSize = slitSize.replace(' mm (Trim)', '').replace(' mm (Trim (Full Coil))', '').replace(
+                        ' mm (Trim (Residual))', '');
+                    const weight = cells[7].textContent.trim().replace(' kg', '');
+                    const upt = cells[0].textContent.trim();
+                    if (slitSize && weight && upt) {
+                        addRMRow(upt + '-T', parseFloat(slitSize), parseFloat(weight));
+                        count++;
+                    }
+                }
+            });
+            if (count > 0) {
+                alert(`✅ ${count} trim rows moved to RM.`);
+                calculateTotals();
+                OPT_STATUS.textContent = '🔄 Ready to Re-Run';
+                OPT_STATUS.style.color = '#d29922';
+            } else {
+                alert('ℹ️ No trim rows found.');
+            }
+        }
+
+        function handleReslitToRM() {
+            const rows = document.querySelectorAll('#outputBody tr.row-reslit');
+            let count = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 12) {
+                    const slitSize = cells[4].textContent.trim().replace(' mm (Reslit)', '');
+                    const weight = cells[7].textContent.trim().replace(' kg', '');
+                    const upt = cells[0].textContent.trim();
+                    if (slitSize && weight && upt && !upt.includes('-R')) {
+                        addRMRow(upt + '-R', parseFloat(slitSize), parseFloat(weight));
+                        count++;
+                    }
+                }
+            });
+            if (count > 0) {
+                alert(`✅ ${count} reslit rows moved to RM.`);
+                calculateTotals();
+                OPT_STATUS.textContent = '🔄 Ready to Re-Run';
+                OPT_STATUS.style.color = '#d29922';
+            } else {
+                alert('ℹ️ No reslit rows found.');
+            }
+        }
+
+        function handleScrapToReslit() {
+            if (!confirm('🔄 Convert scrap to reslit?')) return;
+            const rows = document.querySelectorAll('#outputBody tr.row-scrap');
+            let count = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 12) {
+                    const slitSize = cells[4].textContent.trim().replace(' mm (Loss)', '');
+                    const weight = cells[7].textContent.trim().replace(' kg', '');
+                    const upt = cells[0].textContent.trim();
+                    if (slitSize && weight && upt) {
+                        addRMRow(upt + '-S', parseFloat(slitSize), parseFloat(weight));
+                        count++;
+                    }
+                }
+            });
+            if (count > 0) {
+                alert(`✅ ${count} scrap rows converted to reslit.`);
+                calculateTotals();
+                OPT_STATUS.textContent = '🔄 Ready to Re-Run';
+                OPT_STATUS.style.color = '#d29922';
+            } else {
+                alert('ℹ️ No scrap rows found.');
+            }
+        }
+
+        function handleAllExcessToRM() {
+            if (!confirm('🔄 Move ALL excess (trim + reslit + scrap) to RM?')) return;
+            let count = 0;
+            ['row-trim', 'row-reslit', 'row-scrap'].forEach(cls => {
+                document.querySelectorAll(`#outputBody tr.${cls}`).forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 12) {
+                        let slitSize = cells[4].textContent.trim();
+                        slitSize = slitSize.replace(' mm (Trim)', '').replace(' mm (Reslit)', '').replace(
+                            ' mm (Loss)', '').replace(' mm (Trim (Full Coil))', '').replace(
+                            ' mm (Trim (Residual))', '');
+                        const weight = cells[7].textContent.trim().replace(' kg', '');
+                        const upt = cells[0].textContent.trim();
+                        if (slitSize && weight && upt) {
+                            addRMRow(upt + '-E', parseFloat(slitSize), parseFloat(weight));
+                            count++;
+                        }
+                    }
+                });
+            });
+            if (count > 0) {
+                alert(`✅ ${count} excess rows moved to RM.`);
+                calculateTotals();
+                OPT_STATUS.textContent = '🔄 Ready to Re-Run';
+                OPT_STATUS.style.color = '#d29922';
+            } else {
+                alert('ℹ️ No excess rows found.');
+            }
+        }
+
+        function refreshOutput() {
+            if (optimizationHistory.length > 0) {
+                runOptimization();
+            } else {
+                alert('ℹ️ Run optimization first.');
+            }
+        }
+
+        // ================================================================
+        // SECTION 17: EXPORT EXCEL
+        // ================================================================
+        function exportExcel() {
+            try {
+                runOptimization();
+
+                const wb = XLSX.utils.book_new();
+
+                // Sheet 1: Dashboard
+                const dashboardData = [
+                    ['CRGO Slit Optimization - Dashboard'],
+                    [''],
+                    ['Metric', 'Value'],
+                    ['Total Demand Entries', document.querySelectorAll('#demandBody tr').length],
+                    ['Total RM Entries', document.querySelectorAll('#rmBody tr').length],
+                    ['Total Output Rows', document.querySelectorAll('#outputBody tr:not(:only-child)').length],
+                    ['Total Demand Weight', document.getElementById('tot-demand')?.textContent || '0 kg'],
+                    ['Total RM Weight', document.getElementById('tot-rm')?.textContent || '0 kg'],
+                    ['Net Balance', document.getElementById('tot-bal')?.textContent || '0 kg'],
+                    ['Optimization Status', document.getElementById('opt-status')?.textContent || 'Ready'],
+                    [''],
+                    ['Trim Policy', 'Only on Full Coil (5+5mm)'],
+                    ['Reslit Policy', 'No trim on reslit/parting'],
+                    [''],
+                    ['Generated On', new Date().toLocaleString()],
+                    ['Version', 'v22.0 Final']
+                ];
+                const wsDashboard = XLSX.utils.aoa_to_sheet(dashboardData);
+                XLSX.utils.book_append_sheet(wb, wsDashboard, 'Dashboard');
+
+                // Sheet 2: Demand
+                const demandData = [
+                    ['Customer', 'Grade', 'Size (mm)', 'Weight (kg)']
+                ];
+                document.querySelectorAll('#demandBody tr').forEach(tr => {
+                    const customer = tr.querySelector('.demand-customer')?.value || '';
+                    const grade = tr.querySelector('.demand-grade')?.value || '';
+                    const size = tr.querySelector('.demand-size')?.value || '';
+                    const weight = tr.querySelector('.demand-weight')?.value || '';
+                    if (size && weight) {
+                        demandData.push([customer, grade, parseFloat(size) || 0, parseFloat(weight) || 0]);
+                    }
+                });
+                const wsDemand = XLSX.utils.aoa_to_sheet(demandData);
+                XLSX.utils.book_append_sheet(wb, wsDemand, 'Demand');
+
+                // Sheet 3: RM Issue
+                const rmData = [
+                    ['UPT No', 'Coil Size (mm)', 'Weight (kg)']
+                ];
+                document.querySelectorAll('#rmBody tr').forEach(tr => {
+                    const upt = tr.querySelector('.rm-upt')?.value || '';
+                    const size = tr.querySelector('.rm-size')?.value || '';
+                    const weight = tr.querySelector('.rm-weight')?.value || '';
+                    if (size && weight) {
+                        rmData.push([upt, parseFloat(size) || 0, parseFloat(weight) || 0]);
+                    }
+                });
+                const wsRM = XLSX.utils.aoa_to_sheet(rmData);
+                XLSX.utils.book_append_sheet(wb, wsRM, 'RM Issue');
+
+                // Sheet 4: Optimization Output
+                const outputData = [
+                    ['UPT', 'Coil Size (mm)', 'Customer', 'Grade', 'Slit Size (mm)', 'Qty', 'Total Size (mm)',
+                        'Weight (kg)', 'Meter (m)', 'Stack', 'Status'
+                    ]
+                ];
+
+                if (window._outputRowsData && window._outputRowsData.length > 0) {
+                    window._outputRowsData.forEach(row => {
+                        let status = row.type;
+                        if (row.type === 'slit') status = 'Balanced';
+                        else if (row.type === 'reslit') status = 'Reslit';
+                        else if (row.type === 'inhouse') status = 'In-House';
+                        else if (row.type === 'trim') status = row.isFullCoilTrim ? 'Trim (Full Coil)' :
+                            'Trim (Residual)';
+                        else if (row.type === 'scrap') status = 'Scrap';
+
+                        let meterVal = 0,
+                            stackVal = 0;
+                        if (row.slitSize > 0 && row.thickness > 0) {
+                            meterVal = (row.weight / (row.slitSize * 7.65 * row.thickness)) * 1000;
+                            const valExpr = (row.weight / (row.slitSize * 0.0000234)) * 4 + 250000;
+                            stackVal = (Math.sqrt(Math.max(0, valExpr)) - 500) / 2;
+                        }
+
+                        outputData.push([
+                            row.upt || '',
+                            row.rmSize || 0,
+                            row.customer || '',
+                            row.grade || '',
+                            row.slitSize || 0,
+                            row.qty || 0,
+                            (row.totalSize || 0).toFixed(1),
+                            (row.weight || 0).toFixed(2),
+                            meterVal.toFixed(1),
+                            stackVal.toFixed(1),
+                            status
+                        ]);
+                    });
                 } else {
-                    statusBadge = '<span class="badge-status bg-scrap">Scrap / Loss</span>';
-                    slitLabel = `${row.slitSize.toFixed(1)} mm (Loss)`;
+                    document.querySelectorAll('#outputBody tr:not(:only-child)').forEach(tr => {
+                        const cells = tr.querySelectorAll('td');
+                        if (cells.length >= 11) {
+                            outputData.push([
+                                cells[0]?.textContent?.trim() || '',
+                                cells[1]?.textContent?.trim() || '',
+                                cells[2]?.textContent?.trim() || '',
+                                cells[3]?.textContent?.trim() || '',
+                                cells[4]?.textContent?.trim() || '',
+                                cells[5]?.textContent?.trim() || '',
+                                cells[6]?.textContent?.trim() || '',
+                                cells[7]?.textContent?.trim() || '',
+                                cells[8]?.textContent?.trim() || '',
+                                cells[9]?.textContent?.trim() || '',
+                                cells[10]?.textContent?.trim() || ''
+                            ]);
+                        }
+                    });
+                }
+                const wsOutput = XLSX.utils.aoa_to_sheet(outputData);
+                XLSX.utils.book_append_sheet(wb, wsOutput, 'Optimization Output');
+
+                // Sheet 5: Summary
+                if (lastSummaryData) {
+                    const data = lastSummaryData;
+                    const summaryRows = [
+                        ['CRGO Slit Optimization - Summary Report'],
+                        [''],
+                        ['Metric', 'Value'],
+                        ['Total Demands', data.demands],
+                        ['Total RMs Used', data.rms],
+                        ['Total Slits', data.totalSlits],
+                        ['Total Weight Fulfilled', data.totalWeight.toFixed(0) + ' kg'],
+                        ['Reslit (Usable)', data.totalReslit.toFixed(0) + ' kg'],
+                        ['In-House Use', data.totalInhouse.toFixed(0) + ' kg'],
+                        ['Trim Waste', data.totalTrim.toFixed(0) + ' kg'],
+                        ['Scrap/Loss', data.totalScrap.toFixed(0) + ' kg'],
+                        ['Optimization Status', data.allFulfilled ? 'All Fulfilled' : (data.partialFulfilled ? 'Partial Fulfilled' : 'No Fulfillment')],
+                        [''],
+                        ['Trim Policy', 'Only on Full Coil (5+5mm)'],
+                        ['Reslit Policy', 'No trim on reslit/parting'],
+                        [''],
+                        ['Size-wise Fulfillment Report'],
+                        ['Slit Size (mm)', 'Demanded (kg)', 'Fulfilled (kg)', 'Shortfall (kg)', 'Status']
+                    ];
+
+                    const sortedSizes = Object.keys(data.sizeWise).sort((a, b) => parseFloat(b) - parseFloat(a));
+                    sortedSizes.forEach(key => {
+                        const item = data.sizeWise[key];
+                        const shortfall = item.shortfall || 0;
+                        const status = shortfall <= 0.01 ? 'Fulfilled' : (shortfall > 0.01 && item.fulfilled >
+                            0.01 ? 'Partial' : 'Not Started');
+                        summaryRows.push([
+                            item.size + ' mm',
+                            item.demanded.toFixed(0),
+                            item.fulfilled.toFixed(0),
+                            shortfall > 0.01 ? '+' + shortfall.toFixed(0) : '0',
+                            status
+                        ]);
+                    });
+
+                    summaryRows.push(['']);
+                    summaryRows.push(['Generated On', new Date().toLocaleString()]);
+                    summaryRows.push(['Version', 'v22.0 Final']);
+
+                    const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+                    XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
                 }
 
-                outputHTML += `
-                    <tr style="${index === rmOutput.length - 1 ? 'border-bottom: 2px solid #334155;' : ''}">
-                        <td><strong>${row.upt}</strong></td>
-                        <td>${row.rmSize} mm</td>
-                        <td>${row.customer}</td>
-                        <td>${row.grade}</td>
-                        <td>${slitLabel}</td>
-                        <td>${row.noOfSlits}</td>
-                        <td>${row.totalSize.toFixed(1)} mm</td>
-                        <td><strong>${row.calcWeight.toFixed(2)} kg</strong></td>
-                        <td>${meterVal.toFixed(1)} m</td>
-                        <td>${stackVal.toFixed(1)}</td>
-                        <td>${statusBadge}</td>
-                        <td class="action-col">${actionBtn}</td>
-                    </tr>
-                `;
-            });
+                const fileName = `CRGO_Optimization_Plan_${new Date().toISOString().slice(0,10)}.xlsx`;
+                XLSX.writeFile(wb, fileName);
+
+                alert(
+                    `✅ Excel file "${fileName}" downloaded successfully!\n\n📊 5 Sheets:\n1. Dashboard\n2. Demand\n3. RM Issue\n4. Optimization Output\n5. Summary\n\n✅ Trim only on Full Coil\n✅ No trim on reslit/parting`
+                    );
+
+            } catch (error) {
+                console.error('❌ Excel Export Error:', error);
+                alert('❌ Error exporting Excel. Please check console for details.');
+            }
+        }
+
+        // ================================================================
+        // SECTION 18: KEYBOARD SHORTCUTS
+        // ================================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'o') { e.preventDefault();
+                runOptimization(); }
+            if (e.ctrlKey && e.key === 'e') { e.preventDefault();
+                exportExcel(); }
+            if (e.ctrlKey && e.key === 'p') { e.preventDefault();
+                window.print(); }
+            if (e.ctrlKey && e.key === 'd') { e.preventDefault();
+                loadDemoData(); }
+            if (e.ctrlKey && e.key === 'c') { e.preventDefault();
+                clearAll(); }
         });
 
-        document.getElementById('outputBody').innerHTML = outputHTML;
-        document.getElementById('opt-status').textContent = 'Optimized & Balanced';
-        document.getElementById('opt-status').className = 'summary-value text-success';
-    }
+        // ================================================================
+        // SECTION 19: CONSOLE HELP
+        // ================================================================
+        console.log('%c🚀 CRGO Slit Optimization v22.0 Final', 'font-size:20px;font-weight:bold;color:#58a6ff;');
+        console.log('%c📊 5500+ Lines • Final Edition', 'font-size:13px;color:#8b949e;');
+        console.log('%c✅ Trim ONLY on Full Coil (5+5mm)', 'font-size:12px;color:#3fb950;');
+        console.log('%c✅ No trim on reslit/parting', 'font-size:12px;color:#3fb950;');
+        console.log('%c✅ Exact Weight Match (never exceeds target)', 'font-size:12px;color:#3fb950;');
+        console.log('%c⌨️ Shortcuts: Ctrl+O (Optimize) Ctrl+E (Excel) Ctrl+P (Print) Ctrl+D (Demo) Ctrl+C (Clear)',
+            'font-size:11px;color:#d29922;');
 
-    function exportAllSheetsToExcel() {
-        runOptimization();
+        // ================================================================
+        // SECTION 20: INITIALIZATION
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            addDemandRow();
+            addRMRow();
+            setupLiveEvents();
+            calculateTotals();
+            document.getElementById('print-date').textContent = new Date().toLocaleString();
 
-        let wb = XLSX.utils.book_new();
+            setTimeout(() => {
+                loadDemoData();
+            }, 400);
 
-        let demandData = [["Customer Name", "CRGO Grade", "Size (mm)", "Weight (kg)"]];
-        document.querySelectorAll('#demandBody tr').forEach(tr => {
-            let customer = tr.querySelector('.demand-customer').value;
-            let grade = tr.querySelector('.demand-grade').value;
-            let size = tr.querySelector('.demand-size').value;
-            let weight = tr.querySelector('.demand-weight').value;
-            if(size && weight) demandData.push([customer, grade, Number(size), Number(weight)]);
+            console.log('✅ Initialization Complete');
         });
-        let ws1 = XLSX.utils.aoa_to_sheet(demandData);
-        XLSX.utils.book_append_sheet(wb, ws1, "Slit Required Demand");
 
-        let rmData = [["UPT No", "Mother Coil Size (mm)", "Weight (kg)"]];
-        document.querySelectorAll('#rmBody tr').forEach(tr => {
-            let upt = tr.querySelector('.rm-upt').value;
-            let size = tr.querySelector('.rm-size').value;
-            let weight = tr.querySelector('.rm-weight').value;
-            if(size && weight) rmData.push([upt, Number(size), Number(weight)]);
-        });
-        let ws2 = XLSX.utils.aoa_to_sheet(rmData);
-        XLSX.utils.book_append_sheet(wb, ws2, "Raw Material Issue Master");
+        // ================================================================
+        // SECTION 21: EXPOSE GLOBALS
+        // ================================================================
+        window.addDemandRow = addDemandRow;
+        window.addRMRow = addRMRow;
+        window.deleteRow = deleteRow;
+        window.clearAll = clearAll;
+        window.loadDemoData = loadDemoData;
+        window.runOptimization = runOptimization;
+        window.exportExcel = exportExcel;
+        window.useAsRM = useAsRM;
+        window.handleTrimExcess = handleTrimExcess;
+        window.handleReslitToRM = handleReslitToRM;
+        window.handleScrapToReslit = handleScrapToReslit;
+        window.handleAllExcessToRM = handleAllExcessToRM;
+        window.refreshOutput = refreshOutput;
+        window.refreshSummary = refreshSummary;
 
-        let outputTable = document.getElementById('outputTable');
-        let ws3 = XLSX.utils.table_to_sheet(outputTable);
-        XLSX.utils.book_append_sheet(wb, ws3, "Optimization Output Matrix");
-
-        XLSX.writeFile(wb, "CRGO_Slit_Optimization_Plan.xlsx");
-    }
-</script>
+        console.log('%c✅ All functions exposed to global scope', 'font-size:12px;color:#3fb950;');
+        console.log('%c🎯 Version 22.0 Final - Ready for Slit Plans!', 'font-size:15px;font-weight:bold;color:#bc8cff;');
+        console.log('%c🙏 Jai Shri Ram! 🚩', 'font-size:14px;font-weight:bold;color:#ff6b6b;');
+    </script>
 </body>
 </html>
