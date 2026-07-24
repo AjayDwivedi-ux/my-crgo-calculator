@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRGO Slit Optimization - v22.0 Final</title>
+    <title>CRGO Slit Optimization - v27.0 Final</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        /* ===================================================================
-                   ROOT VARIABLES
-                   =================================================================== */
         :root {
             --bg-primary: #0d1117;
             --bg-secondary: #161b22;
@@ -37,27 +34,20 @@
             --radius-sm: 6px;
             --radius-lg: 16px;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --shadow-glow: 0 8px 40px rgba(88, 166, 255, 0.08);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             padding: 16px;
             min-height: 100vh;
-            background-image:
-                radial-gradient(ellipse at 10% 20%, rgba(88, 166, 255, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 90% 80%, rgba(188, 140, 255, 0.03) 0%, transparent 50%);
         }
-
         ::-webkit-scrollbar {
             width: 5px;
             height: 5px;
@@ -74,10 +64,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--blue);
         }
-
-        /* ===================================================================
-                   CARD
-                   =================================================================== */
         .card-glass {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
@@ -91,9 +77,8 @@
         }
         .card-glass:hover {
             border-color: rgba(88, 166, 255, 0.15);
-            box-shadow: var(--shadow-glow);
+            box-shadow: 0 8px 40px rgba(88, 166, 255, 0.08);
         }
-
         .card-header-glass {
             padding: 14px 20px;
             background: rgba(13, 17, 23, 0.6);
@@ -106,7 +91,6 @@
             font-weight: 600;
             font-size: 0.85rem;
         }
-
         .card-header-glass .icon-box {
             width: 36px;
             height: 36px;
@@ -117,7 +101,6 @@
             margin-right: 10px;
             font-size: 0.9rem;
         }
-
         .icon-blue {
             background: rgba(88, 166, 255, 0.12);
             color: var(--blue);
@@ -142,14 +125,6 @@
             background: rgba(121, 192, 255, 0.12);
             color: var(--cyan);
         }
-        .icon-pink {
-            background: rgba(247, 120, 186, 0.12);
-            color: var(--pink);
-        }
-
-        /* ===================================================================
-                   STAT CARDS
-                   =================================================================== */
         .stat-card {
             padding: 16px 20px;
             border-radius: var(--radius);
@@ -197,7 +172,6 @@
             color: var(--text-secondary);
             margin-top: 2px;
         }
-
         .stat-blue {
             border-bottom: 3px solid var(--blue);
         }
@@ -210,15 +184,10 @@
         .stat-purple {
             border-bottom: 3px solid var(--purple);
         }
-
-        /* ===================================================================
-                   TABLES
-                   =================================================================== */
         .table-wrap {
             overflow-x: auto;
             position: relative;
         }
-
         .table {
             color: var(--text-primary);
             margin: 0;
@@ -259,7 +228,6 @@
         .table tbody tr:hover td {
             background: rgba(88, 166, 255, 0.03);
         }
-
         .row-balanced td {
             border-left: 3px solid var(--green);
         }
@@ -275,7 +243,6 @@
         .row-scrap td {
             border-left: 3px solid var(--red);
         }
-
         .row-balanced {
             background: rgba(63, 185, 80, 0.03);
         }
@@ -291,10 +258,6 @@
         .row-scrap {
             background: rgba(248, 81, 73, 0.03);
         }
-
-        /* ===================================================================
-                   FORM CONTROLS
-                   =================================================================== */
         .form-control {
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
@@ -322,10 +285,28 @@
             color: var(--text-primary);
             border-color: rgba(88, 166, 255, 0.15);
         }
-
-        /* ===================================================================
-                   BUTTONS
-                   =================================================================== */
+        .form-select-custom {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            transition: var(--transition);
+            width: 100%;
+            min-width: 90px;
+            cursor: pointer;
+            appearance: auto;
+        }
+        .form-select-custom:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+            outline: none;
+        }
+        .form-select-custom option {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
         .btn-custom {
             border-radius: var(--radius-sm);
             font-weight: 500;
@@ -347,7 +328,6 @@
         .btn-custom:active {
             transform: translateY(0px) scale(0.97);
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #238636, #2ea043);
             color: #fff;
@@ -356,7 +336,6 @@
             background: linear-gradient(135deg, #2ea043, #3fb950);
             color: #fff;
         }
-
         .btn-blue {
             background: linear-gradient(135deg, #1f6feb, #388bfd);
             color: #fff;
@@ -365,7 +344,6 @@
             background: linear-gradient(135deg, #388bfd, #58a6ff);
             color: #fff;
         }
-
         .btn-outline {
             background: transparent;
             color: var(--text-primary);
@@ -376,7 +354,6 @@
             color: #fff;
             border-color: rgba(255, 255, 255, 0.08);
         }
-
         .btn-danger {
             background: linear-gradient(135deg, #da3633, #f85149);
             color: #fff;
@@ -385,7 +362,6 @@
             background: linear-gradient(135deg, #f85149, #ff6b6b);
             color: #fff;
         }
-
         .btn-orange {
             background: linear-gradient(135deg, #d29922, #f0b34b);
             color: #fff;
@@ -394,16 +370,6 @@
             background: linear-gradient(135deg, #f0b34b, #ffc107);
             color: #fff;
         }
-
-        .btn-purple {
-            background: linear-gradient(135deg, #8957e5, #bc8cff);
-            color: #fff;
-        }
-        .btn-purple:hover {
-            background: linear-gradient(135deg, #bc8cff, #d4a8ff);
-            color: #fff;
-        }
-
         .btn-sm {
             padding: 5px 14px;
             font-size: 0.65rem;
@@ -412,10 +378,6 @@
             padding: 3px 10px;
             font-size: 0.55rem;
         }
-
-        /* ===================================================================
-                   BADGES
-                   =================================================================== */
         .badge-status {
             padding: 3px 14px;
             border-radius: 20px;
@@ -462,10 +424,6 @@
             font-size: 0.6rem;
             font-weight: 500;
         }
-
-        /* ===================================================================
-                   USE AS RM BUTTON
-                   =================================================================== */
         .use-rm-btn {
             background: rgba(88, 166, 255, 0.08);
             color: var(--blue);
@@ -490,10 +448,6 @@
             cursor: not-allowed;
             transform: none !important;
         }
-
-        /* ===================================================================
-                   HEADER
-                   =================================================================== */
         .main-header {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -518,10 +472,6 @@
             color: var(--text-secondary);
             font-size: 0.75rem;
         }
-
-        /* ===================================================================
-                   PROGRESS BAR
-                   =================================================================== */
         .progress-custom {
             height: 3px;
             background: var(--border-color);
@@ -542,10 +492,6 @@
         .progress-custom .fill.red {
             background: var(--red);
         }
-
-        /* ===================================================================
-                   EMPTY STATE
-                   =================================================================== */
         .empty-state {
             text-align: center;
             padding: 35px 20px;
@@ -565,10 +511,6 @@
             font-size: 0.75rem;
             opacity: 0.6;
         }
-
-        /* ===================================================================
-                   HELPER TEXT
-                   =================================================================== */
         .helper-text {
             font-size: 0.6rem;
             color: var(--text-secondary);
@@ -582,10 +524,6 @@
         .helper-text i {
             opacity: 0.4;
         }
-
-        /* ===================================================================
-                   ACTION ROW
-                   =================================================================== */
         .action-row {
             display: flex;
             gap: 6px;
@@ -597,10 +535,6 @@
             font-size: 0.6rem;
             padding: 4px 14px;
         }
-
-        /* ===================================================================
-                   STATUS DOT
-                   =================================================================== */
         .status-dot {
             width: 8px;
             height: 8px;
@@ -620,10 +554,6 @@
         .dot-blue {
             background: var(--blue);
         }
-
-        /* ===================================================================
-                   ANIMATIONS
-                   =================================================================== */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -644,36 +574,15 @@
                 transform: translateX(0);
             }
         }
-
         .animate-fade {
             animation: fadeUp 0.5s ease forwards;
         }
         .animate-slide {
             animation: slideRight 0.4s ease forwards;
         }
-
         .card-glass {
             animation: fadeUp 0.4s ease forwards;
         }
-        .card-glass:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-        .card-glass:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        .card-glass:nth-child(3) {
-            animation-delay: 0.15s;
-        }
-        .card-glass:nth-child(4) {
-            animation-delay: 0.2s;
-        }
-        .card-glass:nth-child(5) {
-            animation-delay: 0.25s;
-        }
-
-        /* ===================================================================
-                   SUMMARY
-                   =================================================================== */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -717,10 +626,6 @@
         .summary-item .s-value.purple {
             color: var(--purple);
         }
-
-        /* ===================================================================
-                   PRINT
-                   =================================================================== */
         @media print {
             body {
                 background: #ffffff !important;
@@ -728,7 +633,6 @@
                 padding: 6px !important;
                 font-size: 7px !important;
             }
-
             .card-glass {
                 background: #ffffff !important;
                 border: 1px solid #000000 !important;
@@ -736,11 +640,6 @@
                 margin-bottom: 4px !important;
                 border-radius: 0 !important;
             }
-            .card-glass:hover {
-                border-color: #000 !important;
-                box-shadow: none !important;
-            }
-
             .card-header-glass {
                 background: #f1f3f5 !important;
                 color: #000 !important;
@@ -752,7 +651,6 @@
                 background: #e9ecef !important;
                 color: #000 !important;
             }
-
             .main-header {
                 background: #f8f9fa !important;
                 border: 1px solid #000 !important;
@@ -767,7 +665,6 @@
             .main-header .subtitle {
                 color: #000 !important;
             }
-
             .stat-card {
                 background: #f8f9fa !important;
                 border: 1px solid #000 !important;
@@ -785,11 +682,6 @@
             .stat-card .stat-icon {
                 display: none !important;
             }
-            .stat-card:hover {
-                transform: none !important;
-                box-shadow: none !important;
-            }
-
             .table {
                 color: #000 !important;
                 font-size: 6px !important;
@@ -813,19 +705,6 @@
             .table tbody td.text-center {
                 text-align: center !important;
             }
-            .table tbody tr:hover td {
-                background: #fff !important;
-            }
-
-            .row-balanced td,
-            .row-reslit td,
-            .row-trim td,
-            .row-inhouse td,
-            .row-scrap td {
-                border-left: 2px solid #000 !important;
-                background: #fff !important;
-            }
-
             .form-control {
                 background: transparent !important;
                 border: none !important;
@@ -833,10 +712,13 @@
                 padding: 0 !important;
                 font-size: 6px !important;
             }
-            .form-control::placeholder {
-                color: transparent !important;
+            .form-select-custom {
+                background: transparent !important;
+                border: none !important;
+                color: #000 !important;
+                padding: 0 !important;
+                font-size: 6px !important;
             }
-
             .badge-status {
                 border: 1px solid #000 !important;
                 background: transparent !important;
@@ -844,7 +726,6 @@
                 padding: 0 4px !important;
                 font-size: 4px !important;
             }
-
             .no-print {
                 display: none !important;
             }
@@ -860,7 +741,6 @@
             .action-row {
                 display: none !important;
             }
-
             #print-header {
                 display: block !important;
             }
@@ -877,7 +757,6 @@
             .progress-custom {
                 display: none !important;
             }
-
             .summary-grid {
                 display: grid !important;
                 grid-template-columns: repeat(4, 1fr) !important;
@@ -889,7 +768,6 @@
                 background: #f8f9fa !important;
             }
         }
-
         #print-header {
             display: none;
         }
@@ -898,10 +776,6 @@
                 display: block !important;
             }
         }
-
-        /* ===================================================================
-                   RESPONSIVE
-                   =================================================================== */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -931,6 +805,11 @@
                 padding: 5px 8px;
                 min-width: 50px;
             }
+            .form-select-custom {
+                font-size: 0.7rem;
+                padding: 5px 8px;
+                min-width: 70px;
+            }
             .btn-custom {
                 font-size: 0.7rem;
                 padding: 5px 14px;
@@ -939,7 +818,6 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
         @media (max-width: 480px) {
             .main-header .d-flex {
                 flex-direction: column;
@@ -959,7 +837,6 @@
                 grid-template-columns: 1fr;
             }
         }
-
         .text-muted-custom {
             color: var(--text-secondary);
         }
@@ -978,27 +855,50 @@
         .text-right {
             text-align: right !important;
         }
+        .trim-green {
+            background: rgba(46, 160, 67, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(46, 160, 67, 0.2);
+        }
+        .reslit-orange {
+            background: rgba(210, 153, 34, 0.12);
+            color: var(--orange);
+            border: 1px solid rgba(210, 153, 34, 0.2);
+        }
+        .trim-input {
+            max-width: 70px;
+            display: inline-block;
+            text-align: center;
+        }
+        .mode-label {
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 2px 10px;
+            border-radius: 4px;
+        }
+        .mode-label.trim {
+            color: var(--green);
+            background: rgba(46, 160, 67, 0.1);
+        }
+        .mode-label.reslit {
+            color: var(--orange);
+            background: rgba(210, 153, 34, 0.1);
+        }
     </style>
 </head>
 <body>
 
     <div class="container-fluid px-2 px-lg-3">
 
-        <!-- ==========================================================
-        PRINT HEADER
-        ========================================================== -->
         <div id="print-header" style="border-bottom:2px solid #000;padding-bottom:4px;margin-bottom:8px;">
             <h2 style="font-size:12px;margin:0;font-weight:700;">CRGO Slit Optimization Plan</h2>
             <div style="display:flex;justify-content:space-between;font-size:7px;margin-top:2px;">
                 <span>Kryfs Power Systems</span>
                 <span id="print-date"></span>
-                <span>v22.0 Final</span>
+                <span>v27.0 Final</span>
             </div>
         </div>
 
-        <!-- ==========================================================
-        MAIN HEADER
-        ========================================================== -->
         <div class="main-header no-print">
             <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;">
                 <div style="display:flex;align-items:center;gap:12px;">
@@ -1007,9 +907,9 @@
                         <h1>CRGO Slit Optimization</h1>
                         <div class="subtitle">
                             <i class="fas fa-microchip me-1"></i>
-                            Final v22.0 • 5500+ Lines • Kryfs Power Systems
+                            Final v27.0 • 8500+ Lines • Kryfs Power Systems
                             <span style="opacity:0.3;margin-left:8px;">|</span>
-                            <span style="opacity:0.5;font-size:0.65rem;">Trim Only on Full Coil • Exact Weight Match</span>
+                            <span style="opacity:0.5;font-size:0.65rem;">Exact Trim • No Trim on Reslit</span>
                         </div>
                     </div>
                 </div>
@@ -1023,9 +923,6 @@
             </div>
         </div>
 
-        <!-- ==========================================================
-        STATISTICS
-        ========================================================== -->
         <div class="row g-2 mb-3">
             <div class="col-6 col-lg-3">
                 <div class="stat-card stat-blue animate-fade">
@@ -1061,9 +958,6 @@
             </div>
         </div>
 
-        <!-- ==========================================================
-        SECTION 1: DEMAND
-        ========================================================== -->
         <div class="card-glass animate-fade">
             <div class="card-header-glass">
                 <div>
@@ -1094,9 +988,6 @@
             </div>
         </div>
 
-        <!-- ==========================================================
-        SECTION 2: RAW MATERIAL
-        ========================================================== -->
         <div class="card-glass animate-fade" style="animation-delay:0.1s;">
             <div class="card-header-glass">
                 <div>
@@ -1115,6 +1006,8 @@
                             <th style="min-width:90px;text-align:left;">UPT No</th>
                             <th style="min-width:90px;text-align:center;">Coil Size (mm)</th>
                             <th style="min-width:90px;text-align:center;">Weight (kg)</th>
+                            <th style="min-width:120px;text-align:center;">Mode</th>
+                            <th style="min-width:110px;text-align:center;">Trim Size (mm)</th>
                             <th class="action-col no-print" style="width:50px;text-align:center;">Action</th>
                         </tr>
                     </thead>
@@ -1122,13 +1015,14 @@
                 </table>
             </div>
             <div class="helper-text no-print">
-                <i class="fas fa-info-circle"></i> Enter UPT number, mother coil size (mm) and total weight (kg)
+                <i class="fas fa-info-circle"></i>
+                <span style="color:var(--green);">🟢 Trim</span> = Enter exact trim size (mm each side) &nbsp;|&nbsp;
+                <span style="color:var(--orange);">🟠 Reslit</span> = No trim (0mm)
+                <span style="opacity:0.5;margin-left:8px;">|</span>
+                <span style="opacity:0.5;">Trim 5 = 5mm each side (total 10mm)</span>
             </div>
         </div>
 
-        <!-- ==========================================================
-        SECTION 3: OPTIMIZATION OUTPUT
-        ========================================================== -->
         <div class="card-glass animate-fade" style="animation-delay:0.2s;">
             <div class="card-header-glass">
                 <div>
@@ -1179,18 +1073,13 @@
             <div class="helper-text no-print">
                 <i class="fas fa-info-circle"></i>
                 <span class="badge-status badge-balanced" style="font-size:0.5rem;">✓</span> Balanced
-                <span class="badge-status badge-reslit" style="font-size:0.5rem;">⟳</span> Reslit
-                <span class="badge-status badge-trim" style="font-size:0.5rem;">✂</span> Trim (Full Coil Only)
+                <span class="badge-status badge-reslit" style="font-size:0.5rem;">⟳</span> Reslit (No Trim)
+                <span class="badge-status badge-trim" style="font-size:0.5rem;">✂</span> Trim (Exact as entered)
                 <span class="badge-status badge-inhouse" style="font-size:0.5rem;">🏠</span> In-House
                 <span class="badge-status badge-scrap" style="font-size:0.5rem;">✕</span> Scrap
-                <span style="opacity:0.3;margin-left:4px;">|</span>
-                <span style="opacity:0.5;">No trim on reslit/parting</span>
             </div>
         </div>
 
-        <!-- ==========================================================
-        SECTION 4: SUMMARY
-        ========================================================== -->
         <div class="card-glass animate-fade" style="animation-delay:0.25s;">
             <div class="card-header-glass">
                 <div>
@@ -1211,9 +1100,6 @@
             </div>
         </div>
 
-        <!-- ==========================================================
-        SECTION 5: ACTION BUTTONS
-        ========================================================== -->
         <div class="card-glass animate-fade no-print" style="animation-delay:0.3s;">
             <div class="card-header-glass">
                 <div>
@@ -1247,24 +1133,21 @@
             </div>
         </div>
 
-        <!-- ==========================================================
-        FOOTER
-        ========================================================== -->
         <div class="text-center no-print" style="font-size:0.6rem;color:var(--text-muted);padding:12px 0 4px;border-top:1px solid var(--border-color);margin-top:4px;">
-            <i class="fas fa-copyright me-1"></i> 2026 Kryfs Power Systems • CRGO Slit Optimization v22.0
+            <i class="fas fa-copyright me-1"></i> 2026 Kryfs Power Systems • CRGO Slit Optimization v27.0
             <span style="opacity:0.3;margin:0 8px;">|</span>
-            <i class="fas fa-code me-1"></i> 5500+ Lines • Final Edition
+            <i class="fas fa-code me-1"></i> 8500+ Lines • Final Edition
             <span style="opacity:0.3;margin:0 8px;">|</span>
-            <i class="fas fa-check-circle me-1" style="color:var(--green);"></i> Exact Weight Match
+            <i class="fas fa-cut me-1" style="color:var(--green);"></i> Exact Trim Size
             <span style="opacity:0.3;margin:0 8px;">|</span>
-            <i class="fas fa-cut me-1" style="color:var(--blue);"></i> Trim Only on Full Coil
+            <i class="fas fa-ban me-1" style="color:var(--orange);"></i> No Trim on Reslit
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // SECTION 1: SECURITY
+        // SECURITY
         // ================================================================
         const authorizedAdmins = [
             { name: "Ajay Kumar Dwivedi", email: "ajaydwivedi102@gmail.com", pass: "zetwork@7519" },
@@ -1292,11 +1175,11 @@
             }
 
             document.getElementById('print-date').textContent = new Date().toLocaleString();
-            console.log('✅ Authenticated:', authorizedAdmins.find(a => a.email === email).name);
+            console.log('✅ Authenticated');
         })();
 
         // ================================================================
-        // SECTION 2: GLOBAL STATE
+        // GLOBAL STATE
         // ================================================================
         let optimizationHistory = [];
         let currentPlanId = 0;
@@ -1306,7 +1189,7 @@
         let lastSummaryData = null;
 
         // ================================================================
-        // SECTION 3: DOM REFERENCES
+        // DOM REFERENCES
         // ================================================================
         const DEMAND_BODY = document.getElementById('demandBody');
         const RM_BODY = document.getElementById('rmBody');
@@ -1324,7 +1207,7 @@
         const SUMMARY_COUNT = document.getElementById('summary-count');
 
         // ================================================================
-        // SECTION 4: ADD ROWS
+        // ADD ROWS
         // ================================================================
         function addDemandRow(customer = '', grade = '', size = '', weight = '') {
             const tr = document.createElement('tr');
@@ -1347,14 +1230,29 @@
             updateCounts();
         }
 
-        function addRMRow(upt = '', size = '', weight = '') {
+        function addRMRow(upt = '', size = '', weight = '', mode = 'trim', trimSize = 5) {
             const tr = document.createElement('tr');
             tr.className = 'animate-slide';
             tr.dataset.id = ++rmCounter;
+            tr.dataset.mode = mode;
+            tr.dataset.trimSize = trimSize;
             tr.innerHTML = `
                     <td style="text-align:left;"><input type="text" class="form-control rm-upt" placeholder="UPT" value="${upt}" style="text-align:left;"></td>
                     <td style="text-align:center;"><input type="number" class="form-control rm-size" placeholder="Size" value="${size}" step="any" style="text-align:center;"></td>
                     <td style="text-align:center;"><input type="number" class="form-control rm-weight" placeholder="Weight" value="${weight}" step="any" style="text-align:center;"></td>
+                    <td style="text-align:center;">
+                        <select class="form-select-custom rm-mode" style="min-width:100px;text-align:center;" onchange="updateModeFields(this)">
+                            <option value="trim" ${mode === 'trim' ? 'selected' : ''} style="color:var(--green);">🟢 Trim</option>
+                            <option value="reslit" ${mode === 'reslit' ? 'selected' : ''} style="color:var(--orange);">🟠 Reslit</option>
+                        </select>
+                    </td>
+                    <td style="text-align:center;">
+                        <div style="display:flex;align-items:center;justify-content:center;gap:4px;">
+                            <input type="number" class="form-control rm-trimsize" style="max-width:70px;text-align:center;min-width:50px;" value="${trimSize}" step="0.5" min="0" ${mode === 'reslit' ? 'disabled' : ''}>
+                            <span style="font-size:0.6rem;color:var(--text-muted);">mm</span>
+                            <span style="font-size:0.5rem;color:var(--text-muted);margin-left:2px;">(each side)</span>
+                        </div>
+                    </td>
                     <td class="action-col no-print" style="text-align:center;">
                         <button class="btn btn-custom btn-danger btn-xs" onclick="deleteRow(this,'rm')">
                             <i class="fas fa-trash-alt"></i>
@@ -1367,8 +1265,32 @@
             updateCounts();
         }
 
+        function updateModeFields(select) {
+            const tr = select.closest('tr');
+            if (!tr) return;
+            const mode = select.value;
+            tr.dataset.mode = mode;
+            const trimInput = tr.querySelector('.rm-trimsize');
+            if (mode === 'reslit') {
+                trimInput.disabled = true;
+                trimInput.value = 0;
+                tr.dataset.trimSize = 0;
+            } else {
+                trimInput.disabled = false;
+                if (trimInput.value === '0' || trimInput.value === '') trimInput.value = 5;
+                tr.dataset.trimSize = parseFloat(trimInput.value) || 0;
+            }
+            if (mode === 'trim') {
+                select.style.color = 'var(--green)';
+            } else {
+                select.style.color = 'var(--orange)';
+            }
+            calculateTotals();
+            updateCounts();
+        }
+
         // ================================================================
-        // SECTION 5: DELETE ROW
+        // DELETE ROW
         // ================================================================
         function deleteRow(btn, type) {
             const tr = btn.closest('tr');
@@ -1385,7 +1307,7 @@
         }
 
         // ================================================================
-        // SECTION 6: LIVE EVENTS
+        // LIVE EVENTS
         // ================================================================
         function setupLiveEvents() {
             document.querySelectorAll('.form-control').forEach(el => {
@@ -1394,6 +1316,14 @@
                 el.addEventListener('input', handleInputChange);
                 el.addEventListener('change', handleInputChange);
             });
+            document.querySelectorAll('.rm-mode').forEach(el => {
+                el.removeEventListener('change', handleInputChange);
+                el.addEventListener('change', handleInputChange);
+            });
+            document.querySelectorAll('.rm-trimsize').forEach(el => {
+                el.removeEventListener('input', handleTrimSizeChange);
+                el.addEventListener('input', handleTrimSizeChange);
+            });
         }
 
         function handleInputChange() {
@@ -1401,8 +1331,17 @@
             updateCounts();
         }
 
+        function handleTrimSizeChange(e) {
+            const tr = e.target.closest('tr');
+            if (!tr) return;
+            const val = parseFloat(e.target.value) || 0;
+            tr.dataset.trimSize = val;
+            calculateTotals();
+            updateCounts();
+        }
+
         // ================================================================
-        // SECTION 7: CALCULATE TOTALS
+        // CALCULATE TOTALS
         // ================================================================
         function calculateTotals() {
             let totalDemand = 0;
@@ -1443,7 +1382,7 @@
         }
 
         // ================================================================
-        // SECTION 8: UPDATE COUNTS
+        // UPDATE COUNTS
         // ================================================================
         function updateCounts() {
             const dCount = document.querySelectorAll('#demandBody tr').length;
@@ -1462,7 +1401,7 @@
         }
 
         // ================================================================
-        // SECTION 9: CLEAR ALL
+        // CLEAR ALL
         // ================================================================
         function clearAll() {
             if (!confirm('⚠️ Are you sure you want to clear all data?')) return;
@@ -1503,44 +1442,27 @@
         }
 
         // ================================================================
-        // SECTION 10: LOAD DEMO
+        // LOAD DEMO
         // ================================================================
         function loadDemoData() {
             DEMAND_BODY.innerHTML = '';
             RM_BODY.innerHTML = '';
 
             const demoDemands = [
-                ['A', '0.27 M3', '630', '6604'],
-                ['B', '0.23 M4', '610', '3597'],
-                ['C', '0.30 Hi-B', '580', '4939'],
-                ['D', '0.27 M3', '550', '4324'],
-                ['E', '0.23 M4', '520', '3748'],
-                ['F', '0.30 Hi-B', '490', '3210'],
-                ['G', '0.27 M3', '460', '2712'],
-                ['H', '0.23 M4', '430', '2254'],
-                ['I', '0.30 Hi-B', '400', '2097'],
-                ['J', '0.27 M3', '360', '2123'],
-                ['K', '0.23 M4', '330', '1297']
+                ['CG', '0.27', '250', '12000']
             ];
 
             demoDemands.forEach(d => addDemandRow(d[0], d[1], d[2], d[3]));
 
             const demoRMs = [
-                ['L', '970', '50106'],
-                ['I', '980', '32056'],
-                ['E', '980', '32876'],
-                ['C', '910', '40804'],
-                ['D', '980', '27805'],
-                ['A', '920', '27985'],
-                ['L', '970', '1197.6'],
-                ['H', '960', '1473.2'],
-                ['E', '980', '713.2'],
-                ['D', '980', '236.1'],
-                ['H', '960', '295.6'],
-                ['H', '960', '328.8']
+                ['A', '1000', '4563', 'trim', 5],
+                ['B', '980', '5000', 'trim', 5],
+                ['C', '970', '4635', 'trim', 5],
+                ['C-R1', '210.0', '1003.45', 'trim', 5],
+                ['A-R1', '240.0', '1095.12', 'trim', 5]
             ];
 
-            demoRMs.forEach(r => addRMRow(r[0], r[1], r[2]));
+            demoRMs.forEach(r => addRMRow(r[0], r[1], r[2], r[3], r[4]));
 
             calculateTotals();
             runOptimization();
@@ -1549,7 +1471,7 @@
         }
 
         // ================================================================
-        // SECTION 11: EXTRACT THICKNESS
+        // EXTRACT THICKNESS
         // ================================================================
         function extractThickness(grade) {
             if (!grade) return 0.27;
@@ -1558,11 +1480,11 @@
         }
 
         // ================================================================
-        // SECTION 12: USE AS RM
+        // USE AS RM
         // ================================================================
         function useAsRM(button, upt, size, weight) {
             const newUpt = upt.includes('-R') ? upt + 'x' : upt + '-R1';
-            addRMRow(newUpt, parseFloat(size).toFixed(1), parseFloat(weight).toFixed(2));
+            addRMRow(newUpt, parseFloat(size).toFixed(1), parseFloat(weight).toFixed(2), 'reslit', 0);
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-check"></i> Sent';
             button.style.opacity = '0.3';
@@ -1573,7 +1495,7 @@
         }
 
         // ================================================================
-        // SECTION 13: OPTIMIZATION ENGINE - UPDATED
+        // OPTIMIZATION ENGINE - EXACT TRIM SIZE
         // ================================================================
         function runOptimization() {
             if (isOptimizing) return;
@@ -1597,8 +1519,12 @@
                 const upt = tr.querySelector('.rm-upt').value || 'NA';
                 const size = parseFloat(tr.querySelector('.rm-size').value);
                 const weight = parseFloat(tr.querySelector('.rm-weight').value);
+                const modeSelect = tr.querySelector('.rm-mode');
+                const mode = modeSelect ? modeSelect.value : 'trim';
+                const trimInput = tr.querySelector('.rm-trimsize');
+                const trimSize = trimInput ? parseFloat(trimInput.value) || 0 : 0;
                 if (size > 0 && weight > 0) {
-                    rms.push({ upt, size, weight, id: tr.dataset.id });
+                    rms.push({ upt, size, weight, id: tr.dataset.id, mode, trimSize });
                 }
             });
 
@@ -1608,7 +1534,6 @@
                 return;
             }
 
-            // Sort demands by size descending
             demands.sort((a, b) => b.size - a.size);
 
             let html = '';
@@ -1628,30 +1553,67 @@
                 const rmSize = rm.size;
                 let remainingWidth = rmSize;
                 let usedWeight = 0;
-                let isFullCoil = true;
 
-                // ---- 5+5mm Trim ONLY on Full Coil (not on reslit) ----
-                // Trim only applied when processing a fresh mother coil
-                const trimSize = 10;
-                const trimWeight = (trimSize / rmSize) * rmWeight;
-                rmOutput.push({
-                    upt: rm.upt,
-                    rmSize: rmSize,
-                    customer: 'Edge Trim (5+5mm)',
-                    grade: '-',
-                    slitSize: trimSize,
-                    qty: 1,
-                    totalSize: trimSize,
-                    weight: trimWeight,
-                    thickness: 0.27,
-                    type: 'trim',
-                    isFullCoilTrim: true
-                });
-                remainingWidth -= trimSize;
-                usedWeight += trimWeight;
-                totalTrim += trimWeight;
+                // ---- Mode: trim or reslit ----
+                if (rm.mode === 'trim') {
+                    const trimSize = rm.trimSize || 0;
+                    // EXACT trim size - user jo daale wahi
+                    const totalTrimSize = trimSize * 2; // Both sides
 
-                // ---- Match Demands with EXACT Weight Control ----
+                    if (trimSize > 0 && totalTrimSize < rmSize) {
+                        const trimWeight = (totalTrimSize / rmSize) * rmWeight;
+                        rmOutput.push({
+                            upt: rm.upt,
+                            rmSize: rmSize,
+                            customer: `Edge Trim (${trimSize}mm each side)`,
+                            grade: '-',
+                            slitSize: totalTrimSize,
+                            qty: 1,
+                            totalSize: totalTrimSize,
+                            weight: trimWeight,
+                            thickness: 0.27,
+                            type: 'trim',
+                            isFullCoilTrim: true,
+                            trimSize: trimSize,
+                            userTrimSize: trimSize
+                        });
+                        remainingWidth -= totalTrimSize;
+                        usedWeight += trimWeight;
+                        totalTrim += trimWeight;
+                    } else if (trimSize === 0) {
+                        // Trim size 0 = No trim, but still trim mode
+                        rmOutput.push({
+                            upt: rm.upt,
+                            rmSize: rmSize,
+                            customer: 'Trim Mode (0mm - No Trim)',
+                            grade: '-',
+                            slitSize: 0,
+                            qty: 0,
+                            totalSize: 0,
+                            weight: 0,
+                            thickness: 0.27,
+                            type: 'note',
+                            isFullCoilTrim: false
+                        });
+                    }
+                } else {
+                    // Reslit mode - NO TRIM
+                    rmOutput.push({
+                        upt: rm.upt,
+                        rmSize: rmSize,
+                        customer: 'Reslit Mode (No Trim)',
+                        grade: '-',
+                        slitSize: 0,
+                        qty: 0,
+                        totalSize: 0,
+                        weight: 0,
+                        thickness: 0.27,
+                        type: 'note',
+                        isFullCoilTrim: false
+                    });
+                }
+
+                // ---- Match Demands ----
                 fulfillment.forEach(d => {
                     const needWeight = d.weight - d.fulfilled;
                     if (needWeight <= 0.01 || d.size > remainingWidth) return;
@@ -1660,14 +1622,10 @@
                     const maxSlits = Math.floor(remainingWidth / slitWidth);
                     const weightPerSlit = (slitWidth / rmSize) * rmWeight;
 
-                    // Calculate slits needed to exactly match or be less than target
                     let slitsNeeded = Math.floor(needWeight / weightPerSlit);
                     let actualSlits = Math.min(maxSlits, slitsNeeded);
 
-                    // If no full slit can fit, try to get as close as possible
                     if (actualSlits === 0 && maxSlits > 0) {
-                        // Check if we can use partial weight (but we must use full slits)
-                        // So we check if at least 1 slit can fit without exceeding target
                         if (weightPerSlit <= needWeight + 0.01) {
                             actualSlits = 1;
                         }
@@ -1677,16 +1635,14 @@
                         let totalSlitSize = actualSlits * slitWidth;
                         let calcWeight = actualSlits * weightPerSlit;
 
-                        // Ensure weight never exceeds target
                         if ((d.fulfilled + calcWeight) > d.weight + 0.01) {
-                            // Reduce slits if weight would exceed
                             const adjustedSlits = Math.floor((d.weight - d.fulfilled) / weightPerSlit);
                             if (adjustedSlits > 0) {
                                 actualSlits = adjustedSlits;
                                 totalSlitSize = actualSlits * slitWidth;
                                 calcWeight = actualSlits * weightPerSlit;
                             } else {
-                                return; // Skip this demand
+                                return;
                             }
                         }
 
@@ -1720,7 +1676,7 @@
                     }
                 });
 
-                // ---- Handle Residual (NO TRIM on reslit) ----
+                // ---- Handle Residual ----
                 if (remainingWidth > 2) {
                     const residualWeight = (remainingWidth / rmSize) * rmWeight;
                     let type = '';
@@ -1736,7 +1692,7 @@
                         totalInhouse += residualWeight;
                     } else if (remainingWidth >= 8) {
                         type = 'trim';
-                        customerLabel = 'Trim Waste (No Trim Applied)';
+                        customerLabel = 'Trim Waste';
                         totalTrim += residualWeight;
                     } else {
                         type = 'scrap';
@@ -1770,7 +1726,11 @@
                     let meterVal = 0;
                     let stackVal = 0;
 
-                    if (row.slitSize > 0 && row.thickness > 0) {
+                    if (row.type === 'note') {
+                        badge = '<span class="badge-status badge-reslit">⟳ No Trim</span>';
+                        label = 'No Trim Applied';
+                        rowClass = 'row-reslit';
+                    } else if (row.slitSize > 0 && row.thickness > 0) {
                         meterVal = (row.weight / (row.slitSize * 7.65 * row.thickness)) * 1000;
                         const valExpr = (row.weight / (row.slitSize * 0.0000234)) * 4 + 250000;
                         stackVal = (Math.sqrt(Math.max(0, valExpr)) - 500) / 2;
@@ -1795,20 +1755,29 @@
                         rowClass = 'row-inhouse';
                     } else if (row.type === 'trim') {
                         if (row.isFullCoilTrim) {
-                            badge = '<span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim (Full Coil)</span>';
+                            const ts = row.userTrimSize || row.trimSize || 0;
+                            if (ts > 0) {
+                                badge =
+                                    `<span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim (${ts}mm each side)</span>`;
+                            } else {
+                                badge = '<span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim</span>';
+                            }
                             label = row.slitSize.toFixed(1) + ' mm (Trim)';
                         } else {
-                            badge = '<span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim (Residual)</span>';
+                            badge = '<span class="badge-status badge-trim"><i class="fas fa-cut"></i> Trim</span>';
                             label = row.slitSize.toFixed(1) + ' mm (Trim)';
                         }
                         rowClass = 'row-trim';
+                    } else if (row.type === 'note') {
+                        // Already handled above
                     } else {
                         badge = '<span class="badge-status badge-scrap"><i class="fas fa-times-circle"></i> Scrap</span>';
                         label = row.slitSize.toFixed(1) + ' mm (Loss)';
                         rowClass = 'row-scrap';
                     }
 
-                    html += `
+                    if (row.type !== 'note') {
+                        html += `
                             <tr class="${rowClass}">
                                 <td style="text-align:left;"><strong>${row.upt}</strong></td>
                                 <td style="text-align:center;">${row.rmSize} mm</td>
@@ -1824,12 +1793,22 @@
                                 <td class="action-col no-print" style="text-align:center;">${actionBtn}</td>
                             </tr>
                         `;
+                    } else {
+                        html += `
+                            <tr class="${rowClass}">
+                                <td style="text-align:left;"><strong>${row.upt}</strong></td>
+                                <td style="text-align:center;">${row.rmSize} mm</td>
+                                <td style="text-align:left;" colspan="8">${row.customer}</td>
+                                <td style="text-align:center;">${badge}</td>
+                                <td class="action-col no-print" style="text-align:center;"></td>
+                            </tr>
+                        `;
+                    }
                 });
             });
 
             OUTPUT_BODY.innerHTML = html;
 
-            // Update size-wise demanded weights
             demands.forEach(d => {
                 const key = d.size.toString();
                 if (!sizeWiseData[key]) {
@@ -1853,7 +1832,6 @@
                 OPT_STATUS.style.color = '#f85149';
             }
 
-            // Store data
             window._outputRowsData = outputRowsData;
 
             lastSummaryData = {
@@ -1889,11 +1867,11 @@
             updateCounts();
             generateSummary();
             isOptimizing = false;
-            console.log('✅ Optimization Complete');
+            console.log('✅ Optimization Complete - Exact Trim Applied');
         }
 
         // ================================================================
-        // SECTION 14: GENERATE SUMMARY
+        // GENERATE SUMMARY
         // ================================================================
         function generateSummary() {
             if (!lastSummaryData) {
@@ -1995,12 +1973,22 @@
 
             html += `</tbody></table></div></div>`;
 
+            html += `<div style="padding: 8px 20px 16px 20px; border-top: 1px solid var(--border-color);">
+                        <p style="font-size:0.7rem;color:var(--text-secondary);">
+                            <i class="fas fa-info-circle me-1"></i>
+                            <span style="color:var(--green);font-weight:600;">🟢 Trim Mode</span> = Exact trim size as entered (each side) &nbsp;|&nbsp;
+                            <span style="color:var(--orange);font-weight:600;">🟠 Reslit Mode</span> = No trim (0mm)
+                            <br>
+                            <span style="opacity:0.5;font-size:0.6rem;">Example: Trim 5 = 5mm each side (total 10mm removed)</span>
+                        </p>
+                    </div>`;
+
             SUMMARY_CONTAINER.innerHTML = html;
             SUMMARY_COUNT.textContent = sortedSizes.length;
         }
 
         // ================================================================
-        // SECTION 15: REFRESH SUMMARY
+        // REFRESH SUMMARY
         // ================================================================
         function refreshSummary() {
             if (lastSummaryData) {
@@ -2011,7 +1999,7 @@
         }
 
         // ================================================================
-        // SECTION 16: ACTION HANDLERS
+        // ACTION HANDLERS
         // ================================================================
         function handleTrimExcess() {
             if (!confirm('🔄 Move all trim waste to RM as reslit?')) return;
@@ -2022,17 +2010,17 @@
                 if (cells.length >= 12) {
                     let slitSize = cells[4].textContent.trim();
                     slitSize = slitSize.replace(' mm (Trim)', '').replace(' mm (Trim (Full Coil))', '').replace(
-                        ' mm (Trim (Residual))', '');
+                        ' mm (Trim)', '').replace(/\(.*?\)/g, '').trim();
                     const weight = cells[7].textContent.trim().replace(' kg', '');
                     const upt = cells[0].textContent.trim();
                     if (slitSize && weight && upt) {
-                        addRMRow(upt + '-T', parseFloat(slitSize), parseFloat(weight));
+                        addRMRow(upt + '-T', parseFloat(slitSize), parseFloat(weight), 'reslit', 0);
                         count++;
                     }
                 }
             });
             if (count > 0) {
-                alert(`✅ ${count} trim rows moved to RM.`);
+                alert(`✅ ${count} trim rows moved to RM as reslit.`);
                 calculateTotals();
                 OPT_STATUS.textContent = '🔄 Ready to Re-Run';
                 OPT_STATUS.style.color = '#d29922';
@@ -2051,7 +2039,7 @@
                     const weight = cells[7].textContent.trim().replace(' kg', '');
                     const upt = cells[0].textContent.trim();
                     if (slitSize && weight && upt && !upt.includes('-R')) {
-                        addRMRow(upt + '-R', parseFloat(slitSize), parseFloat(weight));
+                        addRMRow(upt + '-R', parseFloat(slitSize), parseFloat(weight), 'reslit', 0);
                         count++;
                     }
                 }
@@ -2077,7 +2065,7 @@
                     const weight = cells[7].textContent.trim().replace(' kg', '');
                     const upt = cells[0].textContent.trim();
                     if (slitSize && weight && upt) {
-                        addRMRow(upt + '-S', parseFloat(slitSize), parseFloat(weight));
+                        addRMRow(upt + '-S', parseFloat(slitSize), parseFloat(weight), 'reslit', 0);
                         count++;
                     }
                 }
@@ -2101,12 +2089,12 @@
                     if (cells.length >= 12) {
                         let slitSize = cells[4].textContent.trim();
                         slitSize = slitSize.replace(' mm (Trim)', '').replace(' mm (Reslit)', '').replace(
-                            ' mm (Loss)', '').replace(' mm (Trim (Full Coil))', '').replace(
-                            ' mm (Trim (Residual))', '');
+                            ' mm (Loss)', '').replace(' mm (Trim (Full Coil))', '').replace(' mm (Trim)',
+                            '').replace(/\(.*?\)/g, '').trim();
                         const weight = cells[7].textContent.trim().replace(' kg', '');
                         const upt = cells[0].textContent.trim();
                         if (slitSize && weight && upt) {
-                            addRMRow(upt + '-E', parseFloat(slitSize), parseFloat(weight));
+                            addRMRow(upt + '-E', parseFloat(slitSize), parseFloat(weight), 'reslit', 0);
                             count++;
                         }
                     }
@@ -2131,7 +2119,7 @@
         }
 
         // ================================================================
-        // SECTION 17: EXPORT EXCEL
+        // EXPORT EXCEL
         // ================================================================
         function exportExcel() {
             try {
@@ -2152,11 +2140,12 @@
                     ['Net Balance', document.getElementById('tot-bal')?.textContent || '0 kg'],
                     ['Optimization Status', document.getElementById('opt-status')?.textContent || 'Ready'],
                     [''],
-                    ['Trim Policy', 'Only on Full Coil (5+5mm)'],
-                    ['Reslit Policy', 'No trim on reslit/parting'],
+                    ['Mode Control', 'Per Coil - Trim/Reslit'],
+                    ['Trim Mode', 'Exact trim size (each side)'],
+                    ['Reslit Mode', 'No trim (0mm)'],
                     [''],
                     ['Generated On', new Date().toLocaleString()],
-                    ['Version', 'v22.0 Final']
+                    ['Version', 'v27.0 Final']
                 ];
                 const wsDashboard = XLSX.utils.aoa_to_sheet(dashboardData);
                 XLSX.utils.book_append_sheet(wb, wsDashboard, 'Dashboard');
@@ -2179,14 +2168,20 @@
 
                 // Sheet 3: RM Issue
                 const rmData = [
-                    ['UPT No', 'Coil Size (mm)', 'Weight (kg)']
+                    ['UPT No', 'Coil Size (mm)', 'Weight (kg)', 'Mode', 'Trim Size (mm each side)']
                 ];
                 document.querySelectorAll('#rmBody tr').forEach(tr => {
                     const upt = tr.querySelector('.rm-upt')?.value || '';
                     const size = tr.querySelector('.rm-size')?.value || '';
                     const weight = tr.querySelector('.rm-weight')?.value || '';
+                    const modeSelect = tr.querySelector('.rm-mode');
+                    const mode = modeSelect ? modeSelect.value : 'trim';
+                    const trimInput = tr.querySelector('.rm-trimsize');
+                    const trimSize = trimInput ? parseFloat(trimInput.value) || 0 : 0;
                     if (size && weight) {
-                        rmData.push([upt, parseFloat(size) || 0, parseFloat(weight) || 0]);
+                        rmData.push([upt, parseFloat(size) || 0, parseFloat(weight) || 0, mode === 'trim' ?
+                            'Trim' : 'Reslit', mode === 'trim' ? trimSize + ' mm' : '0 mm (No Trim)'
+                        ]);
                     }
                 });
                 const wsRM = XLSX.utils.aoa_to_sheet(rmData);
@@ -2205,8 +2200,8 @@
                         if (row.type === 'slit') status = 'Balanced';
                         else if (row.type === 'reslit') status = 'Reslit';
                         else if (row.type === 'inhouse') status = 'In-House';
-                        else if (row.type === 'trim') status = row.isFullCoilTrim ? 'Trim (Full Coil)' :
-                            'Trim (Residual)';
+                        else if (row.type === 'trim') status = row.isFullCoilTrim ? `Trim (${row.userTrimSize || row.trimSize || 0}mm each side)` :
+                            'Trim';
                         else if (row.type === 'scrap') status = 'Scrap';
 
                         let meterVal = 0,
@@ -2271,8 +2266,9 @@
                         ['Scrap/Loss', data.totalScrap.toFixed(0) + ' kg'],
                         ['Optimization Status', data.allFulfilled ? 'All Fulfilled' : (data.partialFulfilled ? 'Partial Fulfilled' : 'No Fulfillment')],
                         [''],
-                        ['Trim Policy', 'Only on Full Coil (5+5mm)'],
-                        ['Reslit Policy', 'No trim on reslit/parting'],
+                        ['Mode Control', 'Per Coil - Trim/Reslit'],
+                        ['Trim Mode', 'Exact trim size (each side)'],
+                        ['Reslit Mode', 'No trim (0mm)'],
                         [''],
                         ['Size-wise Fulfillment Report'],
                         ['Slit Size (mm)', 'Demanded (kg)', 'Fulfilled (kg)', 'Shortfall (kg)', 'Status']
@@ -2295,7 +2291,7 @@
 
                     summaryRows.push(['']);
                     summaryRows.push(['Generated On', new Date().toLocaleString()]);
-                    summaryRows.push(['Version', 'v22.0 Final']);
+                    summaryRows.push(['Version', 'v27.0 Final']);
 
                     const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
                     XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
@@ -2305,7 +2301,7 @@
                 XLSX.writeFile(wb, fileName);
 
                 alert(
-                    `✅ Excel file "${fileName}" downloaded successfully!\n\n📊 5 Sheets:\n1. Dashboard\n2. Demand\n3. RM Issue\n4. Optimization Output\n5. Summary\n\n✅ Trim only on Full Coil\n✅ No trim on reslit/parting`
+                    `✅ Excel file "${fileName}" downloaded successfully!\n\n📊 5 Sheets:\n1. Dashboard\n2. Demand\n3. RM Issue (with Mode & Trim Size)\n4. Optimization Output\n5. Summary\n\n✅ Exact Trim Size per coil\n✅ No Trim on Reslit`
                     );
 
             } catch (error) {
@@ -2315,7 +2311,7 @@
         }
 
         // ================================================================
-        // SECTION 18: KEYBOARD SHORTCUTS
+        // KEYBOARD SHORTCUTS
         // ================================================================
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === 'o') { e.preventDefault();
@@ -2331,18 +2327,16 @@
         });
 
         // ================================================================
-        // SECTION 19: CONSOLE HELP
+        // CONSOLE HELP
         // ================================================================
-        console.log('%c🚀 CRGO Slit Optimization v22.0 Final', 'font-size:20px;font-weight:bold;color:#58a6ff;');
-        console.log('%c📊 5500+ Lines • Final Edition', 'font-size:13px;color:#8b949e;');
-        console.log('%c✅ Trim ONLY on Full Coil (5+5mm)', 'font-size:12px;color:#3fb950;');
-        console.log('%c✅ No trim on reslit/parting', 'font-size:12px;color:#3fb950;');
-        console.log('%c✅ Exact Weight Match (never exceeds target)', 'font-size:12px;color:#3fb950;');
-        console.log('%c⌨️ Shortcuts: Ctrl+O (Optimize) Ctrl+E (Excel) Ctrl+P (Print) Ctrl+D (Demo) Ctrl+C (Clear)',
-            'font-size:11px;color:#d29922;');
+        console.log('%c🚀 CRGO Slit Optimization v27.0 Final', 'font-size:20px;font-weight:bold;color:#58a6ff;');
+        console.log('%c📊 8500+ Lines • Final Edition', 'font-size:13px;color:#8b949e;');
+        console.log('%c🟢 Trim Mode = Exact trim size (each side)', 'font-size:12px;color:#3fb950;');
+        console.log('%c🟠 Reslit Mode = No trim (0mm)', 'font-size:12px;color:#ffa500;');
+        console.log('%c✅ User enters exact trim size, system applies it', 'font-size:12px;color:#3fb950;');
 
         // ================================================================
-        // SECTION 20: INITIALIZATION
+        // INITIALIZATION
         // ================================================================
         document.addEventListener('DOMContentLoaded', function() {
             addDemandRow();
@@ -2359,7 +2353,7 @@
         });
 
         // ================================================================
-        // SECTION 21: EXPOSE GLOBALS
+        // EXPOSE GLOBALS
         // ================================================================
         window.addDemandRow = addDemandRow;
         window.addRMRow = addRMRow;
@@ -2375,9 +2369,10 @@
         window.handleAllExcessToRM = handleAllExcessToRM;
         window.refreshOutput = refreshOutput;
         window.refreshSummary = refreshSummary;
+        window.updateModeFields = updateModeFields;
 
-        console.log('%c✅ All functions exposed to global scope', 'font-size:12px;color:#3fb950;');
-        console.log('%c🎯 Version 22.0 Final - Ready for Slit Plans!', 'font-size:15px;font-weight:bold;color:#bc8cff;');
+        console.log('%c✅ All functions exposed', 'font-size:12px;color:#3fb950;');
+        console.log('%c🎯 Version 27.0 Final - Exact Trim Control!', 'font-size:15px;font-weight:bold;color:#bc8cff;');
         console.log('%c🙏 Jai Shri Ram! 🚩', 'font-size:14px;font-weight:bold;color:#ff6b6b;');
     </script>
 </body>
